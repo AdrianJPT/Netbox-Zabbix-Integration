@@ -54,4 +54,43 @@ Create User and Group for the service
 ===============================
 
 adduser --system --group <user/group>
-chown --recursive <user/group> /opt/netbox/media/
+chown --recursive <user/group> /opt/netbox/netbox/
+
+=======================
+Config the configuration.py file
+=======================
+
+cd /opt/netbox/netbox/netbox/
+cp configuration_example.py configuration.py
+
+******Secret key********* #To encrypt username passwords enables_secrets (50 caracters recomended)
+/opt/netbox/netbox# python3 ./generate_secret_key.py
+************************************************************************
+
+
+# Example: ALLOWED_HOSTS = ['netbox.example.com', 'netbox.internal.local']
+ALLOWED_HOSTS = ['192.168.254.134','*']
+
+# PostgreSQL database configuration. See the Django documentation for a complete list of available parame>
+#   https://docs.djangoproject.com/en/stable/ref/settings/#databases
+DATABASE = {
+    'NAME': 'netboxdb',         # Database name
+    'USER': 'netbox',               # PostgreSQL username
+    'PASSWORD': 'netbox',           # PostgreSQL password
+    'HOST': 'localhost',      # Database server
+    'PORT': '',               # Database port (leave blank for default)
+    'CONN_MAX_AGE': 300,      # Max database connection age
+}
+
+SECRET_KEY = 'uuSKowcwUqQG#)aKp9K6G^!kebY)G_Da4DoiEW8OsD4m$o^$DR'
+
+====================================
+UPGRADE & RUN
+====================================
+/opt/netbox/upgrade.sh
+
+
+
+
+
+
