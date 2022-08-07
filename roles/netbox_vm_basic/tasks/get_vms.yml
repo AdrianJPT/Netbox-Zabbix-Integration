@@ -1,0 +1,19 @@
+- name: CREAR VM BASICO y DEVICE
+  netbox.netbox.netbox_virtual_machine:
+    netbox_url: "http://192.168.1.203:8000"
+    netbox_token: "efb56b6d8d84fa57580fe3bd487f0d0652d1543b"
+    data:
+      name: "{{vmname_vm }}"
+      cluster: "Servidores Criticos"
+      custom_fields:
+        phisical_machine: "{{ device_name }}"
+        
+    
+    state: present
+  delegate_to: localhost
+  ignore_errors: yes
+  
+
+     
+     
+    

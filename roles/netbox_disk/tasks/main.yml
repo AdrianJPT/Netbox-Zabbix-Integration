@@ -1,0 +1,9 @@
+- name: DISCO FACTS.
+  community.windows.win_disk_facts:
+  
+- include_tasks: 01_disk_fisico.yml 
+  loop: "{{ ansible_disks }}"
+  no_log: True
+
+  
+    

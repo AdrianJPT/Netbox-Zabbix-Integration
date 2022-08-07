@@ -1,0 +1,26 @@
+- name: DEFINIENDO PARTICIONES Y DRIVES.
+  debug:  
+    msg: "drive: {{disk_device}} {{features['drive_letter'] | replace('null','')}}: {{size_partition}} "
+  register: disk_complete
+
+- set_fact: 
+          #    objects: "{{ objects | default([]) }} | {{ output.msg }}"
+    objects: "{{objects|default()}} | {{ disk_complete.msg }}"
+
+    
+
+#- name: MOSTRAR DRIVE Y PARTITIONS.
+#debug: 
+#    var: objects
+
+
+    
+- name: ASOCIAR DISCO Y PARTICIONES
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ url_nb }}"
+    netbox_token: "{{ token_nb }}"
+    data:
+      name: "{{ hostname }}"
+      custom_fields:
+        disk_partition: "{{ objects }}"
+  delegate_to: localhost

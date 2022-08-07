@@ -1,0 +1,4 @@
+#---
+# vars file for netbox_ipam
+#ipv4: "{{ ansible_interfaces[0]['ipv4']['address'] }}"
+

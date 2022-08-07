@@ -1,0 +1,11 @@
+- name: VM INFORMACION BASICA.
+  ansible.windows.win_powershell:
+    script: |
+      Get-VM
+  register: virtual_machine
+  
+- include_tasks: get_vms.yml
+  vars:
+    vmname_vm: "{{virtual_machine.output[0]['VMName'] }}"
+    device_name: "{{virtual_machine.output[0]['ComputerName'] }}"
+

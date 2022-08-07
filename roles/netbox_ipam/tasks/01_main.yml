@@ -1,0 +1,33 @@
+
+- name: CREAR IP y INTERFAZ.
+  netbox.netbox.netbox_ip_address:
+    netbox_url: "{{ url_nb }}"
+    netbox_token: "{{ token_nb }}"
+    data:
+      address: "{{ ipv4 }}/{{ prefix }}"
+      assigned_object:
+        device: "{{ hostname }}"
+        name: "ge0/4"
+      status: "Active"
+    state: present
+    query_params:
+      - address
+      - assigned_object_id
+  delegate_to: localhost
+  ignore_errors: yes
+  register: interfaz
+
+
+
+- name: IP PRIMARIO.
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ url_nb }}"
+    netbox_token: "{{ token_nb }}"
+    data:
+      name: "{{ hostname }}"
+      primary_ip4: "{{ ipv4 }}/{{ prefix }}"
+  delegate_to: localhost
+  ignore_errors: yes
+  when: interfaz is succeeded
+
+

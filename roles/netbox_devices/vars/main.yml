@@ -1,0 +1,9 @@
+#---
+
+#hostname: "{{ ansible_hostname }}"
+#ipv4: "{{ ansible_interfaces[0]['ipv4']['address'] }}"
+#mac: "{{ ansible_interfaces[0]['macaddress'] }}"
+#interface: "{{ ansible_facts.interfaces[0]['connection_name'] }}"
+#dominio: "{{ ansible_windows_domain }}"
+
+
