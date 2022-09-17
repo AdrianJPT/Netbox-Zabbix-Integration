@@ -1,6 +1,6 @@
 from pyzabbix import ZabbixAPI
 
-ZABBIX_SERVER = "http://15.228.201.253/zabbix/api_jsonrpc.php"
+ZABBIX_SERVER = "http://YOUR-IP-ADDRESS-OR-DNS/zabbix/api_jsonrpc.php"
 
 zapi = ZabbixAPI(ZABBIX_SERVER)
 zapi.login("Admin", "zabbix")
