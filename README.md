@@ -1,6 +1,6 @@
 # Netbox | Zabbix | Python | API | Ansible 
 
-Integration between Netbox and Zabbix to unify sincrhounisly a everything in a single SoT (Source of Truth)
+Integration between Netbox and Zabbix to unify synchronously a everything in a single SoT (Source of Truth)
 
 Libraries
 - Pyzabbix
