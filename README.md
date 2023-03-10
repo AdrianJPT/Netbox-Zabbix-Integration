@@ -1,9 +1,13 @@
 # Netbox | Zabbix | Python | API | Ansible 
 
-populate devices into NetBox ussing Ansible, API, Zabbix and Python
+Integration between Netbox and Zabbix to unify sincrhounisly a everything in a single SoT (Source of Truth)
 
 Libraries
 - Pyzabbix
 - ipaddress
 - Flask
 - pynetbox
+
+Funtionality supported NETBOX - ZABBIX:
+- Devices (Disk, VM)
+- IPAM
