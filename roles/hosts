@@ -1,11 +1,12 @@
-[vm_win:vars]
+
+[win]
+WSSV01.ADRIAN.EDU.PE
+
+[win:vars]
 ansible_user=ansible@ADRIAN.EDU.PE
 ansible_password=P@ssw0rd
 ansible_connection=winrm
 ansible_port=5985
 #ansible_winrm_scheme=https
 ansible_winrm_transport=kerberos
-ansible_winrm_server_cert_validation = ignore
-
-[win]
-WSSV01.ADRIAN.EDU.PE
+#ansible_winrm_server_cert_validation = validate
