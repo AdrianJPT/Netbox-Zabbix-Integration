@@ -21,7 +21,7 @@
   include_tasks: 01_main.yml
   when: 
     - indicador is succeeded
-    - indicador.device.site != "5"
+    - indicador.device.site != "{{site_temporal}}""
   no_log: True
 
 
@@ -31,8 +31,8 @@
     netbox_token: "{{ token_nb }}"
     data:
       name: "{{ hostname }}"
-      device_type: "HP Proliant Gen 10"  # MODELO DE EQUIPO
-      device_role: "Servidores Fisicos"
+      device_type: "{{device_type}}"  # MODELO DE EQUIPO
+      device_role: "{{device_role}}"
       site: "{{ site_temporal }}"
       serial: "adsad"
       platform: "{{ plataforma }}"
@@ -41,11 +41,10 @@
         cpu: "{{ ansible_processor[2] }}"
         cpu_cantidad: "{{ cpu_count }}"
         threads: "{{ cpu_logics }}"
-        memory: "{{ ram_total }} GB"
+        memory: "{{ ram_total }} MB"
         version: "{{ version }}"
         arquitectura: "{{ arquitecture }}"
     state: present
   delegate_to: localhost
   when: indicador is failed
-
 
