@@ -1,6 +1,6 @@
 # Netbox | Zabbix | Python | API | Ansible 
 
-Integration between Netbox and Zabbix to unify synchronously a everything in a single SoT (Source of Truth)
+Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth)
 
 ## Architecture:
 ![image](https://user-images.githubusercontent.com/86939628/224458899-5c0c49e8-d94a-4a73-bb90-963f0122432a.png)
