@@ -29,15 +29,22 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
 
 ## Execute:
 - Creating a device:
-![Vídeo sin título ‐ Hecho con Clipchamp](https://user-images.githubusercontent.com/86939628/224466508-8b9dc0db-fcce-4123-a3e0-4c82206389f7.gif)
+
+https://user-images.githubusercontent.com/86939628/224466846-707d1ebb-51e6-4810-81c3-ddcaed001dfe.mp4
+
 
 - Assigning and UPDATING an IP address:
-![Vídeo sin título ‐ Hecho con Clipchamp (1)](https://user-images.githubusercontent.com/86939628/224466633-19af34aa-77de-433d-a5dd-ac6bdd26cafe.gif)
 
-![Vídeo sin título ‐ Hecho con Clipchamp (2)](https://user-images.githubusercontent.com/86939628/224466696-fc9b8ddb-0eec-4bda-9581-4634375b4e55.gif)
+https://user-images.githubusercontent.com/86939628/224466840-b284fa0c-51bf-47f0-af25-8f757269e3cb.mp4
+
+
+https://user-images.githubusercontent.com/86939628/224466834-455d832e-1e59-420a-b45e-ec7331a84e0c.mp4
+
 
 - Deleting a Device:
-![Vídeo sin título ‐ Hecho con Clipchamp (3)](https://user-images.githubusercontent.com/86939628/224466770-420d1b96-a948-4a10-b86a-a1693555c4fa.gif)
+https://user-images.githubusercontent.com/86939628/224466829-aaf29897-ef5f-4767-bf44-2161f925c63a.mp4
+
+
 
 
  
