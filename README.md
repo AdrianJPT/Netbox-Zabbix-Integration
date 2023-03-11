@@ -17,9 +17,9 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
   - zabbix = 6.0.7
 
 ## Funcionalities from Netbox to Zabbix:
-- CREATE devices, ipaddress, templates, sites, platform
-- UPDATE devices, ipaddress, templates, sites, platform
-- DELETE devices, ipaddress, templates, sites, platform
+- CREATE devices, ipaddress (IPv4 Primary IP), templates, sites, platform
+- UPDATE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
+- DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
 
 ## Setup
  - Set the corresponding variables in "credentials.py" file:
