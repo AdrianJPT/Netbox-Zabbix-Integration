@@ -2,6 +2,10 @@
 
 Integration between Netbox and Zabbix to unify synchronously a everything in a single SoT (Source of Truth)
 
+Architecture:
+![image](https://user-images.githubusercontent.com/86939628/224458812-71225edf-344f-4a88-ba4c-1fbfc75b7723.png)
+
+
 Requirements:
 Hosts:
   - Install WinRM to access from the CM (Control Machine)
@@ -26,12 +30,10 @@ Flask middleware libreries:
   - ipaddress
   - requests
   - json
-
-
-
   
+  Set the variables to access the endpoints
   
-
+  ![image](https://user-images.githubusercontent.com/86939628/224456921-af46541e-9f0d-4669-be24-429d6fd4c02a.png)
 
 
 Funtionality supported NETBOX - ZABBIX:
