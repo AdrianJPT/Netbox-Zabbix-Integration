@@ -2,7 +2,7 @@ import pynetbox
 from credentials import *
 import requests
 
-NETBOX = f'http://{Netbox_Url}/'
+NETBOX = Netbox_Url
 nb  = pynetbox.api(
     url=NETBOX,
     token= Netbox_Token
