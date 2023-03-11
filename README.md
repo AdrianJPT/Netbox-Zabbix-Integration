@@ -22,11 +22,17 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
 - DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
 
 ## Setup
- - Set the corresponding variables in "credentials.py" file:
+- Set the corresponding variables in "credentials.py" file:
 ![image](https://user-images.githubusercontent.com/86939628/224465775-7a07d1ca-989e-4aef-89d0-fd627f933413.png)
- - Then You run the Flask middleware file "app.py" (Change for your IP)
-![image](https://user-images.githubusercontent.com/86939628/224466267-7ce09abc-5a4c-49e0-8ffd-a684a94826a5.png)
 
+
+- Set VALUES equals in Netbox and Zabbix: 
+    - Platform(Netbox) - Templates(Zabbix)
+    - Sites(Netbox) - Groups(Zabbix)
+
+- Import "netbox_webhooks.csv" in Netbox>Others>Webhooks and change the IP for your own endpoint Flask address
+- Then You run the Flask middleware file "app.py" (Change for your IP)
+![image](https://user-images.githubusercontent.com/86939628/224466267-7ce09abc-5a4c-49e0-8ffd-a684a94826a5.png)
 ## Execute:
 - Creating a device:
 
