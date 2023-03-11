@@ -1,22 +1,20 @@
 from pyzabbix import ZabbixAPI
+from credentials import *
 
-ZABBIX_SERVER = "http://YOUR-IP-ADDRESS-OR-DNS/zabbix/api_jsonrpc.php"
+ZABBIX_SERVER = Zabbix_Url
 
 zapi = ZabbixAPI(ZABBIX_SERVER)
-zapi.login("Admin", "zabbix")
+zapi.login(Zabbix_User, Zabbix_Password)
 
-zabbix_url = 'http://15.228.201.253/zabbix/api_jsonrpc.php'
-zabbix_token = '64acb78476350f099de1ea79800e2901ffb5a267f7aef5ac3e7c4d1af167e42a'
+zabbix_url = Zabbix_Url
+zabbix_token = Zabbix_Token
 
-
-
-
-def zab_patch_HostGroups(nb_device_name, nb_site_name):
+def zab_patch_HostGroups(nb_device_name_name, nb_site_name):
     try:
 
         zb_hostgroup = zapi.hostgroup.get(output=["groupid", "name"], filter={"name": nb_site_name})
 
-        zb_host_get_1  = zapi.host.get(output=["hostid", "name", "interfaces"], filter={"name": nb_device_name}, selectInterfaces=["interfaceid", "ip", "dns"], selectGroups=["groupid"], selectParentTemplates = ["templateid"])
+        zb_host_get_1  = zapi.host.get(output=["hostid", "name", "interfaces"], filter={"name": nb_device_name_name}, selectInterfaces=["interfaceid", "ip", "dns"], selectGroups=["groupid"], selectParentTemplates = ["templateid"])
 
         zab_hostgroup_id = zb_hostgroup[0]['groupid']
 
@@ -44,16 +42,16 @@ def zab_patch_HostGroups(nb_device_name, nb_site_name):
         print(f'{e}')
         print(f"ZABBIX | ERROR | Hostgroup and Site ({nb_site_name}) DON'T MATCH")
 
-def zab_patch_Template(zab_host_get, platform_name, NB_DEVICE):
+def zab_patch_Template( platform_name, nb_device_name):
     try: #MATCH PLATFORM Y TEMPLATE
 
-        zab_host_get = zapi.host.get(output=["hostid", "name", "interfaces","template"], filter={"name": NB_DEVICE}, selectInterfaces=["interfaceid", "ip", "dns"], selectGroups=["groupid"], selectParentTemplates = ["templateid"])
+        zab_host_get = zapi.host.get(output=["hostid", "name", "interfaces","template"], filter={"name": nb_device_name}, selectInterfaces=["interfaceid", "ip", "dns"], selectGroups=["groupid"], selectParentTemplates = ["templateid"])
         host_id = zab_host_get[0]['hostid']
         zab_template_get = zapi.template.get(output=["name", "templateid"], filter={"name": platform_name})
 
-#        print(zab_host_get)
-#        print("")
-#        print(zab_template_get)
+        print(zab_host_get)
+        print("")
+        print(zab_template_get)
 
         platform_template_id = zab_template_get[0]['templateid']
 
