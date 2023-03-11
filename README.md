@@ -7,10 +7,17 @@ Hosts:
   - Install WinRM to access from the CM (Control Machine)
 
 CM:
-  - Install Kerberos to access to the hosts of your ansible inventory
-  - Install Ansible
+  - Install Kerberos/sshkeys to access to the hosts of your ansible inventory.
+  - Install Ansible.
   
-  Edit the variables in roles/main.yml file and set 
+  - Adapat the variables of the file roles/main.yml
+  
+  ![image](https://user-images.githubusercontent.com/86939628/224456020-4c4954c4-1fde-479e-85e7-90cabafb49cd.png)
+ 
+  - Set the inventory in roles/hosts.
+  - Then run the ansible playbook and populate your server information into NETBOX.
+     ansible-playbook main.yml -i hosts
+  
 
 Flask middleware libreries:
   - pynetbox
@@ -19,7 +26,8 @@ Flask middleware libreries:
   - ipaddress
   - requests
   - json
-  ![image](https://user-images.githubusercontent.com/86939628/224455574-566ad056-e948-4f20-b0f3-e118afefbcc9.png)
+
+
 
   
   
