@@ -1,12 +1,12 @@
 import pynetbox
+from credentials import *
+import requests
 
-NETBOX = 'http://192.168.1.203'
+NETBOX = f'http://{Netbox_Url}/'
 nb  = pynetbox.api(
     url=NETBOX,
-    token='4c121d2ed2103e10fd2f4d9532dcb8e040fd0fc9'
-    
+    token= Netbox_Token
 )
-
 
 
 # DEVICE/Tags IN NETBOX
