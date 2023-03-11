@@ -1,47 +1,24 @@
-# Netbox | Zabbix | Python | API | Ansible 
+# Netbox and Zabbix Integration using Flask API
 
-Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth)
-
-## Architecture:
-![image](https://user-images.githubusercontent.com/86939628/224458899-5c0c49e8-d94a-4a73-bb90-963f0122432a.png)
+Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth) using Flask as a middleware
 
 ## Architecture:
 
+![image](https://user-images.githubusercontent.com/86939628/224465296-abddcd6b-f1a6-4a51-90b1-c212dcd4d08f.png)
 
 ## Requirements:
-Hosts:
-  - Install WinRM to access from the CM (Control Machine)
+  - pynetbox = 7.0.1
+  - pyzabbix = 1.2.1
+  - Flask = 2.2.3
+  - requests = 2.22.0
 
-CM:
-  - Install Kerberos/sshkeys to access to the hosts of your ansible inventory.
-  - Install Ansible.
+## Tested on:
+  netbox = 3.3.2
+  zabbix = 6.0.7
   
-  - Adapat the variables of the file roles/main.yml (Create the temporary objects o )
-  
-  ![image](https://user-images.githubusercontent.com/86939628/224456020-4c4954c4-1fde-479e-85e7-90cabafb49cd.png)
- 
-  - Set the inventory in roles/hosts.
-  - Then run the ansible playbook and populate your server information into NETBOX.
-     ansible-playbook main.yml -i hosts
-  
-
-Flask middleware libreries:
-  - pynetbox
-  - pyzabbix
-  - flask
-  - ipaddress
-  - requests
-  - json
-  
-  Set the variables to access the endpoints
-  
-  ![image](https://user-images.githubusercontent.com/86939628/224456921-af46541e-9f0d-4669-be24-429d6fd4c02a.png)
-
-Netbox:
+## Setup
+ - Set the corresponding variables:
+![image](https://user-images.githubusercontent.com/86939628/224465775-7a07d1ca-989e-4aef-89d0-fd627f933413.png)
 
 
-  
 
-Funtionality supported NETBOX - ZABBIX:
-- Devices (Disk, VM)
-- IPAM
