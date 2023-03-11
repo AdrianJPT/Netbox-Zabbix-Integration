@@ -3,7 +3,7 @@
 Integration between Netbox and Zabbix to unify synchronously a everything in a single SoT (Source of Truth)
 
 Architecture:
-![image](https://user-images.githubusercontent.com/86939628/224458812-71225edf-344f-4a88-ba4c-1fbfc75b7723.png)
+![image](https://user-images.githubusercontent.com/86939628/224458864-507c077b-3a77-49ce-be24-3746edbf0092.png)
 
 
 Requirements:
