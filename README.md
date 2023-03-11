@@ -13,12 +13,20 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
   - requests = 2.22.0
 
 ## Tested on:
-  netbox = 3.3.2
-  zabbix = 6.0.7
-  
+  - netbox = 3.3.2
+  - zabbix = 6.0.7
+
+## Funcionalities from Netbox to Zabbix:
+- CREATE devices, ipaddress, templates, sites, platform
+- UPDATE devices, ipaddress, templates, sites, platform
+- DELETE devices, ipaddress, templates, sites, platform
+
 ## Setup
- - Set the corresponding variables:
+ - Set the corresponding variables in "credentials.py" file:
 ![image](https://user-images.githubusercontent.com/86939628/224465775-7a07d1ca-989e-4aef-89d0-fd627f933413.png)
+ - Then You run the Flask middleware file "app.py" (Change for your IP)
+ ![image](https://user-images.githubusercontent.com/86939628/224465975-c8016db7-bd2d-4047-bc85-9f20ac24823a.png)
+ 
 
-
+ 
 
