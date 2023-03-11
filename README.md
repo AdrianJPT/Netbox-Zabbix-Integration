@@ -42,6 +42,7 @@ https://user-images.githubusercontent.com/86939628/224466834-455d832e-1e59-420a-
 
 
 - Deleting a Device:
+
 https://user-images.githubusercontent.com/86939628/224466829-aaf29897-ef5f-4767-bf44-2161f925c63a.mp4
 
 
