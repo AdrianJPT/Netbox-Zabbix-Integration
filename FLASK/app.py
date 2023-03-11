@@ -4,7 +4,10 @@ import requests
 
 # RESOLVE IP ADDRESS
 import ipaddress 
+import lib_zabbix as za
 
+from credentials import *
+import nb_local_lib as ntbx
 
 
 # ZABBIX
@@ -14,15 +17,13 @@ from pyzabbix import ZabbixAPI, ZabbixAPIException
 
 app = Flask(__name__)
 
-
-
-ZABBIX_SERVER = "http://15.228.201.253/zabbix/api_jsonrpc.php"
+ZABBIX_SERVER = Zabbix_Url
 
 zapi = ZabbixAPI(ZABBIX_SERVER)
-zapi.login("Admin", "zabbix")
+zapi.login(Zabbix_User, Zabbix_Password)
 
-zabbix_url = 'http://15.228.201.253/zabbix/api_jsonrpc.php'
-zabbix_token = '64acb78476350f099de1ea79800e2901ffb5a267f7aef5ac3e7c4d1af167e42a'
+zabbix_url = str(Zabbix_Url)
+zabbix_token = Zabbix_Token
 
 
 @app.route('/create', methods=['POST'])
@@ -32,6 +33,8 @@ def zabbix_host_create():
     if(request.data):
         reading_post = request.get_json()
         nb_device_name = reading_post['data']['name']
+        nb_site_name = reading_post['data']['site']['name']
+        platform_name = reading_post['data']['platform']['name']
         print("")
         print(f"ZABBIX | Creando ... ({nb_device_name})")
 
@@ -43,6 +46,8 @@ def zabbix_host_create():
                             }
                         ]
                         )
+            
+            
 
             print(f"ZABBIX | SUCCESS | Creado ({nb_device_name})")
 
@@ -51,6 +56,10 @@ def zabbix_host_create():
             print("ERROR", e.__class__, "ocurrio.")
             print(F"ZABBIX | WARNING | ({nb_device_name}) ya existe en Zabbix Server")
 
+        # ADD NB (SITE) ZB (Groups)
+        
+        za.zab_patch_HostGroups(nb_device_name,nb_site_name)
+        
     return jsonify({"msg":"Creado"})
 
 @app.route('/update', methods=['POST'])
@@ -58,14 +67,11 @@ def zabbix_host_update():
     if(request.data):
         # LEER NOMBRE DEL DEVICE NETBOX
         reading_post = request.get_json()
-        #print(reading_post) # TURN ON PARA DEBUGEAR NETBOX REQUEST !!
         nb_device_name = reading_post['data']['name']
-        #print (nb_device_name)
-        
-        
+        platform_name = reading_post['data']['platform']['name']
         # TRAER LA INFO DE ZABBIX
         hosts_zabbix = zapi.host.get(output=["hostid", "name", "interfaces"], filter={"name": nb_device_name}, selectInterfaces=["interfaceid", "ip", "dns"], selectGroups=["groupid"])
-
+        
         # SI YA EXISTIA EL NB DEVICE Y EN ZABBIX NO, SE CREARA UNO
         if len(hosts_zabbix) != 0:
             # SI EXISTE EN ZABBIX
@@ -142,7 +148,7 @@ def zabbix_host_update():
                     print("ZABBIX | WARNING | ", e.__class__, f"ocurrio para ({nb_device_name}).")
                     print(f"ZABBIX | SUCCESS | La IP es: ({nb_primary_ip}) ")
                     print(f"ZABBIX | WARNING | No se identifico IP en Netbox")
-
+        
         #CUANDO NO EXITE EN ZABBIX PERO EL NETBOX SÍ
         else:
             print("CREANDO CON IP O SIN UNA")
@@ -185,7 +191,7 @@ def zabbix_host_update():
                 
                 print(f"ZABBIX | SUCCESS | Se creo el host ({nb_device_name}) , porque no exitia en Zabbix Server")
 
-
+        za.zab_patch_Template( platform_name, nb_device_name)
     return jsonify({"msg":"pong"})    
     
 @app.route('/delete', methods=['DELETE'])
@@ -218,4 +224,4 @@ def zabbix_host_delete():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='192.168.1.204',port=4000)
+    app.run(debug=True,host='192.168.1.204',port=5000)
