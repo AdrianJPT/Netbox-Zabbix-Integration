@@ -1,0 +1,4 @@
+pynetbox = 7.0.1
+pyzabbix = 1.2.1
+Flask = 2.2.3
+requests = 2.22.0
