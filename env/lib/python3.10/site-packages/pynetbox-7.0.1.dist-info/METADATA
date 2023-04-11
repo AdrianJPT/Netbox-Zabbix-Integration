@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: pynetbox
+Version: 7.0.1
+Summary: NetBox API client library
+Home-page: https://github.com/netbox-community/pynetbox
+Author: Zach Moody
+Author-email: zmoody@do.co
+License: Apache2
+Keywords: netbox
+Classifier: Intended Audience :: Developers
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+License-File: LICENSE
+Requires-Dist: requests (<3.0,>=2.20.0)
+

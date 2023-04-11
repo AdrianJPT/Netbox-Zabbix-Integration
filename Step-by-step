@@ -1,0 +1,185 @@
+
+apt install postgresql libpq-dev -y
+
+====================
+CREATE DB for NETBOX
+====================
+sudo -u postgres psql
+
+CREATE DATABASE <DB_name>;
+CREATE USER <user> WITH PASSWORD '<PASSWORD>';
+GRANT ALL PRIVILEGES ON DATABASE <DB_name> TO <user>
+
+\q
+====================
+Proof the DB you've created
+====================
+psql --username <user> --password --host localhost <DB_name>
+
+\q
+
+===================
+install redis server
+===================
+
+apt install redis-server -y
+
+--------------
+Healh test
+--------------
+redis-cli ping
+
+<output>PONG<output\>
+
+========================
+Dependencies for netbox
+========================
+apt instalar python3 python3-pip python3-venv python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev -y
+
+******Just for make sure "pip" is up to date*******
+pip3 install --upgrade pip
+
+============================
+Download NETBOX from GITHUB
+============================
+wget <git repository>
+
+**** Decompress and move it *******
+tar -xzf <source_file> -C /opt
+
+**** Symbolic link for the version *****
+
+ln -s /opt/netbox/ /opt/netbox-3.2.5
+
+===============================
+Create User and Group for the service
+===============================
+
+adduser --system --group <user/group>
+chown --recursive <user/group> /opt/netbox/netbox/
+
+=======================
+Config the configuration.py file
+=======================
+
+cd /opt/netbox/netbox/netbox/
+cp configuration_example.py configuration.py
+
+******Secret key********* #To encrypt username passwords enables_secrets (50 caracters recomended)
+/opt/netbox/netbox# python3 ./generate_secret_key.py
+************************************************************************
+
+
+# Example: ALLOWED_HOSTS = ['netbox.example.com', 'netbox.internal.local']
+ALLOWED_HOSTS = ['192.168.254.134','*']
+
+# PostgreSQL database configuration. See the Django documentation for a complete list of available parame>
+#   https://docs.djangoproject.com/en/stable/ref/settings/#databases
+DATABASE = {
+    'NAME': 'netboxdb',         # Database name
+    'USER': 'netbox',               # PostgreSQL username
+    'PASSWORD': 'netbox',           # PostgreSQL password
+    'HOST': 'localhost',      # Database server
+    'PORT': '',               # Database port (leave blank for default)
+    'CONN_MAX_AGE': 300,      # Max database connection age
+}
+
+SECRET_KEY = 'uuSKowcwUqQG#)aKp9K6G^!kebY)G_Da4DoiEW8OsD4m$o^$DR'
+
+====================================
+UPGRADE & RUN
+====================================
+/opt/netbox/upgrade.sh
+
+==================================================================
+**************** Activating a virtual envarioment****************
+==================================================================
+
+source /opt/netbox/venv/bin/activate
+(venv) cd /opt/netbox/netbox/
+(venv) python3 manage.py createsuperuser   #ramdom temporary credentials
+(venv) python3 manage.py runserver 192.168.1.202:8000 --insecure
+
+===================================================================
+
+===================================================
+To make in guinicorn (PYTHON WEB SERVER)
+===================================================
+(venv) cd /opt/netbox
+(venv) cp contrib/gunicorn.py /opt/netvox/gunicorn.py
+(venv) cp contrib/*.service /etc/systemd/system/
+(venv) systemctl deamon.reload
+(venv) systemctl start netbox netbox-rq
+(venv) systemctl enable netbox netbox-rq
+(venv) systemctl status netbox
+
+===================================================
+Dedicated WEB SERVER (NGINX) with SSL
+===================================================
+
+cp /opt/netbox/contrib/nginx.conf /etc/nginx/sites-available/netbox
+cd /etc/nginx/sites-enabled/
+rm default
+ln -s /etc/nginx/sites-available/netbox
+
+service nginx restart
+
+
+cd /home/adrian  # Directory where the certifica will be created.
+
+nano netbox.cnf #Create the certificate file
+
+///////////////////////////////////////////////////////////
+[req]
+default_bits           = 2048
+default_md             = sha256
+encrypt_key            = no
+prompt                 = no
+distinguished_name     = subject
+req_extensions         = req_ext
+x509_extensions        = x509_ext
+
+[ subject ]
+C                      = US
+ST                     = Illinois
+L                      = Chicago
+O                      = Me Corp
+OU                     = IT
+emailAddress           = netbox@lan.com
+CN                     = netbox
+
+[ req_ext ]
+subjectKeyIdentifier   = hash
+basicConstraints       = CA:FALSE
+keyUsage               = digitalSignature, keyEncipherment
+extendedKeyUsage       = serverAuth, clientAuth
+subjectAltName         = @alternate_names
+nsComment              = "Self-Signed SSL Certificate"
+
+[ x509_ext ]
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid,issuer
+basicConstraints       = CA:FALSE
+keyUsage               = digitalSignature, keyEncipherment
+extendedKeyUsage       = serverAuth, clientAuth
+subjectAltName         = @alternate_names
+nsComment              = "Self-Signed SSL Certificate"
+
+[ alternate_names ]
+DNS.1                  = localhost
+DNS.2                  = netbox.lan
+DNS.3                  = 192.168.1.202
+IP.1                   = 192.168.1.202
+///////////////////////////////////////////////////////////
+
+
+# Command to run the certificate
+openssl req -config netbox.cnf \
+-new -sha256 -newkey rsa:2048 -nodes -keyout /etc/ssl/private/netbox.key \
+-x509 -days 825 -out /etc/ssl/certs/netbox.crt
+
+
+
+
+
+
