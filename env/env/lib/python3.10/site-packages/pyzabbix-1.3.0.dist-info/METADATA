@@ -1,0 +1,202 @@
+Metadata-Version: 2.1
+Name: pyzabbix
+Version: 1.3.0
+Summary: Zabbix API Python interface
+Home-page: http://github.com/lukecyca/pyzabbix
+Author: Luke Cyca
+Author-email: me@lukecyca.com
+License: LGPL
+Keywords: zabbix monitoring api
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Natural Language :: English
+Classifier: Topic :: System :: Monitoring
+Classifier: Topic :: System :: Networking :: Monitoring
+Classifier: Topic :: System :: Systems Administration
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests (>=1.0)
+Requires-Dist: packaging
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pytest-xdist ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: requests-mock ; extra == 'dev'
+Requires-Dist: types-requests ; extra == 'dev'
+
+# PyZabbix
+
+**PyZabbix** is a Python module for working with the [Zabbix API](https://www.zabbix.com/documentation/current/manual/api/reference).
+
+[![CI](https://github.com/lukecyca/pyzabbix/actions/workflows/ci.yml/badge.svg)](https://github.com/lukecyca/pyzabbix/actions/workflows/ci.yml)
+[![PyPI Package Version](https://img.shields.io/pypi/v/pyzabbix.svg)](https://pypi.org/project/pyzabbix/)
+[![PyPI Python Versions](https://img.shields.io/pypi/pyversions/pyzabbix.svg)](https://pypi.org/project/pyzabbix/)
+
+## Requirements
+
+- Tested against Zabbix 4.0 LTS, 5.0 LTS, 6.0 LTS and 6.4.
+
+## Documentation
+
+### Getting Started
+
+Install PyZabbix using pip:
+
+```bash
+$ pip install pyzabbix
+```
+
+You can now import and use pyzabbix like so:
+
+```python
+from pyzabbix import ZabbixAPI
+
+zapi = ZabbixAPI("http://zabbixserver.example.com")
+zapi.login("zabbix user", "zabbix pass")
+# You can also authenticate using an API token instead of user/pass with Zabbix >= 5.4
+# zapi.login(api_token='xxxxx')
+print("Connected to Zabbix API Version %s" % zapi.api_version())
+
+for h in zapi.host.get(output="extend"):
+    print(h['hostid'])
+```
+
+Refer to the [Zabbix API Documentation](https://www.zabbix.com/documentation/current/manual/api/reference) and the [PyZabbix Examples](https://github.com/lukecyca/pyzabbix/tree/master/examples) for more information.
+
+### Customizing the HTTP request
+
+PyZabbix uses the [requests](https://requests.readthedocs.io/en/master/) library for HTTP. You can customize the request parameters by configuring the [requests Session](https://requests.readthedocs.io/en/master/user/advanced/#session-objects) object used by PyZabbix.
+
+This is useful for:
+
+- Customizing headers
+- Enabling HTTP authentication
+- Enabling Keep-Alive
+- Disabling SSL certificate verification
+
+```python
+from pyzabbix import ZabbixAPI
+
+zapi = ZabbixAPI("http://zabbixserver.example.com")
+
+# Enable HTTP auth
+zapi.session.auth = ("http user", "http password")
+
+# Disable SSL certificate verification
+zapi.session.verify = False
+
+# Specify a timeout (in seconds)
+zapi.timeout = 5.1
+
+# Login (in case of HTTP Auth, only the username is needed, the password, if passed, will be ignored)
+zapi.login("http user", "http password")
+
+# You can also authenticate using an API token instead of user/pass with Zabbix >= 5.4
+# zapi.login(api_token='xxxxx')
+```
+
+### Enabling debug logging
+
+If you need to debug some issue with the Zabbix API, you can enable the output of logging, pyzabbix already uses the default python logging facility but by default, it logs to "Null", you can change this behavior on your program, here's an example:
+
+```python
+import sys
+import logging
+from pyzabbix import ZabbixAPI
+
+stream = logging.StreamHandler(sys.stdout)
+stream.setLevel(logging.DEBUG)
+log = logging.getLogger('pyzabbix')
+log.addHandler(stream)
+log.setLevel(logging.DEBUG)
+
+
+zapi = ZabbixAPI("http://zabbixserver.example.com")
+zapi.login('admin','password')
+
+# You can also authenticate using an API token instead of user/pass with Zabbix >= 5.4
+# zapi.login(api_token='xxxxx')
+
+```
+
+The expected output is as following:
+
+```
+Sending: {
+    "params": {
+        "password": "password",
+        "user": "admin"
+    },
+    "jsonrpc": "2.0",
+    "method": "user.login",
+    "id": 2
+}
+Response Code: 200
+Response Body: {
+    "jsonrpc": "2.0",
+    "result": ".................",
+    "id": 2
+}
+>>>
+```
+
+## Development
+
+To develop this project, start by reading the `Makefile` to have a basic understanding of the possible tasks.
+
+Install the project and the dependencies in a virtual environment:
+
+```sh
+make install
+source .venv/bin/activate
+```
+
+### Releases
+
+To release a new version, first bump the version number in `setup.py` by hand and run the release target:
+
+```sh
+make release
+```
+
+Finally, push the release commit and tag to publish them to Pypi:
+
+```sh
+git push --follow-tags
+```
+
+## License
+
+LGPL 2.1 http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+Zabbix API Python Library.
+
+Original Ruby Library is Copyright (C) 2009 Andrew Nelson nelsonab(at)red-tux(dot)net
+
+Original Python Library is Copyright (C) 2009 Brett Lentz brett.lentz(at)gmail(dot)com
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA

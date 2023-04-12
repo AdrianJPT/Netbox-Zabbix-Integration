@@ -34,7 +34,13 @@ def zabbix_host_create():
         reading_post = request.get_json()
         nb_device_name = reading_post['data']['name']
         nb_site_name = reading_post['data']['site']['name']
-        platform_name = reading_post['data']['platform']['name']
+        try:
+            platform_name = reading_post['data']['platform']['name']
+            
+
+        except:
+            print('Platform field empty')
+
         print("")
         print(f"ZABBIX | Creando ... ({nb_device_name})")
 
@@ -224,4 +230,4 @@ def zabbix_host_delete():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='192.168.1.204',port=5000)
+    app.run(debug=True,host='0.0.0.0',port=5000)
