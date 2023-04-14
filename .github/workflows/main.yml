@@ -1,1 +1,16 @@
+name: K6 Test
 
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  k6:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build K6 Docker image
+        run: docker build -t k6-test .
+      - name: Run K6 test
+        run: docker run -v $(pwd):/scripts k6-test run /scripts/test.js
