@@ -1,16 +1,14 @@
-name: K6 Test
+name: Ejecutar pruebas k6 en contenedor Docker
 
-on:
-  push:
-    branches: [ main ]
+on: [push]
 
 jobs:
-  k6:
+  k6-docker:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build K6 Docker image
-        run: docker build -t k6-test .
-      - name: Run K6 test
-        run: docker run -v $(pwd):/scripts k6-test run /scripts/test.js
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Ejecutar pruebas k6 en contenedor Docker
+      uses: docker://loadimpact/k6:latest
+      with:
+        args: run --vus 10 --duration 30s /path/to/k6/script.js
