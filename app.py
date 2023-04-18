@@ -39,9 +39,11 @@ def zabbix_host_create():
         try:
             # HOSTGROUP - SITES | TEMPLATE - PLATFORM
             if (bool(reading_post['data']['platform']['name']) == True):
+                
                 nb_platform = reading_post['data']['platform']['name']
                 print(nb_platform)
                 template = zapi.template.get(filter={'host': nb_platform})
+                
                 find_hostgroup = zapi.hostgroup.get(filter={"name": nb_site_name},output=['groupid'])
                 # Validate HOSTGROPS
                 if(len(find_hostgroup) != 0):
@@ -58,7 +60,7 @@ def zabbix_host_create():
                     groups=[{'groupid': find_hostgroup[0]['groupid']}],
                     templates=[{'templateid': template[0]['templateid']
                     }])
-                    print(f"ZABBIX | SUCCESS | Creado ({nb_device_name})")
+                    print(f"ZABBIX | SUCCESS | Created ({nb_device_name})")
                 
                 else:
                     print(f'HostGroup {nb_site_name} not found in ZABBIX')
@@ -75,13 +77,12 @@ def zabbix_host_create():
                     print(f"ZABBIX | SUCCESS | Creado ({nb_device_name})")
                 else:
                     print(f'HostGroup {nb_site_name} not found in ZABBIX')
-            
+             
         except ZabbixAPIException as e:
-            print('wdasd')
             print("Error: {}".format(str(e)))
             
             
-    return jsonify({"msg":"Creado"})
+    return jsonify({"msg":"Correct"})
 
 @app.route('/update', methods=['POST'])
 def zabbix_host_update():
@@ -96,27 +97,18 @@ def zabbix_host_update():
         # SI YA EXISTIA EL NB DEVICE Y EN ZABBIX NO, SE CREARA UNO
         if len(hosts_zabbix) != 0:
             # SI EXISTE EN ZABBIX
-
             zab_host_id = hosts_zabbix[0]['hostid']     
-            
-            #print (hosts_zabbix)  # ACTIVAR PARA DEBUGEAR ZABBIX REQUEST
-            #print("")
-            print(f"ZABBIX | SUCCESS | Se encontro ({nb_device_name}) device en Zabbix Sever")
-
-
-
             # IDENTIFICAR SI EXISTE ALGUNA INTERFAZ
             zab_host_int = hosts_zabbix[0]['interfaces']
 
             if len(zab_host_int) != 0:
-                print(f'Existe Interfaz')
-
+                print(f'Interface device exists')
                 # OBTNER EL ID DE LA INTERFAZ
                 zab_host_int_id = hosts_zabbix[0]['interfaces'][0]['interfaceid']
 
                 # VALIDAR SI SE ESTA QUITANDO O ACTUALIZANDO LA IP
                 if reading_post['data']['primary_ip'] != None:
-                    print("Actulizando la interfaz")
+                    print("Updating interface")
 
                     request_nb_primary_ip = reading_post['data']['primary_ip']['address']
                     convert_to_ip = ipaddress.IPv4Interface(request_nb_primary_ip)
@@ -124,7 +116,7 @@ def zabbix_host_update():
 
                     zapi.hostinterface.update(interfaceid=zab_host_int_id, ip=nb_primary_ip)
 
-                    print(f"ZABBIX | SUCCESS | Se actulizo la ip: ({nb_primary_ip}) en la interfaz id: ({zab_host_int_id})")
+                    print(f"ZABBIX | SUCCESS | IP updated: ({nb_primary_ip}), Interface id: ({zab_host_int_id})")
 
                 else:
                     # BORRANDO INTERFAZ ZAbbix HOST
@@ -137,7 +129,7 @@ def zabbix_host_update():
                             ],
                             "auth": zabbix_token,
                             "id": 1})
-                    print(f"ZABBIX | SUCCESS | Se Elimino la interfaz con ip del host({nb_device_name})")
+                    print(f"ZABBIX | SUCCESS | Remove IP from host({nb_device_name})")
             else:           
             # NO TIENE INTERFAZ CREAR UNA Y ASOCIAR UNA IP
                 try:
@@ -163,20 +155,20 @@ def zabbix_host_update():
                                                     }
                                                 ]
                                                 )
-                    print(f"ZABBIX | SUCCESS | Se actualizo la ip ({nb_primary_ip}) en Zabbix Server")
+                    print(f"ZABBIX | SUCCESS | IP updated ({nb_primary_ip}) in Zabbix Server")
 
                 except Exception as e:
                     print("ZABBIX | WARNING | ", e.__class__, f"ocurrio para ({nb_device_name}).")
-                    print(f"ZABBIX | SUCCESS | La IP es: ({nb_primary_ip}) ")
-                    print(f"ZABBIX | WARNING | No se identifico IP en Netbox")
+                    print(f"ZABBIX | SUCCESS | IP: ({nb_primary_ip}) ")
+                    print(f"ZABBIX | WARNING | IP not found in netbox")
         
         #CUANDO NO EXITE EN ZABBIX PERO EL NETBOX SÍ
         else:
-            print("CREANDO CON IP O SIN UNA")
+
             # VER SI CREAR CON IP O SIN IP
             if reading_post['data']['primary_ip'] != None: 
                 # CREAR CON IP
-                print("Creando con ip")
+                print("Creating IP")
                 request_nb_primary_ip = reading_post['data']['primary_ip']['address']
                 convert_to_ip = ipaddress.IPv4Interface(request_nb_primary_ip)
                 nb_primary_ip = str(convert_to_ip.ip)            
@@ -197,7 +189,7 @@ def zabbix_host_update():
                         "port": "10050"
                     }])
 
-                print(f"ZABBIX | SUCCESS | Se creo el host ({nb_device_name}) con la ip ({nb_primary_ip}) , porque no exitia en Zabbix Server")
+                print(f"ZABBIX | SUCCESS | Host ({nb_device_name}) created with ip ({nb_primary_ip})")
 
             else:
                 # CREAR SOLAMENTE EL HOST SIN IP
@@ -213,7 +205,8 @@ def zabbix_host_update():
                 print(f"ZABBIX | SUCCESS | Se creo el host ({nb_device_name}) , porque no exitia en Zabbix Server")
 
         za.zab_patch_Template( platform_name, nb_device_name)
-    return jsonify({"msg":"pong"})    
+        
+    return jsonify({"msg":"Correct"})    
     
 @app.route('/delete', methods=['DELETE'])
 def zabbix_host_delete():
@@ -241,7 +234,7 @@ def zabbix_host_delete():
             print("ZABBIX | ERROR | ", e.__class__, f"ocurrio para ({nb_device_name}).")
             print(f"ZABBIX | SUCCESS | ({nb_device_name}) Device no existia en Zabbix, Pero se creo Correctamente")
 
-    return jsonify({"msg": "Correcto"})
+    return jsonify({"msg": "Correct"})
 
 
 if __name__ == '__main__':
