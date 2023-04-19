@@ -1,41 +1,34 @@
 import http from 'k6/http';
-import { check, sleep } from 'k6';
-import { SharedArray } from 'k6/data';
-import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
-import { vu } from 'k6/execution';
+import { sleep, check } from 'k6';
+import { Counter } from 'k6/metrics';
 
+// A simple counter for http requests
 
-const url = 'http://192.168.40.50:3000/create';
+export const requests = new Counter('http_reqs');
+
+// you can specify stages of your test (ramp up/down patterns) through the options object
+// target is the number of VUs you are aiming for
 
 export const options = {
-    scenarios :{
-      "use-all-the-data": {
-        executor: "per-vu-iterations",
-        vus: 10,
-        iterations: 50,
-        maxDuration: "10s"
-      }}
-}
-  
-  
-export default function () {
-
-    var payload =  JSON.stringify(
-            {
-
-            });
-    //console.log('debug: ', JSON.stringify(payload));
-    
-
-
-
-  // Using a JSON string as body
-    var response = http.post(url, payload);
-    console.log(response.json()); 
-    check(response, {
-        'is status 200': (r) => r.status === 200,
-      });
-    //console.log(`VU: ${__VU}  -  ITER: ${__ITER}`);
-
-
+  stages: [
+    { target: 20, duration: '1m' },
+    { target: 15, duration: '1m' },
+    { target: 0, duration: '1m' },
+  ],
+  thresholds: {
+    http_reqs: ['count < 100'],
+  },
 };
+
+export default function () {
+  // our HTTP request, note that we are saving the response to res, which can be accessed later
+
+  const res = http.get('http://test.k6.io');
+
+  sleep(1);
+
+  const checkRes = check(res, {
+    'status is 200': (r) => r.status === 200,
+    'response body': (r) => r.body.indexOf('Feel free to browse') !== -1,
+  });
+}
