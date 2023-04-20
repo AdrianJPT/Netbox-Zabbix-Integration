@@ -11,4 +11,4 @@ jobs:
     - name: Ejecutar pruebas k6 en contenedor Docker
       uses: docker://loadimpact/k6:latest
       with:
-        args: run --vus 10 --duration 30s /path/to/k6/script.js
+        args: run $(pwd)/tests/k6/script.js
