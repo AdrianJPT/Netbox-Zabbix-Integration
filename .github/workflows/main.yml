@@ -13,4 +13,4 @@ jobs:
     - name: Ejecutar prueba de k6 en Docker
       uses: docker://loadimpact/k6:latest
       with:
-        args: run /tests/k6/script.js 
+        args: run tests/k6/script.js 
