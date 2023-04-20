@@ -1,14 +1,16 @@
-name: Ejecutar pruebas k6 en contenedor Docker
+name: Ejemplo de prueba de k6 en Docker
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  k6-docker:
+  k6-test:
     runs-on: self-hosted
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Ejecutar pruebas k6 en contenedor Docker
+    - uses: actions/checkout@v2
+    - name: Ejecutar prueba de k6 en Docker
       uses: docker://loadimpact/k6:latest
       with:
-        args: run $(pwd)/tests/k6/script.js
+        args: run -i 1 -u 1 -s test.js https://example.com
