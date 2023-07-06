@@ -1,4 +1,4 @@
-package Cibertec;
+package Netbox;
 
 import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
