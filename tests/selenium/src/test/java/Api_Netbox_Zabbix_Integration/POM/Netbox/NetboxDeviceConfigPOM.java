@@ -1,4 +1,4 @@
-package Netbox.POM;
+package Api_Netbox_Zabbix_Integration.POM.Netbox;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class NetboxDevicePOM extends PageObject {
+public class NetboxDeviceConfigPOM extends PageObject {
 
     WebDriver driver = getDriver();
     @FindBy(id = "id_name")

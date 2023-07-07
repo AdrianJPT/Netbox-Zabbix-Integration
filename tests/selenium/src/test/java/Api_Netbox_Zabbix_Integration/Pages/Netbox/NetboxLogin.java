@@ -1,12 +1,9 @@
-package Netbox.Pages;
+package Api_Netbox_Zabbix_Integration.Pages.Netbox;
 
-import Netbox.Manage.Credentials;
-import Netbox.Manage.ManageDriver;
-import Netbox.POM.NetboxLoginPOM;
-import net.serenitybdd.core.pages.PageObject;
+import Api_Netbox_Zabbix_Integration.Manage.Credentials;
+import Api_Netbox_Zabbix_Integration.Manage.ManageDriver;
+import Api_Netbox_Zabbix_Integration.POM.Netbox.NetboxLoginPOM;
 import net.thucydides.core.annotations.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.devtools.v85.page.Page;
 
 public class NetboxLogin  {
 

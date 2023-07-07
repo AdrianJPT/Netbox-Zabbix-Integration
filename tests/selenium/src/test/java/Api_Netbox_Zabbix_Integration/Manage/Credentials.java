@@ -1,4 +1,4 @@
-package Netbox.Manage;
+package Api_Netbox_Zabbix_Integration.Manage;
 
 public class Credentials {
 

@@ -1,6 +1,6 @@
-package Netbox.Pages;
+package Api_Netbox_Zabbix_Integration.Pages.Netbox;
 
-import Netbox.POM.NetboxMainPOM;
+import Api_Netbox_Zabbix_Integration.POM.Netbox.NetboxMainPOM;
 import net.thucydides.core.annotations.Step;
 
 public class NetboxMain {
@@ -10,5 +10,7 @@ public class NetboxMain {
         netboxMainPOM.DeviceBar.click();
         netboxMainPOM.CreateDeviceButton.click();
     }
+
+
 
 }

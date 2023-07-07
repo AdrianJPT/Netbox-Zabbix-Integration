@@ -1,13 +1,11 @@
-package Netbox.Manage;
+package Api_Netbox_Zabbix_Integration.Manage;
 
-import Netbox.Pages.ZabbixHosts;
 import net.serenitybdd.core.pages.PageObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class ManageDriver extends PageObject {
 
@@ -21,8 +19,7 @@ public class ManageDriver extends PageObject {
         // MANAGE
         driver.manage().window().maximize();// -- maximize the current window
         driver.manage().deleteAllCookies();
-        driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
-        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+
     }
 
     public void ScrollToElement(WebElement element){

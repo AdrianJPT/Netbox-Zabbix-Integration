@@ -1,4 +1,4 @@
-package Netbox.POM;
+package Api_Netbox_Zabbix_Integration.POM.Zabbix;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;

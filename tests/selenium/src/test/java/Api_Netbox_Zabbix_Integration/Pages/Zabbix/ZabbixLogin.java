@@ -1,7 +1,7 @@
-package Netbox.Pages;
+package Api_Netbox_Zabbix_Integration.Pages.Zabbix;
 
-import Netbox.Manage.Credentials;
-import Netbox.POM.ZabbixLoginPOM;
+import Api_Netbox_Zabbix_Integration.Manage.Credentials;
+import Api_Netbox_Zabbix_Integration.POM.Zabbix.ZabbixLoginPOM;
 import net.thucydides.core.annotations.Step;
 
 public class ZabbixLogin {

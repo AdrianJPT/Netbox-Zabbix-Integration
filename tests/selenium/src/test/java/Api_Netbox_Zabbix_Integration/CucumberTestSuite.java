@@ -1,4 +1,4 @@
-package Netbox;
+package Api_Netbox_Zabbix_Integration;
 
 import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;

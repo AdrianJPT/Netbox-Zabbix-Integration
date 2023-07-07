@@ -1,13 +1,13 @@
-package Netbox.Pages;
+package Api_Netbox_Zabbix_Integration.Pages.Netbox;
 
-import Netbox.Manage.ManageDriver;
-import Netbox.POM.NetboxDevicePOM;
+import Api_Netbox_Zabbix_Integration.Manage.ManageDriver;
+import Api_Netbox_Zabbix_Integration.POM.Netbox.NetboxDeviceConfigPOM;
 import net.thucydides.core.annotations.Step;
 
-public class NetboxDevice {
+public class NetboxDeviceConfig {
     ManageDriver manageDriver;
 
-    NetboxDevicePOM netboxDevicePOM;
+    NetboxDeviceConfigPOM netboxDevicePOM;
 
     @Step
     public void writeDeviceName(String DeviceName) {
