@@ -140,4 +140,6 @@ public class CreateDeviceStepDef {
     public void theZabbixHostDeviceNameDoesNotAppearInZabbix( String s) {
         zabbixHosts.findZabbixDeviceNotEquals(s);
     }
+
+
 }
