@@ -1,7 +1,7 @@
 # Netbox and Zabbix Integration using Flask API
 
-[Netbox-Docker](https://github.com/netbox-community/netbox-docker/tree/release)
-[Zabbix-Docker](https://www.zabbix.com/documentation/current/en/manual/installation/containers#docker-compose)
+[Netbox-Docker]:https://github.com/netbox-community/netbox-docker/tree/release
+[Zabbix-Docker]:https://www.zabbix.com/documentation/current/en/manual/installation/containers#docker-compose
 
 Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth) using Flask as a middleware
 
