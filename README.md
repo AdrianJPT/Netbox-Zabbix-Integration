@@ -33,7 +33,7 @@ cd Netbox-Zabbix-Integration
 ```
 
 * Set the corresponding variables in "credentials.py" file:
-```bash
+```python
 Netbox_Url = '[your_netbox_url]'
 Netbox_Token = '[your_netbox_token]'
 
@@ -65,7 +65,7 @@ services:
 ```
 
 
-## Execution:
+## Execution VIDEOS:
 - Creating a device:
 
 https://user-images.githubusercontent.com/86939628/224466846-707d1ebb-51e6-4810-81c3-ddcaed001dfe.mp4
