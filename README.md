@@ -26,7 +26,6 @@ To get _Netbox-Zabbix-Integracion_ up and running run the following commands.
 ```bash
 git clone https://github.com/AdrianJPT/Netbox-Zabbix-Integration.git
 cd Netbox-Zabbix-Integration
-docker compose up
 ```
 
 * Set the corresponding variables in "credentials.py" file:
@@ -43,6 +42,7 @@ Zabbix_Password = 'zabbix'
 
 * Getting _Netbox-Zabbix-Integracion_ with Docker Compose up
 ```bash
+docker compose build
 docker compose up
 ```
 
