@@ -1,5 +1,8 @@
 # Netbox and Zabbix Integration using Flask API
 
+![Netbox-Docker](https://github.com/netbox-community/netbox-docker/tree/release)
+![Zabbix-Docker](https://www.zabbix.com/documentation/current/en/manual/installation/containers#docker-compose)
+
 Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth) using Flask as a middleware
 
 ## Architecture:
@@ -8,24 +11,41 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
 
 ## Quickstart
 
-To get _NetBox Docker_ up and running run the following commands.
-There is a more complete [_Getting Started_ guide on our wiki][wiki-getting-started] which explains every step.
+To get _Netbox-Zabbix-Integracion_ up and running run the following commands.
+
+* Set the corresponding variables in "credentials.py" file:
+![image](https://user-images.githubusercontent.com/86939628/224465775-7a07d1ca-989e-4aef-89d0-fd627f933413.png)
+
+* Set VALUES equals in Netbox and Zabbix: 
+    - Platform(Netbox) - Templates(Zabbix)
+    - Sites(Netbox) - HostGroups(Zabbix)
+
+* Set the WeebHooks in Netbox pointing to the API roots:
+    * CREATE (POST): https://[your_IP]:[PORT]/create
+    * UPDATE (POST): https://[your_IP]:[PORT]/update
+    * DELETE (DELETE): https://[your_IP]:[PORT]/delete
+
 
 ```bash
-git clone -b release https://github.com/netbox-community/netbox-docker.git
-cd netbox-docker
-tee docker-compose.override.yml <<EOF
-version: '3.4'
-services:
-  netbox:
-    ports:
-      - 8000:8080
-EOF
-docker compose pull
+git clone https://github.com/AdrianJPT/Netbox-Zabbix-Integration.git
+cd Netbox-Zabbix-Integration
 docker compose up
 ```
 
-The whole application will be available after a few minutes.
+ > If you want to edit the port of the docker container, override the _docker-compose.yml_ file.
+```docker-compose.yml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    command: flask run --host=0.0.0.0 --port=your_port --debug
+```
+
 
 ## Requirements:
   - pynetbox = 7.0.1
@@ -34,24 +54,16 @@ The whole application will be available after a few minutes.
   - requests = 2.22.0
 
 ## Tested on:
-  - netbox = 3.3.2
-  - zabbix = 6.0.7
+  - netbox = 3.3.2 (How to deploy Netbox-Docker)
+  - zabbix = 6.0.7 (How to deploy Zabbix-Docker)
 
 ## Funcionalities from Netbox to Zabbix:
 - CREATE devices, ipaddress (IPv4 Primary IP), templates, sites, platform
-- UPDATE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
+- UPDATE devices, ipaddress(IPv4 Primary IP)
 - DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
 
-## Setup
-- Set the corresponding variables in "credentials.py" file:
-![image](https://user-images.githubusercontent.com/86939628/224465775-7a07d1ca-989e-4aef-89d0-fd627f933413.png)
 
-
-- Set VALUES equals in Netbox and Zabbix: 
-    - Platform(Netbox) - Templates(Zabbix)
-    - Sites(Netbox) - Groups(Zabbix)
-
-- Import "netbox_webhooks.csv" in Netbox>Others>Webhooks and change the IP for your own endpoint Flask address
+  
 - Then You run the Flask middleware file "app.py" (Change for your IP)
 ![image](https://user-images.githubusercontent.com/86939628/224466267-7ce09abc-5a4c-49e0-8ffd-a684a94826a5.png)
 ## Execute:
