@@ -64,12 +64,6 @@ services:
     command: flask run --host='0.0.0.0' --port=your_port --debug
 ```
 
-## Requirements:
-  - pynetbox = 7.0.1
-  - pyzabbix = 1.2.1
-  - Flask = 2.2.3
-  - requests = 2.22.0
-
 ## Tested on:
   - netbox-docker = 2.6.1 (How to deploy [Netbox-Docker])
   - zabbix-docker = 6.4 (How to deploy [Zabbix-Docker])
