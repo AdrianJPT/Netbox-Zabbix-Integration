@@ -4,6 +4,10 @@
 [Zabbix-Docker]:https://www.zabbix.com/documentation/current/en/manual/installation/containers#docker-compose
 
 Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth) using Flask as a middleware
+### Funcionalities from Netbox to Zabbix:
+- CREATE devices, ipaddress (IPv4 Primary IP), templates, sites, platform
+- UPDATE devices, ipaddress(IPv4 Primary IP)
+- DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
 
 ## Architecture:
 
@@ -77,10 +81,6 @@ https://user-images.githubusercontent.com/86939628/224466846-707d1ebb-51e6-4810-
   - netbox-docker = 2.6.1 (How to deploy [Netbox-Docker])
   - zabbix-docker = 6.4 (How to deploy [Zabbix-Docker])
 
-## Funcionalities from Netbox to Zabbix:
-- CREATE devices, ipaddress (IPv4 Primary IP), templates, sites, platform
-- UPDATE devices, ipaddress(IPv4 Primary IP)
-- DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
 
 
 - Assigning and UPDATING an IP address:
