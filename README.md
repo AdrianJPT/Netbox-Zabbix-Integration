@@ -64,13 +64,6 @@ services:
     command: flask run --host='0.0.0.0' --port=your_port --debug
 ```
 
-
-## Execution VIDEOS:
-- Creating a device:
-
-https://user-images.githubusercontent.com/86939628/224466846-707d1ebb-51e6-4810-81c3-ddcaed001dfe.mp4
-
-
 ## Requirements:
   - pynetbox = 7.0.1
   - pyzabbix = 1.2.1
@@ -81,7 +74,10 @@ https://user-images.githubusercontent.com/86939628/224466846-707d1ebb-51e6-4810-
   - netbox-docker = 2.6.1 (How to deploy [Netbox-Docker])
   - zabbix-docker = 6.4 (How to deploy [Zabbix-Docker])
 
+## Execution VIDEOS:
+- Creating a device:
 
+https://user-images.githubusercontent.com/86939628/224466846-707d1ebb-51e6-4810-81c3-ddcaed001dfe.mp4
 
 - Assigning and UPDATING an IP address:
 
