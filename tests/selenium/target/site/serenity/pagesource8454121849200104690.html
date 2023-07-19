@@ -1,0 +1,1037 @@
+<html lang='en'><head><link href='prism/prism.css' rel='stylesheet' /></head><body><script src='prism/prism.js'></script><body><div><pre><code class='language-html'>&lt;html lang="en" data-netbox-url-name="device_add" data-netbox-base-path="" data-netbox-color-mode="dark"&gt;<br/>
+ &lt;head&gt;<br/>
+  &lt;meta charset="UTF-8"&gt;<br/>
+  &lt;meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, viewport-fit=cover"&gt;<br/>
+  &lt;title&gt;<br/>
+  Add a new device<br/>
+ | NetBox&lt;/title&gt;<br/>
+  &lt;script type="text/javascript" src="/static/setmode.js" onerror="window.location='/media-failure/?filename=setmode.js'"&gt;<br/>
+    &lt;/script&gt;<br/>
+  &lt;script type="text/javascript"&gt;<br/>
+      (function () {<br/>
+          initMode()<br/>
+      })();<br/>
+      window.CSRF_TOKEN = "4u5eCZh5Zx8u0DIq9hakZxo8MVDv5SltUKzwuzWKbJc5EKlBgOZTMZZtpowAZfGM";<br/>
+    &lt;/script&gt;<br/>
+  &lt;link rel="stylesheet" href="/static/netbox-external.css?v=3.4.7" onerror="window.location='/media-failure/?filename=netbox-external.css'"&gt;<br/>
+  &lt;link rel="stylesheet" href="/static/netbox-light.css?v=3.4.7" onerror="window.location='/media-failure/?filename=netbox-light.css'"&gt;<br/>
+  &lt;link rel="stylesheet" href="/static/netbox-dark.css?v=3.4.7" onerror="window.location='/media-failure/?filename=netbox-dark.css'"&gt;<br/>
+  &lt;link rel="stylesheet" media="print" href="/static/netbox-print.css?v=3.4.7" onerror="window.location='/media-failure/?filename=netbox-print.css'"&gt;<br/>
+  &lt;link rel="icon" type="image/png" href="/static/netbox.ico"&gt;<br/>
+  &lt;link rel="apple-touch-icon" type="image/png" href="/static/netbox_touch-icon-180.png"&gt;<br/>
+  &lt;script type="text/javascript" src="/static/netbox.js?v=3.4.7" onerror="window.location='/media-failure/?filename=netbox.js'"&gt;<br/>
+    &lt;/script&gt;<br/>
+  &lt;style&gt;                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}                    &lt;/style&gt;<br/>
+ &lt;/head&gt;<br/>
+ &lt;body data-sidenav-pinned="" data-sidenav-show=""&gt;<br/>
+  &lt;script type="text/javascript"&gt;<br/>
+      function checkSideNav() {<br/>
+        // Check localStorage to see if the sidebar should be pinned.<br/>
+        var sideNavRaw = localStorage.getItem('netbox-sidenav');<br/>
+        // Determine if the device has a small screeen. This media query is equivalent to<br/>
+        // bootstrap's media-breakpoint-down(lg) breakpoint mixin, which is what the sidenav's<br/>
+        // CSS uses.<br/>
+        var isSmallScreen = window.matchMedia('(max-width: 991.98px)').matches;<br/>
+        if (typeof sideNavRaw === 'string') {<br/>
+          var sideNavState = JSON.parse(sideNavRaw);<br/>
+          if (sideNavState.pinned === true && !isSmallScreen) {<br/>
+            // If the sidebar should be pinned and this is not a small screen, set the appropriate<br/>
+            // body attributes prior to the rest of the content rendering. This prevents<br/>
+            // jumpy/glitchy behavior on page reloads.<br/>
+            document.body.setAttribute('data-sidenav-pinned', '');<br/>
+            document.body.setAttribute('data-sidenav-show', '');<br/>
+            document.body.removeAttribute('data-sidenav-hidden');<br/>
+          } else {<br/>
+            document.body.removeAttribute('data-sidenav-pinned');<br/>
+            document.body.setAttribute('data-sidenav-hidden', '');<br/>
+          }<br/>
+        }<br/>
+      }<br/>
+      window.addEventListener('resize', function(){ checkSideNav() });<br/>
+      checkSideNav();<br/>
+    &lt;/script&gt;<br/>
+  &lt;div class="container-fluid px-0"&gt;<br/>
+   &lt;main class="layout"&gt;<br/>
+    &lt;nav class="sidenav noprint" id="sidenav" data-simplebar="init"&gt;<br/>
+     &lt;div class="simplebar-wrapper" style="margin: 0px;"&gt;<br/>
+      &lt;div class="simplebar-height-auto-observer-wrapper"&gt;<br/>
+       &lt;div class="simplebar-height-auto-observer"&gt;&lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="simplebar-mask"&gt;<br/>
+       &lt;div class="simplebar-offset" style="right: 0px; bottom: 0px;"&gt;<br/>
+        &lt;div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden scroll;"&gt;<br/>
+         &lt;div class="simplebar-content" style="padding: 0px;"&gt;<br/>
+          &lt;div class="sidenav-header"&gt;&lt;a class="sidenav-brand" href="/"&gt; &lt;img src="/static/netbox_logo.svg" height="48" class="sidenav-brand-img" alt="NetBox Logo"&gt; &lt;/a&gt; &lt;a class="sidenav-brand-icon" href="/"&gt; &lt;img src="/static/netbox_icon.svg" height="32" class="sidenav-brand-img" alt="NetBox Logo"&gt; &lt;/a&gt; &lt;button class="btn btn-sm btn-ghost-primary sidenav-toggle"&gt;<br/>
+            &lt;div class="sidenav-toggle-icon"&gt;&lt;i class="mdi mdi-pin"&gt;&lt;/i&gt;<br/>
+            &lt;/div&gt;&lt;/button&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="sidenav-inner h-100 mb-auto"&gt;<br/>
+           &lt;div class="collapse sidenav-collapse pb-4"&gt;<br/>
+            &lt;ul class="navbar-nav"&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuOrganization" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuOrganization"&gt; &lt;i class="mdi mdi-domain"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Organization&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuOrganization"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Sites&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/sites/" class="nav-link"&gt;Sites&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/sites/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/sites/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/regions/" class="nav-link"&gt;Regions&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/regions/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/regions/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/site-groups/" class="nav-link"&gt;Site Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/site-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/site-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/locations/" class="nav-link"&gt;Locations&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/locations/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/locations/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Racks&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/racks/" class="nav-link"&gt;Racks&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/racks/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/racks/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/rack-roles/" class="nav-link"&gt;Rack Roles&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/rack-roles/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/rack-roles/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/rack-reservations/" class="nav-link"&gt;Reservations&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/rack-reservations/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/rack-reservations/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/dcim/rack-elevations/" class="nav-link"&gt;Elevations&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Tenancy&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/tenancy/tenants/" class="nav-link"&gt;Tenants&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/tenancy/tenants/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/tenancy/tenants/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/tenancy/tenant-groups/" class="nav-link"&gt;Tenant Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/tenancy/tenant-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/tenancy/tenant-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Contacts&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/tenancy/contacts/" class="nav-link"&gt;Contacts&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/tenancy/contacts/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/tenancy/contacts/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/tenancy/contact-groups/" class="nav-link"&gt;Contact Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/tenancy/contact-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/tenancy/contact-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/tenancy/contact-roles/" class="nav-link"&gt;Contact Roles&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/tenancy/contact-roles/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/tenancy/contact-roles/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed active" href="#menuDevices" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="menuDevices"&gt; &lt;i class="mdi mdi-server"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Devices&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse show" id="menuDevices"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Devices&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/devices/" class="nav-link active"&gt;Devices&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/devices/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/devices/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/modules/" class="nav-link"&gt;Modules&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/modules/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/modules/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/device-roles/" class="nav-link"&gt;Device Roles&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/device-roles/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/device-roles/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/platforms/" class="nav-link"&gt;Platforms&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/platforms/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/platforms/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/virtual-chassis/" class="nav-link"&gt;Virtual Chassis&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/virtual-chassis/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/virtual-chassis/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/virtual-device-contexts/" class="nav-link"&gt;Virtual Device Contexts&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/virtual-device-contexts/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/virtual-device-contexts/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Device Types&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/device-types/" class="nav-link"&gt;Device Types&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/device-types/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/device-types/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/module-types/" class="nav-link"&gt;Module Types&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/module-types/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/module-types/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/manufacturers/" class="nav-link"&gt;Manufacturers&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/manufacturers/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/manufacturers/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Device Components&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/interfaces/" class="nav-link"&gt;Interfaces&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/interfaces/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/front-ports/" class="nav-link"&gt;Front Ports&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/front-ports/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/rear-ports/" class="nav-link"&gt;Rear Ports&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/rear-ports/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/console-ports/" class="nav-link"&gt;Console Ports&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/console-ports/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/console-server-ports/" class="nav-link"&gt;Console Server Ports&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/console-server-ports/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/power-ports/" class="nav-link"&gt;Power Ports&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/power-ports/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/power-outlets/" class="nav-link"&gt;Power Outlets&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/power-outlets/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/module-bays/" class="nav-link"&gt;Module Bays&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/module-bays/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/device-bays/" class="nav-link"&gt;Device Bays&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/device-bays/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/inventory-items/" class="nav-link"&gt;Inventory Items&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/inventory-items/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/inventory-item-roles/" class="nav-link"&gt;Inventory Item Roles&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/inventory-item-roles/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/inventory-item-roles/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuConnections" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuConnections"&gt; &lt;i class="mdi mdi-connection"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Connections&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuConnections"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Connections&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/cables/" class="nav-link"&gt;Cables&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/cables/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/wireless/wireless-links/" class="nav-link"&gt;Wireless Links&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/wireless/wireless-links/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/dcim/interface-connections/" class="nav-link"&gt;Interface Connections&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/dcim/console-connections/" class="nav-link"&gt;Console Connections&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/dcim/power-connections/" class="nav-link"&gt;Power Connections&lt;/a&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuWireless" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuWireless"&gt; &lt;i class="mdi mdi-wifi"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Wireless&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuWireless"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Wireless&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/wireless/wireless-lans/" class="nav-link"&gt;Wireless LANs&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/wireless/wireless-lans/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/wireless/wireless-lans/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/wireless/wireless-lan-groups/" class="nav-link"&gt;Wireless LAN Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/wireless/wireless-lan-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/wireless/wireless-lan-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuIPAM" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuIPAM"&gt; &lt;i class="mdi mdi-counter"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;IPAM&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuIPAM"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;IP Addresses&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/ip-addresses/" class="nav-link"&gt;IP Addresses&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/ip-addresses/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/ip-addresses/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/ip-ranges/" class="nav-link"&gt;IP Ranges&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/ip-ranges/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/ip-ranges/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Prefixes&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/prefixes/" class="nav-link"&gt;Prefixes&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/prefixes/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/prefixes/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/roles/" class="nav-link"&gt;Prefix &amp; VLAN Roles&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/roles/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/roles/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;ASNs&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/asns/" class="nav-link"&gt;ASNs&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/asns/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/asns/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Aggregates&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/aggregates/" class="nav-link"&gt;Aggregates&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/aggregates/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/aggregates/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/rirs/" class="nav-link"&gt;RIRs&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/rirs/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/rirs/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;VRFs&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/vrfs/" class="nav-link"&gt;VRFs&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/vrfs/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/vrfs/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/route-targets/" class="nav-link"&gt;Route Targets&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/route-targets/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/route-targets/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;VLANs&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/vlans/" class="nav-link"&gt;VLANs&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/vlans/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/vlans/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/vlan-groups/" class="nav-link"&gt;VLAN Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/vlan-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/vlan-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Other&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/fhrp-groups/" class="nav-link"&gt;FHRP Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/fhrp-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/fhrp-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/service-templates/" class="nav-link"&gt;Service Templates&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/service-templates/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/service-templates/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/services/" class="nav-link"&gt;Services&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/services/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/services/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuOverlay" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuOverlay"&gt; &lt;i class="mdi mdi-graph-outline"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Overlay&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuOverlay"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;L2VPNs&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/l2vpns/" class="nav-link"&gt;L2VPNs&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/l2vpns/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/l2vpns/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/ipam/l2vpn-terminations/" class="nav-link"&gt;Terminations&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/ipam/l2vpn-terminations/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/ipam/l2vpn-terminations/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuVirtualization" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuVirtualization"&gt; &lt;i class="mdi mdi-monitor"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Virtualization&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuVirtualization"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Virtual Machines&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/virtualization/virtual-machines/" class="nav-link"&gt;Virtual Machines&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/virtualization/virtual-machines/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/virtualization/virtual-machines/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/virtualization/interfaces/" class="nav-link"&gt;Interfaces&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-cyan lh-1" href="/virtualization/interfaces/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Clusters&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/virtualization/clusters/" class="nav-link"&gt;Clusters&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/virtualization/clusters/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/virtualization/clusters/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/virtualization/cluster-types/" class="nav-link"&gt;Cluster Types&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/virtualization/cluster-types/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/virtualization/cluster-types/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/virtualization/cluster-groups/" class="nav-link"&gt;Cluster Groups&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/virtualization/cluster-groups/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/virtualization/cluster-groups/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuCircuits" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuCircuits"&gt; &lt;i class="mdi mdi-transit-connection-variant"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Circuits&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuCircuits"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Circuits&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/circuits/circuits/" class="nav-link"&gt;Circuits&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/circuits/circuits/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/circuits/circuits/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/circuits/circuit-types/" class="nav-link"&gt;Circuit Types&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/circuits/circuit-types/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/circuits/circuit-types/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Providers&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/circuits/providers/" class="nav-link"&gt;Providers&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/circuits/providers/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/circuits/providers/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/circuits/provider-networks/" class="nav-link"&gt;Provider Networks&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/circuits/provider-networks/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/circuits/provider-networks/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuPower" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuPower"&gt; &lt;i class="mdi mdi-flash"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Power&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuPower"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Power&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/power-feeds/" class="nav-link"&gt;Power Feeds&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/power-feeds/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/power-feeds/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/dcim/power-panels/" class="nav-link"&gt;Power Panels&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/dcim/power-panels/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/dcim/power-panels/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+             &lt;li class="nav-item"&gt;&lt;a class="nav-link collapsed" href="#menuOther" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="menuOther"&gt; &lt;i class="mdi mdi-notification-clear-all"&gt;&lt;/i&gt; &lt;span class="nav-link-text"&gt;Other&lt;/span&gt; &lt;/a&gt;<br/>
+              &lt;div class="collapse" id="menuOther"&gt;<br/>
+               &lt;ul class="nav nav-sm flex-column"&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Logging&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/extras/journal-entries/" class="nav-link"&gt;Journal Entries&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/extras/changelog/" class="nav-link"&gt;Change Log&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Customization&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/custom-fields/" class="nav-link"&gt;Custom Fields&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/custom-fields/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/extras/custom-fields/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/custom-links/" class="nav-link"&gt;Custom Links&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/custom-links/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/extras/custom-links/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/export-templates/" class="nav-link"&gt;Export Templates&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/export-templates/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/extras/export-templates/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/saved-filters/" class="nav-link"&gt;Saved Filters&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/saved-filters/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/extras/saved-filters/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Integrations&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/webhooks/" class="nav-link"&gt;Webhooks&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/webhooks/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/extras/webhooks/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/extras/reports/" class="nav-link"&gt;Reports&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/extras/scripts/" class="nav-link"&gt;Scripts&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item no-buttons"&gt;&lt;a href="/extras/job-results/" class="nav-link"&gt;Jobs&lt;/a&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;<br/>
+                 &lt;div class="nav-group-header"&gt;&lt;span class="nav-group-label"&gt;Other&lt;/span&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/tags/" class="nav-link"&gt;Tags&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/tags/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a class="btn btn-sm btn-cyan lh-1" href="/extras/tags/import/" title="Import"&gt; &lt;i class="mdi mdi-upload"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+                &lt;li class="nav-item"&gt;&lt;a href="/extras/config-contexts/" class="nav-link"&gt;Config Contexts&lt;/a&gt;<br/>
+                 &lt;div class="btn-group px-2"&gt;&lt;a class="btn btn-sm btn-green lh-1" href="/extras/config-contexts/add/" title="Add"&gt; &lt;i class="mdi mdi-plus-thick"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+                 &lt;/div&gt;&lt;/li&gt;<br/>
+               &lt;/ul&gt;<br/>
+              &lt;/div&gt;&lt;/li&gt;<br/>
+            &lt;/ul&gt;<br/>
+           &lt;/div&gt;<br/>
+           &lt;div class="profile-button-container"&gt;<br/>
+            &lt;div class="dropdown profile-button"&gt;&lt;button type="button" aria-expanded="false" data-bs-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle w-100"&gt; &lt;i class="mdi mdi-account"&gt;&lt;/i&gt; &lt;span id="navbar_user"&gt;admin&lt;/span&gt; &lt;/button&gt;<br/>
+             &lt;ul class="dropdown-menu dropdown-menu-end"&gt;<br/>
+              &lt;li&gt;&lt;button type="button" class="dropdown-item color-mode-toggle"&gt; &lt;i class="color-mode-icon mdi mdi-lightbulb-on"&gt;&lt;/i&gt; &lt;span class="color-mode-text"&gt;Light Mode&lt;/span&gt; &lt;/button&gt;&lt;/li&gt;<br/>
+              &lt;li&gt;&lt;a class="dropdown-item" href="/admin/"&gt; &lt;i class="mdi mdi-cog"&gt;&lt;/i&gt; Admin &lt;/a&gt;&lt;/li&gt;<br/>
+              &lt;li&gt;&lt;a class="dropdown-item" href="/user/profile/"&gt; &lt;i class="mdi mdi-account"&gt;&lt;/i&gt; Profile &lt;/a&gt;&lt;/li&gt;<br/>
+              &lt;li&gt;&lt;a class="dropdown-item" href="/user/preferences/"&gt; &lt;i class="mdi mdi-wrench"&gt;&lt;/i&gt; Preferences &lt;/a&gt;&lt;/li&gt;<br/>
+              &lt;li&gt;&lt;a class="dropdown-item" href="/user/api-tokens/"&gt; &lt;i class="mdi mdi-key"&gt;&lt;/i&gt; API Tokens &lt;/a&gt;&lt;/li&gt;<br/>
+              &lt;li&gt;<br/>
+               &lt;hr class="dropdown-divider"&gt;&lt;/li&gt;<br/>
+              &lt;li&gt;&lt;a class="dropdown-item" href="/logout/"&gt; &lt;i class="mdi mdi-logout-variant"&gt;&lt;/i&gt; Log Out &lt;/a&gt;&lt;/li&gt;<br/>
+             &lt;/ul&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="simplebar-placeholder" style="width: auto; height: 1348px;"&gt;&lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"&gt;<br/>
+      &lt;div class="simplebar-scrollbar" style="width: 0px; display: none;"&gt;&lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;div class="simplebar-track simplebar-vertical" style="visibility: visible;"&gt;<br/>
+      &lt;div class="simplebar-scrollbar" style="height: 638px; display: block; transform: translate3d(0px, 0px, 0px);"&gt;&lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+    &lt;/nav&gt;<br/>
+    &lt;div class="content-container" tabindex="-2"&gt;<br/>
+     &lt;div class="p-2 printonly"&gt;&lt;img src="/static/netbox_logo.svg" alt="NetBox logo" width="200px"&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;nav class="navbar navbar-light sticky-top flex-md-nowrap p-1 mb-3 search container-fluid noprint"&gt;<br/>
+      &lt;div class="nav-mobile"&gt;<br/>
+       &lt;div class="nav-mobile-top"&gt;&lt;a class="sidebar-logo p-2 d-block" href="/"&gt; &lt;img src="/static/netbox_logo.svg" alt="NetBox logo" height="40"&gt; &lt;/a&gt; &lt;button type="button" aria-label="Toggle Navigation" class="navbar-toggler sidenav-toggle-mobile"&gt; &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt; &lt;/button&gt;<br/>
+       &lt;/div&gt;<br/>
+       &lt;div class="d-flex my-1 flex-grow-1 justify-content-center w-100"&gt;<br/>
+        &lt;form class="input-group" action="/search/" method="get"&gt;&lt;input name="q" type="text" aria-label="Search" placeholder="Search" class="form-control"&gt; &lt;button class="btn btn-primary" type="submit"&gt; &lt;i class="mdi mdi-magnify"&gt;&lt;/i&gt; &lt;/button&gt;<br/>
+        &lt;/form&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="row search-container"&gt;<br/>
+       &lt;div class="col-3 d-flex flex-grow-1 ps-0"&gt;&lt;/div&gt;<br/>
+       &lt;div class="col-6 d-flex flex-grow-1 justify-content-center"&gt;<br/>
+        &lt;form class="input-group" action="/search/" method="get"&gt;&lt;input name="q" type="text" aria-label="Search" placeholder="Search" class="form-control"&gt; &lt;button class="btn btn-primary" type="submit"&gt; &lt;i class="mdi mdi-magnify"&gt;&lt;/i&gt; &lt;/button&gt;<br/>
+        &lt;/form&gt;<br/>
+       &lt;/div&gt;<br/>
+       &lt;div class="col-3 d-flex flex-grow-1 pe-0 justify-content-end"&gt;<br/>
+        &lt;div class="dropdown profile-button"&gt;&lt;button type="button" aria-expanded="false" data-bs-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle w-100"&gt; &lt;i class="mdi mdi-account"&gt;&lt;/i&gt; &lt;span id="navbar_user"&gt;admin&lt;/span&gt; &lt;/button&gt;<br/>
+         &lt;ul class="dropdown-menu dropdown-menu-end"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" class="dropdown-item color-mode-toggle"&gt; &lt;i class="color-mode-icon mdi mdi-lightbulb-on"&gt;&lt;/i&gt; &lt;span class="color-mode-text"&gt;Light Mode&lt;/span&gt; &lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a class="dropdown-item" href="/admin/"&gt; &lt;i class="mdi mdi-cog"&gt;&lt;/i&gt; Admin &lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a class="dropdown-item" href="/user/profile/"&gt; &lt;i class="mdi mdi-account"&gt;&lt;/i&gt; Profile &lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a class="dropdown-item" href="/user/preferences/"&gt; &lt;i class="mdi mdi-wrench"&gt;&lt;/i&gt; Preferences &lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a class="dropdown-item" href="/user/api-tokens/"&gt; &lt;i class="mdi mdi-key"&gt;&lt;/i&gt; API Tokens &lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;<br/>
+           &lt;hr class="dropdown-divider"&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a class="dropdown-item" href="/logout/"&gt; &lt;i class="mdi mdi-logout-variant"&gt;&lt;/i&gt; Log Out &lt;/a&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+     &lt;/nav&gt;<br/>
+     &lt;div class="title-container px-3 pb-3"&gt;<br/>
+      &lt;div id="content-title"&gt;<br/>
+       &lt;h1 class="h2 w-100"&gt;Add a new device&lt;/h1&gt;<br/>
+      &lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;div id="content" class="container-fluid content px-0 m-0"&gt;<br/>
+      &lt;ul class="nav nav-tabs px-3"&gt;<br/>
+       &lt;li class="nav-item" role="presentation"&gt;&lt;button class="nav-link active" id="edit-form-tab" data-bs-toggle="tab" data-bs-target="#edit-form" type="button" role="tab" aria-controls="edit-form" aria-selected="true"&gt; Create &lt;/button&gt;&lt;/li&gt;<br/>
+      &lt;/ul&gt;<br/>
+      &lt;div class="tab-content"&gt;<br/>
+       &lt;div class="tab-pane show active" id="edit-form" role="tabpanel" aria-labelledby="object-list-tab"&gt;<br/>
+        &lt;div class="float-end"&gt;&lt;a href="/static/docs/models/dcim/device/" target="_blank" class="btn btn-sm btn-outline-secondary" title="View model documentation"&gt; &lt;i class="mdi mdi-help-circle"&gt;&lt;/i&gt; Help &lt;/a&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;form action="" method="post" enctype="multipart/form-data" class="form-object-edit mt-5"&gt;&lt;input type="hidden" name="csrfmiddlewaretoken" value="4u5eCZh5Zx8u0DIq9hakZxo8MVDv5SltUKzwuzWKbJc5EKlBgOZTMZZtpowAZfGM"&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Device&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_name" class="col-sm-3 col-form-label text-lg-end"&gt; Name &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;input type="text" name="name" maxlength="64" class=" form-control" placeholder="Name" id="id_name"&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_device_role" class="col-sm-3 col-form-label text-lg-end required"&gt; Device role &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="device_role" class="netbox-api-select form-select" data-empty-option="" required data-url="/api/dcim/device-roles/?brief=true" id="id_device_role" tabindex="-1" data-ssid="ss-70025" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt;&lt;option value="" data-placeholder="true"&gt;&lt;/option&gt;&lt;option value="1" data-url="http://192.168.40.50:3000/api/dcim/device-roles/1/" data-display="device_role" data-name="device_role" data-device-count="0" data-virtualmachine-count="0"&gt;device_role&lt;/option&gt;&lt;/select&gt;<br/>
+            &lt;div class="ss-70025 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;device_role&lt;/span&gt;&lt;span class="ss-deselect"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-hide"&gt;&lt;/div&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="64453777"&gt;<br/>
+                device_role<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+            &lt;div class="invalid-feedback"&gt;<br/>
+             This field is required.<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_description" class="col-sm-3 col-form-label text-lg-end"&gt; Description &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;input type="text" name="description" maxlength="200" class=" form-control" placeholder="Description" id="id_description"&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_tags" class="col-sm-3 col-form-label text-lg-end"&gt; Tags &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="tags" class="netbox-api-select form-select" data-multiple="1" data-empty-option="" data-url="/api/extras/tags/?brief=true" id="id_tags" multiple tabindex="-1" data-ssid="ss-74609" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 40px; position: absolute; pointer-events: none;"&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-74609 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-multi-selected"&gt;<br/>
+              &lt;div class="ss-values"&gt;<br/>
+               &lt;span class="ss-disabled"&gt;Select Tags&lt;/span&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-add"&gt;<br/>
+               &lt;span class="ss-plus"&gt;&lt;/span&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled"&gt;<br/>
+                No Results<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Hardware&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_manufacturer" class="col-sm-3 col-form-label text-lg-end"&gt; Manufacturer &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="manufacturer" class="netbox-api-select form-select" data-empty-option="" data-url="/api/dcim/manufacturers/?brief=true" id="id_manufacturer" tabindex="-1" data-ssid="ss-74191" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-74191 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="62968999"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_device_type" class="col-sm-3 col-form-label text-lg-end required"&gt; Device type &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="device_type" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;manufacturer&quot;,&quot;queryParam&quot;:&quot;manufacturer_id&quot;}]" data-empty-option="" required data-url="/api/dcim/device-types/?brief=true" id="id_device_type" tabindex="-1" data-ssid="ss-60744" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt;&lt;option value="" data-placeholder="true"&gt;&lt;/option&gt;&lt;option value="1" data-url="http://192.168.40.50:3000/api/dcim/device-types/1/" data-display="Device Type" data-model="Device Type" data-device-count="0"&gt;Device Type&lt;/option&gt;&lt;/select&gt;<br/>
+            &lt;div class="ss-60744 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;Device Type&lt;/span&gt;&lt;span class="ss-deselect"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-hide"&gt;&lt;/div&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="90553281"&gt;<br/>
+                Device Type<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+            &lt;div class="invalid-feedback"&gt;<br/>
+             This field is required.<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_airflow" class="col-sm-3 col-form-label text-lg-end"&gt; Airflow &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="airflow" class="netbox-static-select form-select" placeholder="Airflow" id="id_airflow" tabindex="-1" data-ssid="ss-97778" aria-hidden="true" style="display: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;option value="front-to-rear"&gt;Front to rear&lt;/option&gt; &lt;option value="rear-to-front"&gt;Rear to front&lt;/option&gt; &lt;option value="left-to-right"&gt;Left to right&lt;/option&gt; &lt;option value="right-to-left"&gt;Right to left&lt;/option&gt; &lt;option value="side-to-rear"&gt;Side to rear&lt;/option&gt; &lt;option value="passive"&gt;Passive&lt;/option&gt; &lt;option value="mixed"&gt;Mixed&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-97778 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Search" tabindex="0" aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="83183042"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="62929005"&gt;<br/>
+                Front to rear<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="48201418"&gt;<br/>
+                Rear to front<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="84819579"&gt;<br/>
+                Left to right<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="63835430"&gt;<br/>
+                Right to left<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="40983379"&gt;<br/>
+                Side to rear<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="48367436"&gt;<br/>
+                Passive<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="6438636"&gt;<br/>
+                Mixed<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_serial" class="col-sm-3 col-form-label text-lg-end"&gt; Serial number &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;input type="text" name="serial" maxlength="50" class=" form-control" placeholder="Serial number" id="id_serial"&gt; &lt;span class="form-text"&gt;Chassis serial number&lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_asset_tag" class="col-sm-3 col-form-label text-lg-end"&gt; Asset tag &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;input type="text" name="asset_tag" maxlength="50" class=" form-control" placeholder="Asset tag" id="id_asset_tag"&gt; &lt;span class="form-text"&gt;A unique tag used to identify this device&lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Location&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_region" class="col-sm-3 col-form-label text-lg-end"&gt; Region &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="region" class="netbox-api-select form-select" data-empty-option="" data-url="/api/dcim/regions/?brief=true" id="id_region" tabindex="-1" data-ssid="ss-7436" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-7436 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="65411486"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_site_group" class="col-sm-3 col-form-label text-lg-end"&gt; Site group &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="site_group" class="netbox-api-select form-select" data-empty-option="" data-url="/api/dcim/site-groups/?brief=true" id="id_site_group" tabindex="-1" data-ssid="ss-4302" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-4302 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="72480955"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_site" class="col-sm-3 col-form-label text-lg-end required"&gt; Site &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="site" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;region&quot;,&quot;queryParam&quot;:&quot;region_id&quot;},{&quot;fieldName&quot;:&quot;site_group&quot;,&quot;queryParam&quot;:&quot;group_id&quot;}]" data-empty-option="" required data-url="/api/dcim/sites/?brief=true" id="id_site" tabindex="-1" data-ssid="ss-28696" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt;&lt;option value="" data-placeholder="true"&gt;&lt;/option&gt;&lt;option value="1" data-url="http://192.168.40.50:3000/api/dcim/sites/1/" data-display="SITIO-01" data-name="SITIO-01"&gt;SITIO-01&lt;/option&gt;&lt;option value="2" data-url="http://192.168.40.50:3000/api/dcim/sites/2/" data-display="SITIO-02" data-name="SITIO-02"&gt;SITIO-02&lt;/option&gt;&lt;/select&gt;<br/>
+            &lt;div class="ss-28696 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;SITIO-01&lt;/span&gt;&lt;span class="ss-deselect"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-hide"&gt;&lt;/div&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="78958739"&gt;<br/>
+                SITIO-01<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="97731667"&gt;<br/>
+                SITIO-02<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+            &lt;div class="invalid-feedback"&gt;<br/>
+             This field is required.<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_location" class="col-sm-3 col-form-label text-lg-end"&gt; Location &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="location" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;site&quot;,&quot;queryParam&quot;:&quot;site_id&quot;}]" data-empty-option="" data-url="/api/dcim/locations/?brief=true&amp;site_id=1" id="id_location" tabindex="-1" data-ssid="ss-51187" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt;&lt;option value="" data-placeholder="true"&gt;&lt;/option&gt;&lt;/select&gt;<br/>
+            &lt;div class="ss-51187 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;&lt;span class="ss-disabled"&gt;Select Location&lt;/span&gt;&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-hide"&gt;&lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_rack" class="col-sm-3 col-form-label text-lg-end"&gt; Rack &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="rack" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;site&quot;,&quot;queryParam&quot;:&quot;site_id&quot;},{&quot;fieldName&quot;:&quot;location&quot;,&quot;queryParam&quot;:&quot;location_id&quot;}]" data-empty-option="" data-url="/api/dcim/racks/?brief=true&amp;site_id=1" id="id_rack" tabindex="-1" data-ssid="ss-30859" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt;&lt;option value="" data-placeholder="true"&gt;&lt;/option&gt;&lt;/select&gt;<br/>
+            &lt;div class="ss-30859 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;&lt;span class="ss-disabled"&gt;Select Rack&lt;/span&gt;&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-hide"&gt;&lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_face" class="col-sm-3 col-form-label text-lg-end"&gt; Rack face &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="face" class="netbox-static-select form-select" placeholder="Rack face" id="id_face" tabindex="-1" data-ssid="ss-75409" aria-hidden="true" style="display: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;option value="front"&gt;Front&lt;/option&gt; &lt;option value="rear"&gt;Rear&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-75409 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Search" tabindex="0" aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="94608785"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="32255570"&gt;<br/>
+                Front<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="17198950"&gt;<br/>
+                Rear<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_position" class="col-sm-3 col-form-label text-lg-end"&gt; Position &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="position" disabled-indicator="device" data-dynamic-params="[{&quot;fieldName&quot;:&quot;face&quot;,&quot;queryParam&quot;:&quot;face&quot;}]" class="netbox-api-select form-select" data-url="/api/dcim/racks/{{rack}}/elevation/?brief=true" id="id_position" tabindex="-1" data-ssid="ss-53309" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-53309 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;&lt;span class="ss-disabled"&gt;Select Position&lt;/span&gt;&lt;/span&gt;&lt;span class="ss-deselect"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled"&gt;<br/>
+                No Results<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;&lt;span class="form-text"&gt;The lowest-numbered unit occupied by the device&lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Management&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_status" class="col-sm-3 col-form-label text-lg-end required"&gt; Status &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="status" class="netbox-static-select form-select" required placeholder="Status" id="id_status" tabindex="-1" data-ssid="ss-61875" aria-hidden="true" style="display: none;"&gt; &lt;option value="offline"&gt;Offline&lt;/option&gt; &lt;option value="active" selected&gt;Active&lt;/option&gt; &lt;option value="planned"&gt;Planned&lt;/option&gt; &lt;option value="staged"&gt;Staged&lt;/option&gt; &lt;option value="failed"&gt;Failed&lt;/option&gt; &lt;option value="inventory"&gt;Inventory&lt;/option&gt; &lt;option value="decommissioning"&gt;Decommissioning&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-61875 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;Active&lt;/span&gt;&lt;span class="ss-deselect"&gt;&lt;i class="mdi mdi-close-circle"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Search" tabindex="0" aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="60688044"&gt;<br/>
+                Offline<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="74444171"&gt;<br/>
+                Active<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="14873123"&gt;<br/>
+                Planned<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="96926157"&gt;<br/>
+                Staged<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="49748213"&gt;<br/>
+                Failed<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="83286348"&gt;<br/>
+                Inventory<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="76305275"&gt;<br/>
+                Decommissioning<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+            &lt;div class="invalid-feedback"&gt;<br/>
+             This field is required.<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_platform" class="col-sm-3 col-form-label text-lg-end"&gt; Platform &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="platform" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;manufacturer&quot;,&quot;queryParam&quot;:&quot;manufacturer_id&quot;}]" data-static-params="[{&quot;queryParam&quot;:&quot;manufacturer_id&quot;,&quot;queryValue&quot;:[&quot;null&quot;]}]" data-empty-option="" data-url="/api/dcim/platforms/?brief=true" id="id_platform" tabindex="-1" data-ssid="ss-41959" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt;&lt;option value="" data-placeholder="true"&gt;&lt;/option&gt;&lt;option value="2" data-url="http://192.168.40.50:3000/api/dcim/platforms/2/" data-display="Template_Adrian" data-name="Template_Adrian" data-device-count="0" data-virtualmachine-count="0"&gt;Template_Adrian&lt;/option&gt;&lt;option value="1" data-url="http://192.168.40.50:3000/api/dcim/platforms/1/" data-display="Windows Server" data-name="Windows Server" data-device-count="0" data-virtualmachine-count="0"&gt;Windows Server&lt;/option&gt;&lt;/select&gt;<br/>
+            &lt;div class="ss-41959 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;Template_Adrian&lt;/span&gt;&lt;span class="ss-deselect"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-hide"&gt;&lt;/div&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="94921331"&gt;<br/>
+                Template_Adrian<br/>
+               &lt;/div&gt;<br/>
+               &lt;div class="ss-option" role="option" data-id="50308476"&gt;<br/>
+                Windows Server<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Virtualization&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_cluster_group" class="col-sm-3 col-form-label text-lg-end"&gt; Cluster group &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="cluster_group" class="netbox-api-select form-select" data-empty-option="" data-null-option="None" data-url="/api/virtualization/cluster-groups/?brief=true" id="id_cluster_group" tabindex="-1" data-ssid="ss-658" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-658 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="57391594"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_cluster" class="col-sm-3 col-form-label text-lg-end"&gt; Cluster &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="cluster" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;cluster_group&quot;,&quot;queryParam&quot;:&quot;group_id&quot;}]" data-empty-option="" data-url="/api/virtualization/clusters/?brief=true" id="id_cluster" tabindex="-1" data-ssid="ss-30128" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-30128 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="68217757"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Tenancy&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_tenant_group" class="col-sm-3 col-form-label text-lg-end"&gt; Tenant group &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="tenant_group" class="netbox-api-select form-select" data-empty-option="" data-null-option="None" data-url="/api/tenancy/tenant-groups/?brief=true" id="id_tenant_group" tabindex="-1" data-ssid="ss-69595" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-69595 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="41086558"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_tenant" class="col-sm-3 col-form-label text-lg-end"&gt; Tenant &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="tenant" class="netbox-api-select form-select" data-dynamic-params="[{&quot;fieldName&quot;:&quot;tenant_group&quot;,&quot;queryParam&quot;:&quot;group_id&quot;}]" data-empty-option="" data-url="/api/tenancy/tenants/?brief=true" id="id_tenant" tabindex="-1" data-ssid="ss-50873" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-50873 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="62556637"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;div class="row mb-2"&gt;<br/>
+           &lt;h5 class="offset-sm-3"&gt;Virtual Chassis&lt;/h5&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_virtual_chassis" class="col-sm-3 col-form-label text-lg-end"&gt; Virtual chassis &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;select name="virtual_chassis" class="netbox-api-select form-select" data-empty-option="" data-url="/api/dcim/virtual-chassis/?brief=true" id="id_virtual_chassis" tabindex="-1" data-ssid="ss-63270" aria-hidden="true" style="display: block; opacity: 0; width: 594px; height: 35px; position: absolute; pointer-events: none;"&gt; &lt;option value="" selected&gt;---------&lt;/option&gt; &lt;/select&gt;<br/>
+            &lt;div class="ss-63270 ss-main" style=""&gt;<br/>
+             &lt;div class="ss-single-selected"&gt;<br/>
+              &lt;span class="placeholder"&gt;---------&lt;/span&gt;&lt;span class="ss-deselect ss-hide"&gt;&lt;i class="mdi mdi-close-circle" style="color:currentColor;"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="ss-arrow"&gt;&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/span&gt;<br/>
+             &lt;/div&gt;<br/>
+             &lt;div class="ss-content"&gt;<br/>
+              &lt;div class="ss-search"&gt;<br/>
+               &lt;input type="search" placeholder="Filter" tabindex="0" aria-label="Filter" autocapitalize="off" autocomplete="off" autocorrect="off"&gt;&lt;button type="button" class="btn btn-sm btn-ghost-dark"&gt;&lt;i class="mdi mdi-reload"&gt;&lt;/i&gt;&lt;/button&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="ss-list" role="listbox"&gt;<br/>
+               &lt;div class="ss-option ss-disabled ss-option-selected" role="option" data-id="61363975"&gt;<br/>
+                ---------<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_vc_position" class="col-sm-3 col-form-label text-lg-end"&gt; Position &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;input type="number" name="vc_position" class=" form-control" placeholder="Position" id="id_vc_position"&gt; &lt;span class="form-text"&gt;The position in the virtual chassis this device is identified by&lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="row mb-3"&gt;&lt;label for="id_vc_priority" class="col-sm-3 col-form-label text-lg-end"&gt; Priority &lt;/label&gt;<br/>
+           &lt;div class="col"&gt;&lt;input type="number" name="vc_priority" class=" form-control" placeholder="Priority" id="id_vc_priority"&gt; &lt;span class="form-text"&gt;The priority of the device in the virtual chassis&lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group my-5"&gt;<br/>
+          &lt;h5 class="text-center"&gt;Local Config Context Data&lt;/h5&gt;<br/>
+          &lt;div class="row mb-3"&gt;<br/>
+           &lt;div class="col"&gt;&lt;textarea name="local_context_data" cols="40" rows="10" placeholder="" class="font-monospace form-control" id="id_local_context_data"&gt;&lt;/textarea&gt; &lt;span class="form-text"&gt;Enter context data in &lt;a href="https://json.org/"&gt;JSON&lt;/a&gt; format.&lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="field-group mb-5"&gt;<br/>
+          &lt;h5 class="text-center"&gt;Comments&lt;/h5&gt;<br/>
+          &lt;div class="row mb-3"&gt;<br/>
+           &lt;div class="col"&gt;<br/>
+            &lt;div class="border rounded markdown-widget"&gt;<br/>
+             &lt;ul class="nav nav-tabs px-3 pt-2 rounded-top border-0"&gt;<br/>
+              &lt;li class="nav-item" role="presentation"&gt;&lt;button class="nav-link active " id="comments-input-tab" data-bs-toggle="tab" data-bs-target="#comments-input" type="button" role="tab" aria-controls="comments-input" aria-selected="true"&gt; Write &lt;/button&gt;&lt;/li&gt;<br/>
+              &lt;li class="nav-item" role="presentation"&gt;&lt;button hx-target="#comments-preview" hx-swap="innerHTML" hx-post="/extras/render/markdown/" class="nav-link preview-button" id="comments-markdown-preview-tab" data-bs-toggle="tab" data-bs-target="#comments-markdown-preview" type="button" role="tab" aria-controls="comments-markdown-preview" aria-selected="false"&gt; Preview &lt;/button&gt;&lt;/li&gt;<br/>
+             &lt;/ul&gt;<br/>
+             &lt;div class="tab-content bg-body rounded-bottom border-top"&gt;<br/>
+              &lt;div class="tab-pane show active" id="comments-input" role="tabpanel" aria-labelledby="comments-input-tab"&gt;&lt;textarea name="comments" cols="40" rows="10" class=" form-control" placeholder="" id="id_comments" style="height: 288px;"&gt;&lt;/textarea&gt;<br/>
+              &lt;/div&gt;<br/>
+              &lt;div class="tab-pane show" id="comments-markdown-preview" role="tabpanel" aria-labelledby="comments-markdown-preview-tab"&gt;<br/>
+               &lt;div id="comments-preview" class="preview px-3 py-2"&gt;<br/>
+                Testing<br/>
+               &lt;/div&gt;<br/>
+              &lt;/div&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;&lt;span class="form-text"&gt; &lt;i class="mdi mdi-information-outline"&gt;&lt;/i&gt; &lt;a href="/static/docs/reference/markdown/" target="_blank" tabindex="-1"&gt; Markdown&lt;/a&gt; syntax is supported &lt;/span&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+         &lt;div class="text-end my-3"&gt;&lt;button type="submit" name="_create" class="btn btn-primary"&gt; Create &lt;/button&gt; &lt;button type="submit" name="_addanother" class="btn btn-outline-primary"&gt; Create &amp; Add Another &lt;/button&gt; &lt;a class="btn btn-outline-danger" href="/dcim/devices/"&gt;Cancel&lt;/a&gt;<br/>
+         &lt;/div&gt;<br/>
+        &lt;/form&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;footer class="footer container-fluid"&gt;<br/>
+      &lt;div class="row align-items-center justify-content-between mx-0"&gt;<br/>
+       &lt;div class="col-sm-12 col-md-auto fs-4 noprint"&gt;<br/>
+        &lt;nav class="nav justify-content-center justify-content-lg-start"&gt;&lt;a type="button" class="nav-link" href="/static/docs/" target="_blank"&gt; &lt;i title="" class="mdi mdi-book-open-variant text-primary" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-original-title="Docs" aria-label="Docs"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a type="button" class="nav-link" href="/api/" target="_blank"&gt; &lt;i title="" class="mdi mdi-cloud-braces text-primary" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-original-title="REST API" aria-label="REST API"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a type="button" class="nav-link" href="/api/docs/" target="_blank"&gt; &lt;i title="" class="mdi mdi-book text-primary" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-original-title="REST API documentation" aria-label="REST API documentation"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a type="button" class="nav-link" href="/graphql/" target="_blank"&gt; &lt;i title="" class="mdi mdi-graphql text-primary" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-original-title="GraphQL API" aria-label="GraphQL API"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a type="button" class="nav-link" href="https://github.com/netbox-community/netbox" target="_blank"&gt; &lt;i title="" class="mdi mdi-github text-primary" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-original-title="Source Code" aria-label="Source Code"&gt;&lt;/i&gt; &lt;/a&gt; &lt;a type="button" class="nav-link" href="https://netdev.chat/" target="_blank"&gt; &lt;i title="" class="mdi mdi-slack text-primary" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-original-title="Community" aria-label="Community"&gt;&lt;/i&gt; &lt;/a&gt;<br/>
+        &lt;/nav&gt;<br/>
+       &lt;/div&gt;<br/>
+       &lt;div class="col-sm-12 col-md-auto text-center text-lg-end text-muted"&gt;&lt;span class="d-block d-md-inline"&gt;&lt;span title="July 18, 2023 11:40 p.m."&gt;2023-07-18 23:40&lt;/span&gt; UTC&lt;/span&gt; &lt;span class="ms-md-3 d-block d-md-inline"&gt;c19a3ea073a1 (v3.4.7)&lt;/span&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+     &lt;/footer&gt;<br/>
+    &lt;/div&gt;<br/>
+   &lt;/main&gt;<br/>
+  &lt;/div&gt;<br/>
+  &lt;div id="django-messages" class="toast-container"&gt;<br/>
+  &lt;/div&gt;<br/>
+  &lt;div id="netbox-data" style="display: none!important; visibility: hidden!important"&gt;<br/>
+  &lt;/div&gt;<br/>
+ &lt;/body&gt;<br/>
+&lt;/html&gt;</code></pre></div></body></html>

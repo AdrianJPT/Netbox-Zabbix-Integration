@@ -5,7 +5,7 @@ import net.thucydides.core.annotations.Step;
 
 public class ZabbixMain {
 
-    ZabbixMainPOM zabbixMainPOM;
+    ZabbixMainPOM zabbixMainPOM = new ZabbixMainPOM();
 
     @Step
     public void clickOnBarHost() {

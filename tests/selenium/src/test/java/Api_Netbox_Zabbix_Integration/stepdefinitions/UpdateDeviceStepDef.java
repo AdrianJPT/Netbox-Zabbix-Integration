@@ -35,19 +35,7 @@ public class UpdateDeviceStepDef {
     ManageDriver manageDriver = new ManageDriver();
     Credentials credentials = new Credentials();
 
-    @Before
-    public void Login() {
 
-        netboxLogin.openAplication(credentials.NetboxURL);
-
-        netboxLogin.clickToLoginButton();
-
-        netboxLogin.enterUsername(credentials.NetboxUsername);
-        netboxLogin.enterPassword(credentials.NetboxPassword);
-
-        netboxLogin.clickLoginButton();
-
-    }
 
 
 

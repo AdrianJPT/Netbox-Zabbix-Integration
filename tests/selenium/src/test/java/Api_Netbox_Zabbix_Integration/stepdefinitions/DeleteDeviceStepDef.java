@@ -1,86 +1,113 @@
 package Api_Netbox_Zabbix_Integration.stepdefinitions;
 
-import Api_Netbox_Zabbix_Integration.Manage.Credentials;
 import Api_Netbox_Zabbix_Integration.Manage.ManageDriver;
 import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxDevice;
 import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxDeviceConfig;
-import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxLogin;
-import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxMain;
 import Api_Netbox_Zabbix_Integration.Pages.Zabbix.ZabbixHosts;
-import Api_Netbox_Zabbix_Integration.Pages.Zabbix.ZabbixLogin;
-import Api_Netbox_Zabbix_Integration.Pages.Zabbix.ZabbixMain;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.thucydides.core.annotations.Steps;
 
+import java.util.List;
+
+import static Api_Netbox_Zabbix_Integration.Manage.ManageDriver.TABS;
+import static Api_Netbox_Zabbix_Integration.Manage.ManageDriver.ZabbixTAB;
+
 public class DeleteDeviceStepDef {
-    @Steps
-    NetboxLogin netboxLogin;
-    @Steps
-    NetboxMain netboxMainPage;
+
+
     @Steps
     NetboxDeviceConfig netboxDeviceConfig;
 
     @Steps
-    ZabbixLogin zabbixLogin;
-    @Steps
-    ZabbixMain zabbixMain;
-    @Steps
     ZabbixHosts zabbixHosts;
 
+    @Steps
     NetboxDevice netboxDevice;
-    ManageDriver manageDriver = new ManageDriver();
-    Credentials credentials = new Credentials();
+
+    ManageDriver manageDriver;
 
 
-    @Before
-    public void Login() {
 
-        netboxLogin.openAplication(credentials.NetboxURL);
 
-        netboxLogin.clickToLoginButton();
 
-        netboxLogin.enterUsername(credentials.NetboxUsername);
-        netboxLogin.enterPassword(credentials.NetboxPassword);
+    // SCENARIO CLEANING UP
+    @Given("There are any device in Devices in Netbox")
+    public void thereAreAnyDeviceInDevicesInNetbox() {
 
-        netboxLogin.clickLoginButton();
+        netboxDevice.openURLdevice();
+
+        netboxDevice.deleteAllNetboxDevices();
 
     }
 
+    @Given("There are any device in Hosts in Zabbix")
+    public void thereAreAnyDeviceInHostsInZabbix() {
 
 
-    @Given("I created a netbox Device: {string}")
-    public void iCreatedANetboxDeviceDeviceName(String string) {
+        manageDriver.changeTab(manageDriver.getDriver(),ZabbixTAB );
+
+        zabbixHosts.openURLHosts();
+
+        //if there are no devices, the flow should continue
+        try {
+            zabbixHosts.deleteAllHosts();
+        }catch (Exception e){
+            System.out.println("No hosts were found");
+        }
+
+
+
     }
 
-    @And("The {string} is deleted")
-    public void theDeviceNameIsDeleted(String string) {
-        String urlHost =  credentials.NetboxURL +"dcim/devices/";
-        netboxDevice.openURL(urlHost);
+    // -- SCENARIO 01
+    @Given("I have {string} devices in Netbox and Zabbix")
+    public void i_have_devices_in_netbox_and_zabbix(String DeviceName) {
 
-        netboxDevice.deleteSingleDevice(string);
+        netboxDevice.openURLdevice();
+        netboxDeviceConfig.createNetboxDevice(DeviceName,"device_role","Device Type", "SITIO-01","Template_Adrian");
     }
 
-    @Given("I'm in the netbox Device Page")
-    public void i_m_in_the_netbox_device_page() {
-        String urlHost =  credentials.NetboxURL +"dcim/devices/";
+    @When("I delete the device {string}")
+    public void i_delete_the_device( String DeviceName) {
+        netboxDevice.deleteSingleDevice(DeviceName);
 
-        netboxDevice.openURL(urlHost);
+    }
 
+    @Then("{string} should not exist in Zabbix")
+    public void should_not_exist_in_zabbix(String DeviceName) {
+        manageDriver.changeTab(manageDriver.getDriver(), ZabbixTAB);
+        zabbixHosts.openURLHosts();
+
+        zabbixHosts.validateHostExist(DeviceName);
+
+
+    }
+
+    // -- SCENARIO 02
+    @Given("I have {int} Devices in Netbox and Zabbix")
+    public void i_have_devices_in_netbox_and_zabbix(Integer iteration) {
+        netboxDevice.openURLdevice();
+
+        netboxDeviceConfig.createNetboxDevice("Delete_Clone_1","device_role","Device Type", "SITIO-01","Template_Adrian");
+
+        netboxDevice.cloneNetboxDevice("Delete_Clone_1",iteration);
     }
 
     @When("I delete all the devices")
     public void i_delete_all_the_devices() {
-        String urlHost =  credentials.NetboxURL +"dcim/devices/";
-        netboxDevice.openURL(urlHost);
+        netboxDevice.openURLdevice();
         netboxDevice.deleteAllNetboxDevices();
     }
 
-    @Then("The Zabbix hosts are empty")
-    public void the_zabbix_hosts_are_empty() {
+    @Then("I should not see the {int} devices in Zabbix")
+    public void i_should_not_see_the_devices_in_zabbix(int iteration) {
+        manageDriver.changeTab(manageDriver.getDriver(), ZabbixTAB  );
+        zabbixHosts.openURLHosts();
+        zabbixHosts.validateAllHostsExists(iteration);
+
+
 
     }
 

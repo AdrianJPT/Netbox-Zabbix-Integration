@@ -1,0 +1,3 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Delete devices from NETBOX to ZABBIX","Cleaning up Netbox Devices","SUCCESS","2023-07-18T18:41:54.1109454-05:00[America/Lima]","0.0","7.11"
+"Delete devices from NETBOX to ZABBIX","Delete one Netbox Device","SUCCESS","2023-07-18T18:42:01.9685276-05:00[America/Lima]","0.0","20.86"

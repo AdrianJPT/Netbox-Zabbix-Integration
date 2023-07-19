@@ -1,0 +1,1093 @@
+<html lang='en'><head><link href='prism/prism.css' rel='stylesheet' /></head><body><script src='prism/prism.js'></script><body><div><pre><code class='language-html'>&lt;html lang="en" theme="blue-theme"&gt;<br/>
+ &lt;head&gt;<br/>
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=Edge"&gt;<br/>
+  &lt;meta charset="utf-8"&gt;<br/>
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;<br/>
+  &lt;meta name="Author" content="Zabbix SIA"&gt;<br/>
+  &lt;title&gt;Zabbix docker: Dashboard&lt;/title&gt;<br/>
+  &lt;link rel="icon" href="favicon.ico"&gt;<br/>
+  &lt;link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/img/apple-touch-icon-76x76-precomposed.png"&gt;<br/>
+  &lt;link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/img/apple-touch-icon-120x120-precomposed.png"&gt;<br/>
+  &lt;link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/img/apple-touch-icon-152x152-precomposed.png"&gt;<br/>
+  &lt;link rel="apple-touch-icon-precomposed" sizes="180x180" href="assets/img/apple-touch-icon-180x180-precomposed.png"&gt;<br/>
+  &lt;link rel="icon" sizes="192x192" href="assets/img/touch-icon-192x192.png"&gt;<br/>
+  &lt;meta name="msapplication-TileImage" content="assets/img/ms-tile-144x144.png"&gt;<br/>
+  &lt;meta name="msapplication-TileColor" content="#d40000"&gt;<br/>
+  &lt;meta name="msapplication-config" content="none"&gt;<br/>
+  &lt;link rel="stylesheet" type="text/css" href="assets/styles/blue-theme.css?1680515360"&gt;<br/>
+  &lt;link rel="stylesheet" type="text/css" href="assets/styles/vendors/Leaflet/Leaflet/leaflet.css?1680515360"&gt;<br/>
+  &lt;style&gt;:root {<br/>
+--severity-color-na-bg: #97AAB3;<br/>
+--severity-color-info-bg: #7499FF;<br/>
+--severity-color-warning-bg: #FFC859;<br/>
+--severity-color-average-bg: #FFA059;<br/>
+--severity-color-high-bg: #E97659;<br/>
+--severity-color-disaster-bg: #E45959;<br/>
+}<br/>
+.na-bg, .na-bg input[type="radio"]:checked + label, .na-bg:before, .flh-na-bg, .status-na-bg, .status-na-bg:before { background-color: #97AAB3 }<br/>
+.info-bg, .info-bg input[type="radio"]:checked + label, .info-bg:before, .flh-info-bg, .status-info-bg, .status-info-bg:before { background-color: #7499FF }<br/>
+.warning-bg, .warning-bg input[type="radio"]:checked + label, .warning-bg:before, .flh-warning-bg, .status-warning-bg, .status-warning-bg:before { background-color: #FFC859 }<br/>
+.average-bg, .average-bg input[type="radio"]:checked + label, .average-bg:before, .flh-average-bg, .status-average-bg, .status-average-bg:before { background-color: #FFA059 }<br/>
+.high-bg, .high-bg input[type="radio"]:checked + label, .high-bg:before, .flh-high-bg, .status-high-bg, .status-high-bg:before { background-color: #E97659 }<br/>
+.disaster-bg, .disaster-bg input[type="radio"]:checked + label, .disaster-bg:before, .flh-disaster-bg, .status-disaster-bg, .status-disaster-bg:before { background-color: #E45959 }<br/>
+<br/>
+&lt;/style&gt;<br/>
+  &lt;script&gt;<br/>
+		const PHP_TZ_OFFSETS = {"0":10800,"354920400":14400,"370728000":10800,"386456400":14400,"402264000":10800,"417992400":14400,"433800000":10800,"449614800":14400,"465346800":10800,"481071600":14400,"496796400":10800,"512521200":14400,"528246000":10800,"543970800":14400,"559695600":10800,"575420400":14400,"591145200":10800,"606870000":10800,"622598400":7200,"638323200":10800,"654652800":7200,"670377600":10800,"686102400":7200,"701827200":10800,"717552000":7200,"733276800":10800,"749001600":7200,"764726400":10800,"780451200":7200,"796176000":10800,"811900800":7200,"828230400":10800,"843955200":7200,"859683600":10800,"877827600":7200,"891133200":10800,"909277200":7200,"922582800":10800,"941331600":7200,"985482000":10800,"1004230800":7200,"1017536400":10800,"1035680400":7200,"1048986000":10800,"1067130000":7200,"1080435600":10800,"1099184400":7200,"1111885200":10800,"1130634000":7200,"1143334800":10800,"1162083600":7200,"1174784400":10800,"1193533200":7200,"1206838800":10800,"1224982800":7200,"1238288400":10800,"1256432400":7200,"1269738000":10800,"1288486800":7200,"1301187600":10800,"1319936400":7200,"1332637200":10800,"1351386000":7200,"1364691600":10800,"1382835600":7200,"1396141200":10800,"1414285200":7200,"1427590800":10800,"1445734800":7200,"1459040400":10800,"1477789200":7200,"1490490000":10800,"1509238800":7200,"1521939600":10800,"1540688400":7200,"1553994000":10800,"1572138000":7200,"1585443600":10800,"1603587600":7200,"1616893200":10800,"1635642000":7200,"1648342800":10800,"1667091600":7200,"1679792400":10800,"1698541200":7200,"1711846800":10800,"1729990800":7200,"1743296400":10800,"1761440400":7200,"1774746000":10800,"1792890000":7200,"1806195600":10800,"1824944400":7200,"1837645200":10800,"1856394000":7200,"1869094800":10800,"1887843600":7200,"1901149200":10800,"1919293200":7200,"1932598800":10800,"1950742800":7200,"1964048400":10800,"1982797200":7200,"1995498000":10800,"2014246800":7200,"2026947600":10800,"2045696400":7200,"2058397200":10800,"2077146000":7200,"2090451600":10800,"2108595600":7200,"2121901200":10800,"2140045200":7200};<br/>
+		const PHP_ZBX_FULL_DATE_TIME = "Y-m-d H:i:s";<br/>
+	<br/>
+if (locale === undefined) { var locale = {}; }<br/>
+locale['Actions'] = "Actions";<br/>
+locale['Set this view as default'] = "Set this view as default";<br/>
+locale['Reset to initial view'] = "Reset to initial view";<br/>
+locale['No problems'] = "No problems";<br/>
+locale['Not classified'] = "Not classified";<br/>
+locale['Information'] = "Information";<br/>
+locale['Warning'] = "Warning";<br/>
+locale['Average'] = "Average";<br/>
+locale['High'] = "High";<br/>
+locale['Disaster'] = "Disaster";<br/>
+locale['Host'] = "Host";<br/>
+locale['D'] = "D";<br/>
+locale['H'] = "H";<br/>
+locale['A'] = "A";<br/>
+locale['W'] = "W";<br/>
+locale['I'] = "I";<br/>
+locale['N'] = "N";<br/>
+locale['Navigate to default view'] = "Navigate to default view";<br/>
+locale['Navigate to initial view'] = "Navigate to initial view";<br/>
+locale['Actions'] = "Actions";<br/>
+locale['Download image'] = "Download image";<br/>
+locale['Add'] = "Add";<br/>
+locale['Add child element'] = "Add child elements";<br/>
+locale['Add multiple maps'] = "Add multiple maps";<br/>
+locale['Apply'] = "Apply";<br/>
+locale['Cancel'] = "Cancel";<br/>
+locale['Edit'] = "Edit";<br/>
+locale['Edit tree element'] = "Edit tree element";<br/>
+locale['Remove'] = "Remove";<br/>
+locale['Collapse'] = "Collapse";<br/>
+locale['Expand'] = "Expand";<br/>
+locale['Actions'] = "Actions";<br/>
+locale['Download image'] = "Download image";&lt;/script&gt;<br/>
+  &lt;script src="js/browsers.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="jsLoader.php?lang=en_US&amp;ver=6.4.1&amp;showGuiMessaging=1"&gt;&lt;/script&gt;<br/>
+  &lt;script src="jsLoader.php?ver=6.4.1&amp;lang=en_US&amp;files%5B0%5D=flickerfreescreen.js&amp;files%5B1%5D=gtlc.js&amp;files%5B2%5D=leaflet.js&amp;files%5B3%5D=leaflet.markercluster.js&amp;files%5B4%5D=class.dashboard.js&amp;files%5B5%5D=class.dashboard.page.js&amp;files%5B6%5D=class.dashboard.widget.placeholder.js&amp;files%5B7%5D=class.geomaps.js&amp;files%5B8%5D=class.widget.js&amp;files%5B9%5D=class.widget.inaccessible.js&amp;files%5B10%5D=class.widget.iterator.js&amp;files%5B11%5D=class.widget.paste-placeholder.js&amp;files%5B12%5D=class.calendar.js&amp;files%5B13%5D=layout.mode.js&amp;files%5B14%5D=class.coverride.js&amp;files%5B15%5D=class.crangecontrol.js&amp;files%5B16%5D=colorpicker.js&amp;files%5B17%5D=class.csvggraph.js&amp;files%5B18%5D=class.cnavtree.js&amp;files%5B19%5D=class.svg.canvas.js&amp;files%5B20%5D=class.svg.map.js&amp;files%5B21%5D=class.tagfilteritem.js&amp;files%5B22%5D=class.sortable.js&amp;files%5B23%5D=servercheck.js"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/actionlog/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/clock/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/geomap/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/graph/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/graphprototype/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/hostavail/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/item/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/map/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/navtree/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/problems/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/problemsbysv/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/svggraph/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/trigover/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+  &lt;script src="widgets/url/assets/js/class.widget.js?1680515361"&gt;&lt;/script&gt;<br/>
+ &lt;/head&gt;<br/>
+ &lt;body&gt;<br/>
+  &lt;aside class="sidebar" style="max-width: 175px;"&gt;<br/>
+   &lt;div class="sidebar-header" style="position: relative;"&gt;<br/>
+    &lt;a class="logo" href="zabbix.php?action=dashboard.view"&gt;<br/>
+     &lt;div class="zabbix-sidebar-logo sidebar-logo"&gt;&lt;/div&gt;<br/>
+     &lt;div class="zabbix-sidebar-logo-compact sidebar-logo-compact"&gt;&lt;/div&gt;&lt;/a&gt;<br/>
+    &lt;div class="sidebar-header-buttons"&gt;<br/>
+     &lt;button type="button" class="button-compact js-sidebar-mode" title="Collapse sidebar"&gt;Collapse sidebar&lt;/button&gt;&lt;button type="button" class="button-expand js-sidebar-mode" title="Expand sidebar"&gt;Expand sidebar&lt;/button&gt;&lt;button type="button" class="button-hide js-sidebar-mode" title="Hide sidebar"&gt;Hide sidebar&lt;/button&gt;&lt;button type="button" class="button-show js-sidebar-mode" title="Show sidebar"&gt;Show sidebar&lt;/button&gt;<br/>
+    &lt;/div&gt;<br/>
+   &lt;/div&gt;<br/>
+   &lt;div class="server-name" style="width: auto; max-width: 175px;"&gt;<br/>
+    Zabbix docker<br/>
+   &lt;/div&gt;<br/>
+   &lt;form method="get" action="zabbix.php" accept-charset="utf-8" class="form-search" role="search"&gt;<br/>
+    &lt;input type="hidden" name="action" value="search"&gt;&lt;input type="text" id="search" name="search" value="" maxlength="255" class="search" aria-label="type here to search" autocomplete="off"&gt;&lt;button type="submit" class="search-icon" title="Search" disabled&gt;&lt;/button&gt;<br/>
+   &lt;/form&gt;<br/>
+   &lt;div class="sidebar-nav scrollable" tabindex="-1"&gt;<br/>
+    &lt;nav class="nav-main" role="navigation" aria-label="Main navigation"&gt;<br/>
+     &lt;ul class="menu-main" style="position: static;"&gt;<br/>
+      &lt;li id="dashboard" class="is-selected"&gt;&lt;a class="icon-dashboards" href="zabbix.php?action=dashboard.view"&gt;Dashboards&lt;/a&gt;&lt;/li&gt;<br/>
+      &lt;li id="view" class="has-submenu"&gt;&lt;a class="icon-monitoring" href="#"&gt;Monitoring&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 154px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=problem.view"&gt;Problems&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=host.view"&gt;Hosts&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=latest.view"&gt;Latest data&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=map.view"&gt;Maps&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=discovery.view"&gt;Discovery&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="services" class="has-submenu"&gt;&lt;a class="icon-services" href="#"&gt;Services&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 92px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=service.list"&gt;Services&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=sla.list"&gt;SLA&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=slareport.list"&gt;SLA report&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="cm" class="has-submenu"&gt;&lt;a class="icon-inventory" href="#"&gt;Inventory&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 61px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="hostinventoriesoverview.php"&gt;Overview&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="hostinventories.php"&gt;Hosts&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="reports" class="has-submenu"&gt;&lt;a class="icon-reports" href="#"&gt;Reports&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 216px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=report.status"&gt;System information&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=scheduledreport.list"&gt;Scheduled reports&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="report2.php"&gt;Availability report&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="toptriggers.php"&gt;Triggers top 100&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=auditlog.list"&gt;Audit log&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=actionlog.list"&gt;Action log&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="report4.php"&gt;Notifications&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="config" class="has-submenu"&gt;&lt;a class="icon-data-collection" href="#"&gt;Data collection&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 216px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=templategroup.list"&gt;Template groups&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=hostgroup.list"&gt;Host groups&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="templates.php"&gt;Templates&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=host.list"&gt;Hosts&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=maintenance.list"&gt;Maintenance&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=correlation.list"&gt;Event correlation&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=discovery.list"&gt;Discovery&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="alerts" class="has-submenu"&gt;&lt;a class="icon-alerts" href="#"&gt;Alerts&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 92px;"&gt;<br/>
+        &lt;li class="has-submenu"&gt;&lt;a href="#"&gt;Actions&lt;/a&gt;<br/>
+         &lt;ul class="submenu" style="max-height: 132px;"&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=action.list&amp;eventsource=0"&gt;Trigger actions&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=action.list&amp;eventsource=4"&gt;Service actions&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=action.list&amp;eventsource=1"&gt;Discovery actions&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=action.list&amp;eventsource=2"&gt;Autoregistration actions&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=action.list&amp;eventsource=3"&gt;Internal actions&lt;/a&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=mediatype.list"&gt;Media types&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=script.list"&gt;Scripts&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="users-menu" class="has-submenu"&gt;&lt;a class="icon-users" href="#"&gt;Users&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 154px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=usergroup.list"&gt;User groups&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=userrole.list"&gt;User roles&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=user.list"&gt;Users&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=token.list"&gt;API tokens&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=authentication.edit"&gt;Authentication&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li id="admin" class="has-submenu"&gt;&lt;a class="icon-administration" href="#"&gt;Administration&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 185px;"&gt;<br/>
+        &lt;li class="has-submenu"&gt;&lt;a href="#"&gt;General&lt;/a&gt;<br/>
+         &lt;ul class="submenu" style="max-height: 262px;"&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=gui.edit"&gt;GUI&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=autoreg.edit"&gt;Autoregistration&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=image.list"&gt;Images&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=iconmap.list"&gt;Icon mapping&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=regex.list"&gt;Regular expressions&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=trigdisplay.edit"&gt;Trigger displaying options&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=geomaps.edit"&gt;Geographical maps&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=module.list"&gt;Modules&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=connector.list"&gt;Connectors&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=miscconfig.edit"&gt;Other&lt;/a&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=audit.settings.edit"&gt;Audit log&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=housekeeping.edit"&gt;Housekeeping&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=proxy.list"&gt;Proxies&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=macros.edit"&gt;Macros&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li class="has-submenu"&gt;&lt;a href="#"&gt;Queue&lt;/a&gt;<br/>
+         &lt;ul class="submenu" style="max-height: 80px;"&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=queue.overview"&gt;Queue overview&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=queue.overview.proxy"&gt;Queue overview by proxy&lt;/a&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;a href="zabbix.php?action=queue.details"&gt;Queue details&lt;/a&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+     &lt;/ul&gt;<br/>
+    &lt;/nav&gt;<br/>
+    &lt;nav class="nav-user" role="navigation" aria-label="User menu"&gt;<br/>
+     &lt;ul class="menu-user" style="position: static;"&gt;<br/>
+      &lt;li&gt;&lt;a class="icon-support" title="Zabbix Technical Support" target="_blank" rel="noopener noreferrer" href="https://www.zabbix.com/support"&gt;Support&lt;/a&gt;&lt;/li&gt;<br/>
+      &lt;li&gt;&lt;a class="icon-integrations" title="Zabbix Integrations" target="_blank" rel="noopener noreferrer" href="https://www.zabbix.com/integrations"&gt;Integrations&lt;/a&gt;&lt;/li&gt;<br/>
+      &lt;li&gt;&lt;a class="icon-help" title="Help" target="_blank" rel="noopener noreferrer" href="https://www.zabbix.com/documentation/6.4/"&gt;Help&lt;/a&gt;&lt;/li&gt;<br/>
+      &lt;li class="has-submenu"&gt;&lt;a class="icon-profile" title="Admin (Zabbix Administrator)" href="#"&gt;User settings&lt;/a&gt;<br/>
+       &lt;ul class="submenu" style="max-height: 61px;"&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=userprofile.edit"&gt;Profile&lt;/a&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;a href="zabbix.php?action=user.token.list"&gt;API tokens&lt;/a&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+      &lt;li onclick="ZABBIX.logout(event)"&gt;&lt;a class="icon-signout" title="Sign out" href="#signout"&gt;Sign out&lt;/a&gt;&lt;/li&gt;<br/>
+     &lt;/ul&gt;<br/>
+    &lt;/nav&gt;<br/>
+   &lt;/div&gt;<br/>
+  &lt;/aside&gt;<br/>
+  &lt;div class="wrapper"&gt;<br/>
+   &lt;script&gt;<br/>
+	const view = {<br/>
+		is_busy: false,<br/>
+		is_busy_saving: false,<br/>
+<br/>
+		init({<br/>
+			dashboard,<br/>
+			widget_defaults,<br/>
+			widget_last_type,<br/>
+			configuration_hash,<br/>
+			has_time_selector,<br/>
+			time_period,<br/>
+			dynamic,<br/>
+			web_layout_mode,<br/>
+			clone<br/>
+		}) {<br/>
+			this.dashboard = dashboard;<br/>
+			this.has_time_selector = has_time_selector;<br/>
+			this.time_period = time_period;<br/>
+			this.dynamic = dynamic;<br/>
+			this.clone = clone;<br/>
+<br/>
+			timeControl.refreshPage = false;<br/>
+<br/>
+			ZABBIX.Dashboard = new CDashboard(document.querySelector('.dashboard'), {<br/>
+				containers: {<br/>
+					grid: document.querySelector('.dashboard-grid'),<br/>
+					navigation: document.querySelector('.dashboard-navigation'),<br/>
+					navigation_tabs: document.querySelector('.dashboard-navigation-tabs')<br/>
+				},<br/>
+				buttons: web_layout_mode == 1					? {<br/>
+						previous_page: document.querySelector('.btn-dashboard-kioskmode-previous-page'),<br/>
+						next_page: document.querySelector('.btn-dashboard-kioskmode-next-page'),<br/>
+						slideshow: document.querySelector('.btn-dashboard-kioskmode-toggle-slideshow')<br/>
+					}<br/>
+					: {<br/>
+						previous_page: document.querySelector('.dashboard-previous-page'),<br/>
+						next_page: document.querySelector('.dashboard-next-page'),<br/>
+						slideshow: document.querySelector('.dashboard-toggle-slideshow')<br/>
+					},<br/>
+				data: {<br/>
+					dashboardid: dashboard.dashboardid,<br/>
+					name: dashboard.name,<br/>
+					userid: dashboard.owner.id,<br/>
+					templateid: null,<br/>
+					display_period: dashboard.display_period,<br/>
+					auto_start: dashboard.auto_start<br/>
+				},<br/>
+				max_dashboard_pages: 50,<br/>
+				cell_width: 100 / 24,<br/>
+				cell_height: 70,<br/>
+				max_columns: 24,<br/>
+				max_rows: 64,<br/>
+				widget_min_rows: 2,<br/>
+				widget_max_rows: 32,<br/>
+				widget_defaults,<br/>
+				widget_last_type,<br/>
+				configuration_hash,<br/>
+				is_editable: dashboard.can_edit_dashboards && dashboard.editable<br/>
+					&& web_layout_mode != 1,<br/>
+				is_edit_mode: dashboard.dashboardid === null || clone,<br/>
+				can_edit_dashboards: dashboard.can_edit_dashboards,<br/>
+				is_kiosk_mode: web_layout_mode == 1,<br/>
+				time_period,<br/>
+				dynamic_hostid: dynamic.host ? dynamic.host.id : null,<br/>
+				csrf_token: "e6882a6d2d3e95d58ce966690de1bf45fcb1b448e9a6fcbd9e64939785a8e845"			});<br/>
+<br/>
+			for (const page of dashboard.pages) {<br/>
+				for (const widget of page.widgets) {<br/>
+					widget.fields = (typeof widget.fields === 'object') ? widget.fields : {};<br/>
+				}<br/>
+<br/>
+				ZABBIX.Dashboard.addDashboardPage(page);<br/>
+			}<br/>
+<br/>
+			ZABBIX.Dashboard.activate();<br/>
+<br/>
+			if (web_layout_mode != 1) {<br/>
+				ZABBIX.Dashboard.on(DASHBOARD_EVENT_EDIT, () =&gt; this.edit());<br/>
+				ZABBIX.Dashboard.on(DASHBOARD_EVENT_APPLY_PROPERTIES, this.events.applyProperties);<br/>
+<br/>
+				if (dynamic.has_dynamic_widgets) {<br/>
+					jQuery('#dynamic_hostid').on('change', this.events.dynamicHostChange);<br/>
+				}<br/>
+<br/>
+				if (dashboard.dashboardid === null || clone) {<br/>
+					this.edit();<br/>
+					ZABBIX.Dashboard.editProperties();<br/>
+				}<br/>
+				else {<br/>
+					document<br/>
+						.getElementById('dashboard-edit')<br/>
+						.addEventListener('click', () =&gt; {<br/>
+							ZABBIX.Dashboard.setEditMode();<br/>
+							this.edit();<br/>
+						});<br/>
+				}<br/>
+			}<br/>
+<br/>
+			ZABBIX.Dashboard.on(DASHBOARD_EVENT_CONFIGURATION_OUTDATED, this.events.configurationOutdated);<br/>
+<br/>
+			if (dynamic.has_dynamic_widgets) {<br/>
+				// Perform dynamic host switch when browser back/previous buttons are pressed.<br/>
+				window.addEventListener('popstate', this.events.popState);<br/>
+			}<br/>
+<br/>
+			jqBlink.blink();<br/>
+		},<br/>
+<br/>
+		edit() {<br/>
+			timeControl.disableAllSBox();<br/>
+<br/>
+			if (this.dynamic.has_dynamic_widgets) {<br/>
+				jQuery('#dynamic_hostid').off('change', this.events.dynamicHostChange);<br/>
+			}<br/>
+<br/>
+			document<br/>
+				.querySelectorAll('.filter-space')<br/>
+				.forEach((el) =&gt; {<br/>
+					el.style.display = 'none';<br/>
+				});<br/>
+<br/>
+			clearMessages();<br/>
+<br/>
+			document<br/>
+				.querySelectorAll('#dashboard-control &gt; li')<br/>
+				.forEach((el) =&gt; {<br/>
+					el.style.display = (el.nextElementSibling === null) ? '' : 'none';<br/>
+				});<br/>
+<br/>
+			document<br/>
+				.getElementById('dashboard-config')<br/>
+				.addEventListener('click', () =&gt; ZABBIX.Dashboard.editProperties());<br/>
+<br/>
+			document<br/>
+				.getElementById('dashboard-add-widget')<br/>
+				.addEventListener('click', () =&gt; ZABBIX.Dashboard.addNewWidget());<br/>
+<br/>
+			document<br/>
+				.getElementById('dashboard-add')<br/>
+				.addEventListener('click', this.events.addClick);<br/>
+<br/>
+			document<br/>
+				.getElementById('dashboard-save')<br/>
+				.addEventListener('click', () =&gt; this.save());<br/>
+<br/>
+			document<br/>
+				.getElementById('dashboard-cancel')<br/>
+				.addEventListener('click', (e) =&gt; {<br/>
+					this.cancelEditing();<br/>
+					e.preventDefault();<br/>
+				}<br/>
+			);<br/>
+<br/>
+			ZABBIX.Dashboard.on(DASHBOARD_EVENT_BUSY, this.events.busy);<br/>
+			ZABBIX.Dashboard.on(DASHBOARD_EVENT_IDLE, this.events.idle);<br/>
+<br/>
+			this.enableNavigationWarning();<br/>
+		},<br/>
+<br/>
+		save() {<br/>
+			this.is_busy_saving = true;<br/>
+			this.updateBusy();<br/>
+<br/>
+			const request_data = ZABBIX.Dashboard.save();<br/>
+<br/>
+			request_data.sharing = this.dashboard.sharing;<br/>
+<br/>
+			if (this.clone) {<br/>
+				request_data.clone = '1';<br/>
+			}<br/>
+<br/>
+			const curl = new Curl('zabbix.php');<br/>
+<br/>
+			curl.setArgument('action', 'dashboard.update');<br/>
+			curl.setArgument('_csrf_token',<br/>
+				"e6882a6d2d3e95d58ce966690de1bf45fcb1b448e9a6fcbd9e64939785a8e845"			);<br/>
+<br/>
+			fetch(curl.getUrl(), {<br/>
+				method: 'POST',<br/>
+				headers: {'Content-Type': 'application/json'},<br/>
+				body: JSON.stringify(request_data)<br/>
+			})<br/>
+				.then((response) =&gt; response.json())<br/>
+				.then((response) =&gt; {<br/>
+					if ('error' in response) {<br/>
+						throw {error: response.error};<br/>
+					}<br/>
+<br/>
+					postMessageOk(response.success.title);<br/>
+<br/>
+					if ('messages' in response.success) {<br/>
+						postMessageDetails('success', response.success.messages);<br/>
+					}<br/>
+<br/>
+					this.disableNavigationWarning();<br/>
+<br/>
+					const curl = new Curl('zabbix.php');<br/>
+<br/>
+					curl.setArgument('action', 'dashboard.view');<br/>
+					curl.setArgument('dashboardid', response.dashboardid);<br/>
+<br/>
+					location.replace(curl.getUrl());<br/>
+				})<br/>
+				.catch((exception) =&gt; {<br/>
+					clearMessages();<br/>
+<br/>
+					let title;<br/>
+					let messages = [];<br/>
+<br/>
+					if (typeof exception === 'object' && 'error' in exception) {<br/>
+						title = exception.error.title;<br/>
+						messages = exception.error.messages;<br/>
+					}<br/>
+					else {<br/>
+						title = this.dashboard.dashboardid === null || this.clone<br/>
+							? "Failed to create dashboard"							: "Failed to update dashboard";<br/>
+					}<br/>
+<br/>
+					const message_box = makeMessageBox('bad', messages, title);<br/>
+<br/>
+					addMessage(message_box);<br/>
+				})<br/>
+				.finally(() =&gt; {<br/>
+					this.is_busy_saving = false;<br/>
+					this.updateBusy();<br/>
+				});<br/>
+		},<br/>
+<br/>
+		updateBusy() {<br/>
+			document.getElementById('dashboard-save').disabled = this.is_busy || this.is_busy_saving;<br/>
+		},<br/>
+<br/>
+		cancelEditing() {<br/>
+			const curl = new Curl('zabbix.php');<br/>
+<br/>
+			curl.setArgument('action', 'dashboard.view');<br/>
+<br/>
+			if (this.dashboard.dashboardid !== null) {<br/>
+				curl.setArgument('dashboardid', this.dashboard.dashboardid);<br/>
+			}<br/>
+			else {<br/>
+				curl.setArgument('cancel', '1');<br/>
+			}<br/>
+<br/>
+			location.replace(curl.getUrl());<br/>
+		},<br/>
+<br/>
+		enableNavigationWarning() {<br/>
+			window.addEventListener('beforeunload', this.events.beforeUnload, {passive: false});<br/>
+		},<br/>
+<br/>
+		disableNavigationWarning() {<br/>
+			window.removeEventListener('beforeunload', this.events.beforeUnload);<br/>
+		},<br/>
+<br/>
+		editHost(hostid) {<br/>
+			const host_data = {hostid};<br/>
+<br/>
+			this.openHostPopup(host_data);<br/>
+		},<br/>
+<br/>
+		openHostPopup(host_data) {<br/>
+			const original_url = location.href;<br/>
+<br/>
+			const overlay = PopUp('popup.host.edit', host_data, {<br/>
+				dialogueid: 'host_edit',<br/>
+				dialogue_class: 'modal-popup-large',<br/>
+				prevent_navigation: true<br/>
+			});<br/>
+<br/>
+			overlay.$dialogue[0].addEventListener('dialogue.create', this.events.hostSuccess, {once: true});<br/>
+			overlay.$dialogue[0].addEventListener('dialogue.update', this.events.hostSuccess, {once: true});<br/>
+			overlay.$dialogue[0].addEventListener('dialogue.delete', this.events.hostSuccess, {once: true});<br/>
+			overlay.$dialogue[0].addEventListener('overlay.close', () =&gt; {<br/>
+				history.replaceState({}, '', original_url);<br/>
+			}, {once: true});<br/>
+		},<br/>
+<br/>
+		events: {<br/>
+			addClick(e) {<br/>
+				const menu = [<br/>
+					{<br/>
+						items: [<br/>
+							{<br/>
+								label: "Add widget",<br/>
+								clickCallback: () =&gt; ZABBIX.Dashboard.addNewWidget()<br/>
+							},<br/>
+							{<br/>
+								label: "Add page",<br/>
+								clickCallback: () =&gt; ZABBIX.Dashboard.addNewDashboardPage()<br/>
+							}<br/>
+						]<br/>
+					},<br/>
+					{<br/>
+						items: [<br/>
+							{<br/>
+								label: "Paste widget",<br/>
+								clickCallback: () =&gt; ZABBIX.Dashboard.pasteWidget(<br/>
+									ZABBIX.Dashboard.getStoredWidgetDataCopy()<br/>
+								),<br/>
+								disabled: ZABBIX.Dashboard.getStoredWidgetDataCopy() === null<br/>
+							},<br/>
+							{<br/>
+								label: "Paste page",<br/>
+								clickCallback: () =&gt; ZABBIX.Dashboard.pasteDashboardPage(<br/>
+									ZABBIX.Dashboard.getStoredDashboardPageDataCopy()<br/>
+								),<br/>
+								disabled: ZABBIX.Dashboard.getStoredDashboardPageDataCopy() === null<br/>
+							}<br/>
+						]<br/>
+					}<br/>
+				];<br/>
+<br/>
+				jQuery(e.target).menuPopup(menu, new jQuery.Event(e), {<br/>
+					position: {<br/>
+						of: e.target,<br/>
+						my: 'left top',<br/>
+						at: 'left bottom',<br/>
+						within: '.wrapper'<br/>
+					}<br/>
+				});<br/>
+			},<br/>
+<br/>
+			beforeUnload(e) {<br/>
+				if (ZABBIX.Dashboard.isUnsaved()) {<br/>
+					// Display confirmation message.<br/>
+					e.preventDefault();<br/>
+					e.returnValue = '';<br/>
+				}<br/>
+			},<br/>
+<br/>
+			popState(e) {<br/>
+				const host = (e.state !== null && 'host' in e.state) ? e.state.host : null;<br/>
+<br/>
+				jQuery('#dynamic_hostid').multiSelect('addData', host ? [host] : [], false);<br/>
+<br/>
+				ZABBIX.Dashboard.setDynamicHost(host ? host.id : null);<br/>
+			},<br/>
+<br/>
+			dynamicHostChange() {<br/>
+				const hosts = jQuery('#dynamic_hostid').multiSelect('getData');<br/>
+				const host = hosts.length ? hosts[0] : null;<br/>
+				const curl = new Curl('zabbix.php');<br/>
+<br/>
+				curl.setArgument('action', 'dashboard.view');<br/>
+<br/>
+				if (view.dashboard.dashboardid !== null) {<br/>
+					curl.setArgument('dashboardid', view.dashboard.dashboardid);<br/>
+				}<br/>
+<br/>
+				if (view.has_time_selector) {<br/>
+					curl.setArgument('from', view.time_period.from);<br/>
+					curl.setArgument('to', view.time_period.to);<br/>
+				}<br/>
+<br/>
+				if (host !== null) {<br/>
+					curl.setArgument('hostid', host.id);<br/>
+				}<br/>
+<br/>
+				ZABBIX.Dashboard.setDynamicHost(host ? host.id : null);<br/>
+<br/>
+				history.pushState({host: host}, '', curl.getUrl());<br/>
+<br/>
+				updateUserProfile('web.dashboard.hostid', host ? host.id : 1);<br/>
+			},<br/>
+<br/>
+			applyProperties() {<br/>
+				const dashboard_data = ZABBIX.Dashboard.getData();<br/>
+<br/>
+				document.getElementById('page-title-general').textContent = dashboard_data.name;<br/>
+				document.getElementById('dashboard-direct-link').textContent = dashboard_data.name;<br/>
+			},<br/>
+<br/>
+			configurationOutdated() {<br/>
+				location.href = location.href;<br/>
+			},<br/>
+<br/>
+			busy() {<br/>
+				view.is_busy = true;<br/>
+				view.updateBusy();<br/>
+			},<br/>
+<br/>
+			idle() {<br/>
+				view.is_busy = false;<br/>
+				view.updateBusy();<br/>
+			},<br/>
+<br/>
+			hostSuccess(e) {<br/>
+				const data = e.detail;<br/>
+<br/>
+				if ('success' in data) {<br/>
+					postMessageOk(data.success.title);<br/>
+<br/>
+					if ('messages' in data.success) {<br/>
+						postMessageDetails('success', data.success.messages);<br/>
+					}<br/>
+				}<br/>
+<br/>
+				location.href = location.href;<br/>
+			}<br/>
+		}<br/>
+	}<br/>
+&lt;/script&gt;<br/>
+   &lt;header class="header-title"&gt;<br/>
+    &lt;nav class="sidebar-nav-toggle" role="navigation" aria-label="Sidebar control"&gt;<br/>
+     &lt;button type="button" id="sidebar-button-toggle" class="button-toggle" title="Show sidebar"&gt;Show sidebar&lt;/button&gt;<br/>
+    &lt;/nav&gt;<br/>
+    &lt;div&gt;<br/>
+     &lt;h1 id="page-title-general"&gt;Global view&lt;/h1&gt;<br/>
+    &lt;/div&gt;<br/>
+    &lt;div class="header-doc-link"&gt;<br/>
+     &lt;a title="Help" target="_blank" rel="noopener noreferrer" class="icon-doc-link" href="https://www.zabbix.com/documentation/6.4/en/manual/web_interface/frontend_sections/dashboards"&gt;&lt;/a&gt;<br/>
+    &lt;/div&gt;<br/>
+    &lt;div class="header-controls"&gt;<br/>
+     &lt;ul id="dashboard-control"&gt;<br/>
+      &lt;li&gt;<br/>
+       &lt;nav aria-label="Content controls"&gt;<br/>
+        &lt;ul&gt;<br/>
+         &lt;li&gt;&lt;button type="button" id="dashboard-edit" name="dashboard-edit"&gt;Edit dashboard&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;li&gt;&lt;button type="button" id="dashboard-actions" name="" class="btn-action" title="Actions" aria-haspopup="true" data-menu-popup="{&quot;type&quot;:&quot;dashboard&quot;,&quot;data&quot;:{&quot;dashboardid&quot;:&quot;1&quot;,&quot;editable&quot;:true,&quot;has_related_reports&quot;:false,&quot;can_edit_dashboards&quot;:true,&quot;can_view_reports&quot;:true,&quot;can_create_reports&quot;:true,&quot;csrf_token&quot;:&quot;e6882a6d2d3e95d58ce966690de1bf45fcb1b448e9a6fcbd9e64939785a8e845&quot;}}" aria-expanded="false"&gt;&nbsp;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;li&gt;&lt;button type="button" title="Kiosk mode" data-layout-mode="1" class="layout-mode btn-kiosk"&gt;&nbsp;&lt;/button&gt;&lt;/li&gt;<br/>
+        &lt;/ul&gt;<br/>
+       &lt;/nav&gt;&lt;/li&gt;<br/>
+      &lt;li style="display: none"&gt;<br/>
+       &lt;nav aria-label="Content controls" class="dashboard-edit"&gt;<br/>
+        &lt;ul&gt;<br/>
+         &lt;li&gt;&lt;button type="button" id="dashboard-config" name="dashboard-config" class="btn-dashboard-conf"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;li&gt;<br/>
+          &lt;ul class="btn-split"&gt;<br/>
+           &lt;li&gt;&lt;button type="button" id="dashboard-add-widget" name="dashboard-add-widget" class="btn-alt"&gt;&lt;span class="plus-icon"&gt;&lt;/span&gt;Add&lt;/button&gt;&lt;/li&gt;<br/>
+           &lt;li&gt;&lt;button type="button" id="dashboard-add" name="dashboard-add" class="btn-alt btn-toggle-chevron"&gt;​&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;/ul&gt;&lt;/li&gt;<br/>
+         &lt;li&gt;&lt;button type="button" id="dashboard-save" name="dashboard-save"&gt;Save changes&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;li&gt;&lt;a id="dashboard-cancel" href="#"&gt;Cancel&lt;/a&gt;&lt;/li&gt;<br/>
+         &lt;li&gt;&lt;/li&gt;<br/>
+        &lt;/ul&gt;<br/>
+       &lt;/nav&gt;&lt;/li&gt;<br/>
+     &lt;/ul&gt;<br/>
+    &lt;/div&gt;<br/>
+   &lt;/header&gt;<br/>
+   &lt;main&gt;<br/>
+    &lt;div class="header-navigation"&gt;<br/>
+     &lt;ul&gt;<br/>
+      &lt;li&gt;<br/>
+       &lt;ul class="breadcrumbs" role="navigation" aria-label="Hierarchy"&gt;<br/>
+        &lt;li&gt;&lt;span&gt;&lt;a href="zabbix.php?action=dashboard.list"&gt;All dashboards&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;<br/>
+        &lt;li&gt;&lt;span class="selected"&gt;&lt;a id="dashboard-direct-link" href="zabbix.php?action=dashboard.view&amp;dashboardid=1"&gt;Global view&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;<br/>
+       &lt;/ul&gt;&lt;/li&gt;<br/>
+     &lt;/ul&gt;<br/>
+    &lt;/div&gt;<br/>
+    &lt;div class="dashboard"&gt;<br/>
+     &lt;div class="dashboard-navigation"&gt;<br/>
+      &lt;div class="dashboard-navigation-tabs"&gt;<br/>
+       &lt;div class="sortable"&gt;<br/>
+        &lt;ul class="sortable-list"&gt;<br/>
+         &lt;li class="sortable-item" tabindex="0"&gt;<br/>
+          &lt;div class="selected-tab"&gt;<br/>
+           &lt;span title="Page 1"&gt;Page 1&lt;/span&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-dashboard-page-properties"&gt;&lt;/button&gt;<br/>
+          &lt;/div&gt;&lt;/li&gt;<br/>
+        &lt;/ul&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-navigation-controls"&gt;<br/>
+       &lt;button type="button" class="dashboard-previous-page btn-iterator-page-previous" disabled&gt;&lt;/button&gt;&lt;button type="button" class="dashboard-next-page btn-iterator-page-next" disabled style="margin-right: 0px;"&gt;&lt;/button&gt;&lt;button type="button" class="btn-alt dashboard-toggle-slideshow slideshow-state-started"&gt;&lt;span class="slideshow-state-stopped"&gt;Start slideshow&lt;/span&gt;&lt;span class="slideshow-state-started"&gt;Stop slideshow&lt;/span&gt;&lt;/button&gt;<br/>
+      &lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;div class="dashboard-grid" style="height: 770px;"&gt;<br/>
+      &lt;div class="dashboard-widget-placeholder hidden"&gt;<br/>
+       &lt;div class="dashboard-widget-placeholder-box"&gt;<br/>
+        &lt;div class="dashboard-widget-placeholder-label"&gt;<br/>
+         &lt;span&gt;&lt;a href="javascript:void(0)"&gt;Add a new widget&lt;/a&gt;&lt;/span&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget" style="min-width: 4.16667%; min-height: 70px; left: 0%; top: 0px; width: 33.3333%; height: 280px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Top hosts by CPU utilization&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-tophosts"&gt;<br/>
+         &lt;table class="list-table" id="t64b7230ceb6ab337638231"&gt;<br/>
+          &lt;thead&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;&lt;/th&gt;<br/>
+            &lt;th colspan="2"&gt;Utilization&lt;/th&gt;<br/>
+            &lt;th class="center"&gt;1m avg&lt;/th&gt;<br/>
+            &lt;th class="center"&gt;5m avg&lt;/th&gt;<br/>
+            &lt;th class="center"&gt;15m avg&lt;/th&gt;<br/>
+            &lt;th class="center"&gt;Processes&lt;/th&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/thead&gt;<br/>
+          &lt;tbody&gt;<br/>
+           &lt;tr class="nothing-to-show"&gt;<br/>
+            &lt;td colspan="7"&gt;No data found.&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/tbody&gt;<br/>
+         &lt;/table&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget dashboard-grid-widget-hidden-header" style="min-width: 4.16667%; min-height: 70px; left: 33.3333%; top: 0px; width: 12.5%; height: 140px; --content-height: 110px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Performance&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-item no-padding"&gt;<br/>
+         &lt;table class="list-table" id="t64b7230ce65c4016023757"&gt;<br/>
+          &lt;tbody&gt;<br/>
+           &lt;tr class="nothing-to-show"&gt;<br/>
+            &lt;td colspan="1"&gt;No permissions to referred object or it does not exist!&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/tbody&gt;<br/>
+         &lt;/table&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget" style="min-width: 4.16667%; min-height: 70px; left: 45.8333%; top: 0px; width: 37.5%; height: 280px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;System information&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-systeminfo"&gt;<br/>
+         &lt;output class="msg-bad" role="contentinfo" aria-label="Error message"&gt;<br/>
+          &lt;div class="msg-details"&gt;<br/>
+           &lt;ul class="list-dashed"&gt;<br/>
+            &lt;li&gt;Connection to Zabbix server "localhost:10051" failed. Possible reasons: 1. Incorrect "NodeAddress" or "ListenPort" in the "zabbix_server.conf" or server IP/DNS override in the "zabbix.conf.php"; 2. Incorrect DNS server configuration. Address not available&lt;/li&gt;<br/>
+           &lt;/ul&gt;<br/>
+          &lt;/div&gt;&lt;button class="overlay-close-btn" type="button" title="Close"&gt;&lt;/button&gt;&lt;/output&gt;<br/>
+         &lt;table class="list-table sticky-header" id="t64b7230ce15a3606978513"&gt;<br/>
+          &lt;thead&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;Parameter&lt;/th&gt;<br/>
+            &lt;th&gt;Value&lt;/th&gt;<br/>
+            &lt;th&gt;Details&lt;/th&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/thead&gt;<br/>
+          &lt;tbody&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;Zabbix server is running&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;span class="green"&gt;Yes&lt;/span&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;localhost:10051&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;Number of hosts (enabled/disabled)&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;Number of templates&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;&lt;span title="Only items assigned to enabled hosts are counted"&gt;Number of items (enabled/disabled/not supported)&lt;/span&gt;&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;&lt;span title="Only triggers assigned to enabled hosts and depending on enabled items are counted"&gt;Number of triggers (enabled/disabled [problem/ok])&lt;/span&gt;&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;Number of users (online)&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;Required server performance, new values per second&lt;/th&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th&gt;High availability cluster&lt;/th&gt;<br/>
+            &lt;td&gt;Disabled&lt;/td&gt;<br/>
+            &lt;td&gt;&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/tbody&gt;<br/>
+         &lt;/table&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget dashboard-grid-widget-hidden-header" style="min-width: 4.16667%; min-height: 70px; left: 83.3333%; top: 0px; width: 16.6667%; height: 280px; --content-height: 230px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Local time&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-clock no-padding"&gt;<br/>
+         &lt;div class="clock-digital"&gt;<br/>
+          &lt;div class="clock-time bold" style="--widget-clock-font: 0.40;"&gt;<br/>
+           18:41<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="clock-time-zone" style="--widget-clock-font: 0.20;"&gt;<br/>
+           Lima<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget dashboard-grid-widget-hidden-header" style="min-width: 4.16667%; min-height: 70px; left: 33.3333%; top: 140px; width: 12.5%; height: 140px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Graph&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li class="widget-info-button"&gt;&lt;button type="button" data-hintbox="1" data-hintbox-static="1" class="btn-info-clock"&gt;&lt;/button&gt;<br/>
+           &lt;div class="hint-box" style="display: none;"&gt;<br/>
+            Last 1 hour<br/>
+           &lt;/div&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-svggraph"&gt;<br/>
+         &lt;svg id="svg_64b7230cf0a5b857384780" version="1.1" xmlns="http://www.w3.org/2000/svg" class="svg-graph" width="286px" height="114px" unselectable="on" style="user-select: none;"&gt;<br/>
+          &lt;style&gt;<br/>
+#svg_64b7230cf0a5b857384780 .svg-graph-grid path{stroke-dasharray:2,2;stroke:#CCD5D9;}<br/>
+#svg_64b7230cf0a5b857384780 .svg-line-dashed{stroke-dasharray:2,2;}<br/>
+#svg_64b7230cf0a5b857384780 .svg-graph-problem-handle{fill:#AA4455;stroke:#AA4455;}<br/>
+#svg_64b7230cf0a5b857384780 .svg-graph-problem-box{fill:#AA4455;opacity:0.1;}<br/>
+#svg_64b7230cf0a5b857384780 .svg-graph-problems line{stroke:#AA4455;}<br/>
+#svg_64b7230cf0a5b857384780 .svg-graph-problem-arrow{stroke:#AA4455;fill:#AA4455;stroke-width:3;}<br/>
+#svg_64b7230cf0a5b857384780 .svg-graph-area{clip-path:url(#metric_clip_64b7230cf20e79.37486852);}<br/>
+#svg_64b7230cf0a5b857384780 [data-metric]{clip-path:url(#metric_clip_64b7230cf20e79.37486852);}<br/>
+&lt;/style&gt;&lt;g class="svg-graph-grid" shape-rendering="crispEdges"&gt;<br/>
+           &lt;path&gt;&lt;/path&gt;<br/>
+          &lt;/g&gt;&lt;g class="svg-graph-problems"&gt;&lt;/g&gt;&lt;clippath id="metric_clip_64b7230cf20e79.37486852"&gt;<br/>
+           &lt;path d="M20,7 H266 V94 H20"&gt;&lt;/path&gt;<br/>
+          &lt;/clippath&gt;&lt;line x1="0" y1="0" x2="0" y2="0" class="svg-helper"&gt;&lt;/line&gt;<br/>
+         &lt;/svg&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget" style="min-width: 4.16667%; min-height: 70px; left: 0%; top: 280px; width: 29.1667%; height: 140px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Host availability&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-hostavail no-padding"&gt;<br/>
+         &lt;div class="host-avail-widget totals-list totals-list-horizontal"&gt;<br/>
+          &lt;div class="host-avail-true"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt;Available<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="host-avail-false"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt;Not available<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="host-avail-unknown"&gt;<br/>
+           &lt;span class="count"&gt;2&lt;/span&gt;Unknown<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="host-avail-total"&gt;<br/>
+           &lt;span class="count"&gt;2&lt;/span&gt;Total<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget" style="min-width: 4.16667%; min-height: 70px; left: 29.1667%; top: 280px; width: 41.6667%; height: 140px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Problems by severity&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-problemsbysv no-padding"&gt;<br/>
+         &lt;div class="by-severity-widget totals-list totals-list-horizontal"&gt;<br/>
+          &lt;div class="disaster-bg"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt; Disaster<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="high-bg"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt; High<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="average-bg"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt; Average<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="warning-bg"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt; Warning<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="info-bg"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt; Information<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="na-bg"&gt;<br/>
+           &lt;span class="count"&gt;0&lt;/span&gt; Not classified<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget" style="min-width: 4.16667%; min-height: 70px; left: 70.8333%; top: 280px; width: 29.1667%; height: 490px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Geomap&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-geomap"&gt;<br/>
+         &lt;div id="U000008" class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: relative;"&gt;<br/>
+          &lt;div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);"&gt;<br/>
+           &lt;div class="leaflet-pane leaflet-tile-pane"&gt;<br/>
+            &lt;div class="leaflet-layer " style="z-index: 1; opacity: 1;"&gt;<br/>
+             &lt;div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 19; transform: translate3d(0px, 0px, 0px) scale(1);"&gt;<br/>
+              &lt;img alt="" role="presentation" src="https://c.tile.openstreetmap.org/11/1160/627.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(37px, -17px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://a.tile.openstreetmap.org/11/1161/627.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(293px, -17px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://a.tile.openstreetmap.org/11/1160/628.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(37px, 239px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://b.tile.openstreetmap.org/11/1161/628.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(293px, 239px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://b.tile.openstreetmap.org/11/1159/627.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-219px, -17px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://b.tile.openstreetmap.org/11/1162/627.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(549px, -17px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://c.tile.openstreetmap.org/11/1159/628.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-219px, 239px, 0px); opacity: 1;"&gt;&lt;img alt="" role="presentation" src="https://c.tile.openstreetmap.org/11/1162/628.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(549px, 239px, 0px); opacity: 1;"&gt;<br/>
+             &lt;/div&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+           &lt;div class="leaflet-pane leaflet-shadow-pane"&gt;&lt;/div&gt;<br/>
+           &lt;div class="leaflet-pane leaflet-overlay-pane"&gt;&lt;/div&gt;<br/>
+           &lt;div class="leaflet-pane leaflet-marker-pane"&gt;&lt;/div&gt;<br/>
+           &lt;div class="leaflet-pane leaflet-tooltip-pane"&gt;&lt;/div&gt;<br/>
+           &lt;div class="leaflet-pane leaflet-popup-pane"&gt;&lt;/div&gt;<br/>
+           &lt;div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(297261px, 160749px, 0px) scale(1024);"&gt;&lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+          &lt;div class="leaflet-control-container"&gt;<br/>
+           &lt;div class="leaflet-top leaflet-left"&gt;<br/>
+            &lt;div class="leaflet-control-zoom leaflet-bar leaflet-control"&gt;<br/>
+             &lt;a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in"&gt;+&lt;/a&gt;&lt;a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out"&gt;−&lt;/a&gt;<br/>
+            &lt;/div&gt;<br/>
+            &lt;div class="leaflet-bar leaflet-control" style="visibility: visible;"&gt;<br/>
+             &lt;a class="navigate-home-button" role="button" href="#" aria-label="Navigate to initial view" title="Navigate to initial view"&gt;&lt;/a&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+           &lt;div class="leaflet-top leaflet-right"&gt;<br/>
+            &lt;div class="leaflet-bar leaflet-control"&gt;<br/>
+             &lt;a class="geomap-filter-button" aria-label="Severity filter" title="Severity filter" role="button" href="#"&gt;&lt;/a&gt;<br/>
+             &lt;ul class="checkbox-list geomap-filter"&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="-1" id="filter_severity_1"&gt;&lt;label class="" for="filter_severity_1"&gt;&lt;span class=""&gt;&lt;/span&gt;No problems&lt;/label&gt;&lt;/li&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="0" id="filter_severity_2"&gt;&lt;label class="" for="filter_severity_2"&gt;&lt;span class=""&gt;&lt;/span&gt;Not classified&lt;/label&gt;&lt;/li&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="1" id="filter_severity_3"&gt;&lt;label class="" for="filter_severity_3"&gt;&lt;span class=""&gt;&lt;/span&gt;Information&lt;/label&gt;&lt;/li&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="2" id="filter_severity_4"&gt;&lt;label class="" for="filter_severity_4"&gt;&lt;span class=""&gt;&lt;/span&gt;Warning&lt;/label&gt;&lt;/li&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="3" id="filter_severity_5"&gt;&lt;label class="" for="filter_severity_5"&gt;&lt;span class=""&gt;&lt;/span&gt;Average&lt;/label&gt;&lt;/li&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="4" id="filter_severity_6"&gt;&lt;label class="" for="filter_severity_6"&gt;&lt;span class=""&gt;&lt;/span&gt;High&lt;/label&gt;&lt;/li&gt;<br/>
+              &lt;li class=""&gt;&lt;input class="checkbox-radio" type="checkbox" value="5" id="filter_severity_7"&gt;&lt;label class="" for="filter_severity_7"&gt;&lt;span class=""&gt;&lt;/span&gt;Disaster&lt;/label&gt;&lt;/li&gt;<br/>
+             &lt;/ul&gt;<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+           &lt;div class="leaflet-bottom leaflet-left"&gt;&lt;/div&gt;<br/>
+           &lt;div class="leaflet-bottom leaflet-right"&gt;<br/>
+            &lt;div class="leaflet-control-attribution leaflet-control"&gt;<br/>
+             &lt;a href="http://leafletjs.com" title="A JS library for interactive maps"&gt;Leaflet&lt;/a&gt; | © &lt;a href="https://www.openstreetmap.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors<br/>
+            &lt;/div&gt;<br/>
+           &lt;/div&gt;<br/>
+          &lt;/div&gt;<br/>
+         &lt;/div&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+      &lt;div class="dashboard-grid-widget" style="min-width: 4.16667%; min-height: 70px; left: 0%; top: 420px; width: 70.8333%; height: 350px;"&gt;<br/>
+       &lt;div class="dashboard-grid-widget-container"&gt;<br/>
+        &lt;div class="dashboard-grid-widget-head"&gt;<br/>
+         &lt;h4&gt;Current problems&lt;/h4&gt;<br/>
+         &lt;ul class="dashboard-grid-widget-actions"&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Edit" class="btn-widget-edit js-widget-edit"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+          &lt;li&gt;&lt;button type="button" title="Actions" aria-expanded="false" aria-haspopup="true" class="btn-widget-action js-widget-action"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+         &lt;/ul&gt;<br/>
+        &lt;/div&gt;<br/>
+        &lt;div class="dashboard-grid-widget-content dashboard-widget-problems"&gt;<br/>
+         &lt;table class="list-table" id="t64b7230d18325774218708"&gt;<br/>
+          &lt;thead&gt;<br/>
+           &lt;tr&gt;<br/>
+            &lt;th style="width: 120px;" class="right"&gt;Time&lt;span class="arrow-down"&gt;&lt;/span&gt;&lt;/th&gt;<br/>
+            &lt;th class="timeline-th"&gt;&lt;/th&gt;<br/>
+            &lt;th class="timeline-th"&gt;&lt;/th&gt;<br/>
+            &lt;th&gt;Info&lt;/th&gt;<br/>
+            &lt;th&gt;Host&lt;/th&gt;<br/>
+            &lt;th&gt;Problem • Severity&lt;/th&gt;<br/>
+            &lt;th&gt;Duration&lt;/th&gt;<br/>
+            &lt;th&gt;Update&lt;/th&gt;<br/>
+            &lt;th&gt;Actions&lt;/th&gt;<br/>
+            &lt;th&gt;Tags&lt;/th&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/thead&gt;<br/>
+          &lt;tbody&gt;<br/>
+           &lt;tr class="nothing-to-show"&gt;<br/>
+            &lt;td colspan="10"&gt;No data found.&lt;/td&gt;<br/>
+           &lt;/tr&gt;<br/>
+          &lt;/tbody&gt;<br/>
+         &lt;/table&gt;<br/>
+        &lt;/div&gt;<br/>
+       &lt;/div&gt;<br/>
+      &lt;/div&gt;<br/>
+     &lt;/div&gt;<br/>
+    &lt;/div&gt;<br/>
+    &lt;div hidden class="overlay-dialogue notif ui-draggable" style="display: none; right: 10px; top: 10px;"&gt;<br/>
+     &lt;div class="dashboard-widget-head cursor-move ui-draggable-handle"&gt;<br/>
+      &lt;ul&gt;<br/>
+       &lt;li&gt;&lt;button title="Snooze" class="btn-alarm-on"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+       &lt;li&gt;&lt;button class="btn-sound-on" title="Mute"&gt;&lt;/button&gt;&lt;/li&gt;<br/>
+      &lt;/ul&gt;&lt;button title="Close" type="button" class="overlay-close-btn"&gt;&lt;/button&gt;<br/>
+     &lt;/div&gt;<br/>
+     &lt;ul class="notif-body"&gt;&lt;/ul&gt;<br/>
+    &lt;/div&gt;<br/>
+   &lt;/main&gt;<br/>
+   &lt;script&gt;jQuery(function($){<br/>
+	view.init({"dashboard":{"dashboardid":"1","name":"Global view","userid":"1","display_period":"30","auto_start":"1","pages":[{"dashboard_pageid":"1","name":"","display_period":"0","widgets":[{"widgetid":"1","type":"tophosts","name":"Top hosts by CPU utilization","view_mode":"0","pos":{"x":0,"y":0,"width":8,"height":4},"rf_rate":60,"fields":{"columns.name.0":"","columns.data.0":"2","columns.item.0":"System name","columns.aggregate_function.0":"0","columns.decimal_places.0":"2","columns.base_color.0":"","columns.name.1":"Utilization","columns.data.1":"1","columns.item.1":"CPU utilization","columns.timeshift.1":"","columns.aggregate_function.1":"0","columns.min.1":"0","columns.max.1":"100","columns.decimal_places.1":"2","columns.display.1":"3","columns.history.1":"1","columns.base_color.1":"4CAF50","columnsthresholds.color.1.0":"FFFF00","columnsthresholds.threshold.1.0":"50","columnsthresholds.color.1.1":"FF8000","columnsthresholds.threshold.1.1":"80","columnsthresholds.color.1.2":"FF4000","columnsthresholds.threshold.1.2":"90","columns.name.2":"1m avg","columns.data.2":"1","columns.item.2":"Load average (1m avg)","columns.timeshift.2":"","columns.aggregate_function.2":"0","columns.decimal_places.2":"2","columns.display.2":"1","columns.history.2":"1","columns.base_color.2":"","columns.name.3":"5m avg","columns.data.3":"1","columns.item.3":"Load average (5m avg)","columns.timeshift.3":"","columns.aggregate_function.3":"0","columns.decimal_places.3":"2","columns.display.3":"1","columns.history.3":"1","columns.base_color.3":"","columns.name.4":"15m avg","columns.data.4":"1","columns.item.4":"Load average (15m avg)","columns.timeshift.4":"","columns.aggregate_function.4":"0","columns.decimal_places.4":"2","columns.display.4":"1","columns.history.4":"1","columns.base_color.4":"","columns.name.5":"Processes","columns.data.5":"1","columns.item.5":"Number of processes","columns.timeshift.5":"","columns.aggregate_function.5":"0","columns.decimal_places.5":"2","columns.display.5":"1","columns.history.5":"1","columns.base_color.5":"","column":"1"}},{"widgetid":"2","type":"item","name":"Performance","view_mode":"1","pos":{"x":8,"y":0,"width":3,"height":2},"rf_rate":60,"fields":{"show":["1","2","4"],"adv_conf":"1","description":"{HOST.NAME}\r\nValues per second","units_show":"0","units_bold":"0","desc_bold":"1"}},{"widgetid":"3","type":"systeminfo","name":"","view_mode":"0","pos":{"x":11,"y":0,"width":9,"height":4},"rf_rate":900,"fields":[]},{"widgetid":"4","type":"clock","name":"Local time","view_mode":"1","pos":{"x":20,"y":0,"width":4,"height":4},"rf_rate":900,"fields":{"time_bold":"1","time_sec":"0","time_size":"40","clock_type":"1","show":["2","3"],"adv_conf":"1"}},{"widgetid":"5","type":"svggraph","name":"","view_mode":"1","pos":{"x":8,"y":2,"width":3,"height":2},"rf_rate":60,"fields":{"ds.hosts.0.0":"Zabbix server","ds.items.0.0":"Zabbix server: Number of processed values per second","ds.color.0":"90CAF9","graph_time":"1","lefty":"0","righty":"0","axisx":"0","legend":"0"}},{"widgetid":"6","type":"hostavail","name":"","view_mode":"0","pos":{"x":0,"y":4,"width":7,"height":2},"rf_rate":900,"fields":{"interface_type":"1"}},{"widgetid":"7","type":"problemsbysv","name":"Problems by severity","view_mode":"0","pos":{"x":7,"y":4,"width":10,"height":2},"rf_rate":60,"fields":{"show_type":"1"}},{"widgetid":"8","type":"geomap","name":"","view_mode":"0","pos":{"x":17,"y":4,"width":7,"height":7},"rf_rate":60,"fields":{"default_view":"56.95225,24.11301,11"}},{"widgetid":"9","type":"problems","name":"Current problems","view_mode":"0","pos":{"x":0,"y":6,"width":17,"height":5},"rf_rate":60,"fields":{"show":"3","show_tags":"3"}}]}],"editable":true,"owner":{"id":"1","name":"Admin (Zabbix Administrator)"},"has_related_reports":false,"can_edit_dashboards":true,"can_view_reports":true,"can_create_reports":true},"widget_defaults":{"actionlog":{"name":"Action log","size":{"width":12,"height":5},"js_class":"CWidgetActionLog"},"clock":{"name":"Clock","size":{"width":4,"height":3},"js_class":"CWidgetClock"},"dataover":{"name":"Data overview","size":{"width":12,"height":5},"js_class":"CWidget"},"discovery":{"name":"Discovery status","size":{"width":6,"height":3},"js_class":"CWidget"},"favgraphs":{"name":"Favorite graphs","size":{"width":4,"height":3},"js_class":"CWidget"},"favmaps":{"name":"Favorite maps","size":{"width":4,"height":3},"js_class":"CWidget"},"geomap":{"name":"Geomap","size":{"width":12,"height":5},"js_class":"CWidgetGeoMap"},"graph":{"name":"Graph (classic)","size":{"width":12,"height":5},"js_class":"CWidgetGraph"},"graphprototype":{"name":"Graph prototype","size":{"width":16,"height":5},"js_class":"CWidgetGraphPrototype"},"hostavail":{"name":"Host availability","size":{"width":6,"height":3},"js_class":"CWidgetHostAvail"},"item":{"name":"Item value","size":{"width":4,"height":3},"js_class":"CWidgetItem"},"map":{"name":"Map","size":{"width":18,"height":5},"js_class":"CWidgetMap"},"navtree":{"name":"Map navigation tree","size":{"width":6,"height":5},"js_class":"CWidgetNavTree"},"plaintext":{"name":"Plain text","size":{"width":6,"height":3},"js_class":"CWidget"},"problemhosts":{"name":"Problem hosts","size":{"width":12,"height":5},"js_class":"CWidget"},"problems":{"name":"Problems","size":{"width":12,"height":5},"js_class":"CWidgetProblems"},"problemsbysv":{"name":"Problems by severity","size":{"width":12,"height":5},"js_class":"CWidgetProblemsBySv"},"slareport":{"name":"SLA report","size":{"width":12,"height":5},"js_class":"CWidget"},"svggraph":{"name":"Graph","size":{"width":12,"height":5},"js_class":"CWidgetSvgGraph"},"systeminfo":{"name":"System information","size":{"width":12,"height":5},"js_class":"CWidget"},"tophosts":{"name":"Top hosts","size":{"width":12,"height":5},"js_class":"CWidget"},"trigover":{"name":"Trigger overview","size":{"width":12,"height":5},"js_class":"CWidgetTrigerOver"},"url":{"name":"URL","size":{"width":12,"height":5},"js_class":"CWidgetUrl"},"web":{"name":"Web monitoring","size":{"width":6,"height":3},"js_class":"CWidget"}},"widget_last_type":"actionlog","configuration_hash":"c17af0719950dede8f4132eb117b466a","has_time_selector":false,"time_period":{"profileIdx":"web.dashboard.filter","profileIdx2":"1","from":"now-1h","to":"now","from_ts":1689720060,"to_ts":1689723660},"dynamic":{"has_dynamic_widgets":false,"host":null},"web_layout_mode":0,"clone":false});<br/>
+});&lt;/script&gt;&lt;output id="msg-global-footer" class="msg-global-footer msg-warning" style="left: 185px; width: 2348px;"&gt;&lt;/output&gt;<br/>
+   &lt;footer role="contentinfo"&gt;<br/>
+    Zabbix 6.4.1. © 2001–2023, &lt;a class="grey link-alt" target="_blank" rel="noopener noreferrer" href="https://www.zabbix.com/"&gt;Zabbix SIA&lt;/a&gt;<br/>
+   &lt;/footer&gt;<br/>
+   &lt;script type="text/javascript"&gt;<br/>
+	$(function() {<br/>
+		<br/>
+		// the chkbxRange.init() method must be called after the inserted post scripts and initializing cookies<br/>
+		cookie.init();<br/>
+		chkbxRange.init();<br/>
+	});<br/>
+<br/>
+	/**<br/>
+	 * Toggles filter state and updates title and icons accordingly.<br/>
+	 *<br/>
+	 * @param {string} 	idx					User profile index<br/>
+	 * @param {string} 	value				Value<br/>
+	 * @param {object} 	idx2				An array of IDs<br/>
+	 * @param {int} 	profile_type		Profile type<br/>
+	 */<br/>
+	function updateUserProfile(idx, value, idx2, profile_type = PROFILE_TYPE_INT) {<br/>
+		const value_fields = {<br/>
+			[PROFILE_TYPE_INT]: 'value_int',<br/>
+			[PROFILE_TYPE_STR]: 'value_str'<br/>
+		};<br/>
+<br/>
+		return sendAjaxData('zabbix.php?action=profile.update', {<br/>
+			data: {<br/>
+				idx: idx,<br/>
+				[value_fields[profile_type]]: value,<br/>
+				idx2: idx2,<br/>
+				_csrf_token: "f0711266341db84c018d570de5b152fc72e82797f881d06f6c302b0fc978497a"			}<br/>
+		});<br/>
+	}<br/>
+<br/>
+	/**<br/>
+	 * Add object to the list of favorites.<br/>
+	 */<br/>
+	function add2favorites(object, objectid) {<br/>
+		sendAjaxData('zabbix.php?action=favorite.create', {<br/>
+			data: {<br/>
+				object: object,<br/>
+				objectid: objectid,<br/>
+				_csrf_token: "7f6fd62a27da85a4a2e9ab718e15998e05fe0855020915496e0ff3b2397330a8"			}<br/>
+		});<br/>
+	}<br/>
+<br/>
+	/**<br/>
+	 * Remove object from the list of favorites. Remove all favorites if objectid==0.<br/>
+	 */<br/>
+	function rm4favorites(object, objectid) {<br/>
+		sendAjaxData('zabbix.php?action=favorite.delete', {<br/>
+			data: {<br/>
+				object: object,<br/>
+				objectid: objectid,<br/>
+				_csrf_token: "7f6fd62a27da85a4a2e9ab718e15998e05fe0855020915496e0ff3b2397330a8"			}<br/>
+		});<br/>
+	}<br/>
+&lt;/script&gt;<br/>
+  &lt;/div&gt;<br/>
+ &lt;/body&gt;<br/>
+&lt;/html&gt;</code></pre></div></body></html>

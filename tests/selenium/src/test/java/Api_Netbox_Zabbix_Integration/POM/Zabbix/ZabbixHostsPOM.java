@@ -1,9 +1,7 @@
 package Api_Netbox_Zabbix_Integration.POM.Zabbix;
 
-import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
-import org.eclipse.jetty.util.ssl.X509;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -22,7 +20,7 @@ public class ZabbixHostsPOM extends PageObject {
     public WebElement applyButton;
 
     @FindBy(xpath = "//body[1]/div[1]/main[1]/form[1]/table[1]/tbody[1]/tr[1]/td[2]/a")
-    public WebElement zabbixHost;
+    public WebElement zabbixHostFirst;
 
     @FindBy(xpath = "//input[@id='host']")
     public  WebElement zabbixHostName;
@@ -36,12 +34,6 @@ public class ZabbixHostsPOM extends PageObject {
     public WebElement dnsButton;
 
 
-    public WebElement dnsNameField = driver.findElement(By.xpath("//input[@id='interfaces_81_dns']"));
-
-
-    @FindBy(xpath = "//input[@id='interfaces_44_port']")
-    public WebElement portField;
-
     @FindBy (xpath = "/html[1]/body[1]/div[1]/main[1]/form[1]/table[1]/tbody[1]/tr[1]/td[8]")
     public WebElement interfaceZabbixHost;
     @FindBy(xpath = "//div[@class='dashboard-widget-head']//button[@title='Close']")
@@ -54,10 +46,5 @@ public class ZabbixHostsPOM extends PageObject {
     @FindBy(xpath = "//button[normalize-space()='Delete']")
     public WebElement deleteButton;
 
-    public void validateDnsButton(){
-        WebElement radioButton = dnsButton;
-        String checkedValue = radioButton.getAttribute("checked");
 
-        assertTrue("is not selected!!", checkedValue != null && checkedValue.equalsIgnoreCase("true"));
-    }
 }

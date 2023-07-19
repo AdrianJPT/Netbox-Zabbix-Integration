@@ -2,16 +2,13 @@ package Api_Netbox_Zabbix_Integration.stepdefinitions;
 
 import Api_Netbox_Zabbix_Integration.Manage.Credentials;
 import Api_Netbox_Zabbix_Integration.Manage.ManageDriver;
-import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxDevice;
 import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxDeviceConfig;
 import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxLogin;
 import Api_Netbox_Zabbix_Integration.Pages.Netbox.NetboxMain;
 import Api_Netbox_Zabbix_Integration.Pages.Zabbix.ZabbixHosts;
 import Api_Netbox_Zabbix_Integration.Pages.Zabbix.ZabbixLogin;
 import Api_Netbox_Zabbix_Integration.Pages.Zabbix.ZabbixMain;
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,6 +16,8 @@ import io.cucumber.java.en.When;
 
 import net.thucydides.core.annotations.Steps;
 
+import java.util.List;
+import static Api_Netbox_Zabbix_Integration.Manage.ManageDriver.ZabbixTAB;
 public class CreateDeviceStepDef {
     @Steps
     NetboxLogin netboxLogin;
@@ -34,13 +33,18 @@ public class CreateDeviceStepDef {
     @Steps
     ZabbixHosts zabbixHosts;
 
-    NetboxDevice netboxDevice;
-    ManageDriver manageDriver = new ManageDriver();
+
+    ManageDriver manageDriver;
+    List<String> tabs = ManageDriver.TABS;
     Credentials credentials = new Credentials();
 
+    public CreateDeviceStepDef() {
+        // Constructor vacío
+    }
     @Before
     public void Login() {
 
+        // LOGIN - Netbox
         netboxLogin.openAplication(credentials.NetboxURL);
 
         netboxLogin.clickToLoginButton();
@@ -50,6 +54,15 @@ public class CreateDeviceStepDef {
 
         netboxLogin.clickLoginButton();
 
+        // LOGIN - Zabbix
+        ZabbixTAB = manageDriver.createNewTab(manageDriver.getDriver());
+
+        zabbixLogin.openAplication( credentials.ZabbixURL );
+        zabbixLogin.enterUsername(credentials.ZabbixUsername);
+        zabbixLogin.enterPassword(credentials.ZabbixPassword);
+        zabbixLogin.clickLoginButton();
+
+        manageDriver.changeTab(zabbixLogin.getDriver(), manageDriver.NetboxTAB);
     }
 
 
@@ -99,13 +112,8 @@ public class CreateDeviceStepDef {
 
     @Given("I log in successfully in Zabbix")
     public void iLogInSuccessfullyInZabbix() {
-        manageDriver.ZabbixTAB = manageDriver.createNewTab();
 
-        zabbixLogin.openAplication( credentials.ZabbixURL );
-        zabbixLogin.enterUsername(credentials.ZabbixUsername);
-        zabbixLogin.enterPassword(credentials.ZabbixPassword);
-        zabbixLogin.clickLoginButton();
-
+        manageDriver.changeTab(manageDriver.getDriver(), manageDriver.ZabbixTAB);
         zabbixMain.clickOnBarHost();
     }
 
@@ -113,7 +121,7 @@ public class CreateDeviceStepDef {
     public void theZabbixHostDeviceNameItsInterfaceIsUPDATE_IPWithPort( String string) {
 
 
-        zabbixHosts.cleanFilters(string);
+        zabbixHosts.filterByName(string);
         zabbixHosts.validateInterface("UPDATE_IP:9999");
     }
     @Then("The Netbox device: {string} is displayed in Zabbix hosts")
@@ -140,6 +148,5 @@ public class CreateDeviceStepDef {
     public void theZabbixHostDeviceNameDoesNotAppearInZabbix( String s) {
         zabbixHosts.findZabbixDeviceNotEquals(s);
     }
-
 
 }

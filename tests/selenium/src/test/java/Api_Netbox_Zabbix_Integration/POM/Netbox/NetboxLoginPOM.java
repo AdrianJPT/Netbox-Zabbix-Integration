@@ -7,10 +7,10 @@ import org.openqa.selenium.WebElement;
 
 public class NetboxLoginPOM extends PageObject {
 
-    WebDriver driver = getDriver();
 
 
-    @FindBy(css = ".content-container .mdi.mdi-login-variant")
+
+    @FindBy(css = "div[class='col-3 d-flex flex-grow-1 pe-0 justify-content-end'] a[type='button']")
     public WebElement LoginButtonPage;
     @FindBy(id = "id_username")
     public WebElement UsernameInput;

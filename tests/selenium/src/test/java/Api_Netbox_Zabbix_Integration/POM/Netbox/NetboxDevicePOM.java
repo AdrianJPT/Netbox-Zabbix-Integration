@@ -9,17 +9,24 @@ import org.openqa.selenium.WebElement;
 public class NetboxDevicePOM extends PageObject {
 
     WebDriver driver = getDriver();
-    @FindBy(xpath = "//input[@title='Toggle All']")
+
+    @FindBy(css = "a[class='btn btn-sm btn-success']")
+    public WebElement deviceButtonADD;
+    @FindBy(css = "input[title='Toggle All']")
     public WebElement selectAllDevices;
 
-    @FindBy(xpath = "//button[@name='_delete']")
+    @FindBy(css = "button[name='_delete']")
     public WebElement deleteAllDevices;
 
+    @FindBy(css = "button[name='_confirm']")
+    public WebElement deleteAllDevicesConfirm;
 
 
     @FindBy(xpath = "//a[@class='btn btn-sm btn-danger']")
     public WebElement deleteDeviceButton;
 
+    @FindBy(xpath = "//button[contains(text(),'Delete')]")
+    public WebElement deleteDeviceButtonConfirmation;
     public WebElement deviceNetBox(String DeviceName){
        return driver.findElement(By.xpath("//a[normalize-space()='" + DeviceName+ "']")) ;
     }

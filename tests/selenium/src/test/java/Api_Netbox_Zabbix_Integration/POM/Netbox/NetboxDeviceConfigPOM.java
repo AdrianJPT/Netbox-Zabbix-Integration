@@ -27,6 +27,9 @@ public class NetboxDeviceConfigPOM extends PageObject {
     @FindBy(name = "_create")
     public WebElement ButtonCreateDevice;
 
+    @FindBy(css = ".btn.btn-sm.btn-success")
+    public WebElement DeviceButtonCLONE;
+
     public void selectDeviceRole(String deviceRole){
         DeviceRoleBox.findElement(By.xpath("//div[@class = 'ss-option' and text()='"+ deviceRole +"' and @role='option']")).click();
     }
