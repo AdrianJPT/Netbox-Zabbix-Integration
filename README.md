@@ -6,6 +6,27 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
 
 ![image](https://user-images.githubusercontent.com/86939628/224465296-abddcd6b-f1a6-4a51-90b1-c212dcd4d08f.png)
 
+## Quickstart
+
+To get _NetBox Docker_ up and running run the following commands.
+There is a more complete [_Getting Started_ guide on our wiki][wiki-getting-started] which explains every step.
+
+```bash
+git clone -b release https://github.com/netbox-community/netbox-docker.git
+cd netbox-docker
+tee docker-compose.override.yml <<EOF
+version: '3.4'
+services:
+  netbox:
+    ports:
+      - 8000:8080
+EOF
+docker compose pull
+docker compose up
+```
+
+The whole application will be available after a few minutes.
+
 ## Requirements:
   - pynetbox = 7.0.1
   - pyzabbix = 1.2.1
