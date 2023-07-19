@@ -1,1 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><testsuite errors="0" failures="0" name="Delete devices from NETBOX to ZABBIX" skipped="0" tests="4" time="43.6" timestamp="2023-07-18 06:41:54"><testcase name="Cleaning up Netbox Devices"/><testcase name="Delete one Netbox Device"/><testcase name="Delete many Netobx Devices"/></testsuite>
