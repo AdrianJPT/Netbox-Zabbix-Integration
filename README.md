@@ -53,17 +53,17 @@ docker compose build
 docker compose up
 ```
 
-    > If you want to edit the port of the docker container, override the _docker-compose.yml_ file.
-    ```docker-compose.yml
-    version: '3.8'
-    
-    services:
-      netbox-zabbix-integration:
-        ports:
-          - "5000:5000"
-        volumes:
-          - .:/app
-        command: flask run --host=0.0.0.0 --port=5000 --debug
+> If you want to edit the port of the docker container, override the _docker-compose.yml_ file.
+  ```docker-compose.yml
+        version: '3.8'
+        
+        services:
+          netbox-zabbix-integration:
+            ports:
+              - "5000:5000"
+            volumes:
+              - .:/app
+            command: flask run --host=0.0.0.0 --port=5000 --debug
     
     ```
 
