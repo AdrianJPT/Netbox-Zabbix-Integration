@@ -2,13 +2,22 @@
 
 [Netbox-Docker]:https://github.com/netbox-community/netbox-docker/tree/release
 [Zabbix-Docker]:https://www.zabbix.com/documentation/current/en/manual/installation/containers#docker-compose
-
+[Netbox-Zabbix-Integration_TEST_SERENITY]:https://github.com/AdrianJPT/Netbox-Zabbix-Integration_TEST_SERENITY
+[Cypress_E2E]:https://github.com/AdrianJPT/Cypress_E2E 
 Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth) using Flask as a middleware
 ### Funcionalities from Netbox to Zabbix:
 - CREATE devices, ipaddress (IPv4 Primary IP), templates, sites, platform
 - UPDATE devices, ipaddress(IPv4 Primary IP)
 - DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
+### TESTS:
+##### End to End Testing:
+* [Netbox-Zabbix-Integration_TEST_SERENITY]
+* [Cypress_E2E]
 
+##### API Testing:
+* K6
+* RestAssured
+* 
 ## Architecture:
 
 ![image](https://user-images.githubusercontent.com/86939628/224465296-abddcd6b-f1a6-4a51-90b1-c212dcd4d08f.png)
