@@ -44,10 +44,11 @@ Zabbix_User = 'Admin'
 Zabbix_Password = 'zabbix'
 ```
 
-* Getting _Netbox-Zabbix-Integracion_ with Docker Compose up
+* Getting _Netbox-Zabbix-Integracion_, Build the DockerFile
 ```bash
 docker compose build
 ```
+* Getting _Netbox-Zabbix-Integracion_, Create the container
 ```bash
 docker compose up
 ```
