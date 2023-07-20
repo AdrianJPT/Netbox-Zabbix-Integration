@@ -54,7 +54,7 @@ docker compose up
 ```
 
 > If you want to edit the port of the docker container, override the _docker-compose.yml_ file.
-```docker-compose.yml
+```yml
 version: '3.8'
 
 services:
