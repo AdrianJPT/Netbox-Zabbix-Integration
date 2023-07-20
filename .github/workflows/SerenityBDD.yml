@@ -16,6 +16,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    
+    - uses: browser-actions/setup-chrome@latest
+    - run: chrome --version    
+    
     - name: Build with Maven
       run: mvn clean verify --file pom.xml
       
