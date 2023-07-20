@@ -14,10 +14,6 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
 * [Netbox-Zabbix-Integration_TEST_SERENITY]
 * [Cypress_E2E]
 
-##### API Testing:
-* K6
-* RestAssured
-* 
 ## Architecture:
 
 ![image](https://user-images.githubusercontent.com/86939628/224465296-abddcd6b-f1a6-4a51-90b1-c212dcd4d08f.png)
