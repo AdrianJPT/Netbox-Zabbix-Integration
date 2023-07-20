@@ -1,5 +1,4 @@
 name: Serenity Tests Build
-
 on:
   push:
     branches: main
