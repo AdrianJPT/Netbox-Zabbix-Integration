@@ -1,8 +1,8 @@
-Netbox_Url = 'http://192.168.40.50:3000/'
-Netbox_Token = '3b268ca177be445f0d1ea8dc0ffde327248966adi'
+Netbox_Url = 'http://4.228.209.251:8000/'
+Netbox_Token = '24d3fcabf87219519131bd37f5501663201859ed'
 
-Zabbix_Url = 'http://192.168.40.50:80/'
-Zabbix_Token = '551b7addcc3803a1e16c4df587d22d1466a06e37734ad5c29d2c290038f5077c'
+Zabbix_Url = 'http://4.228.209.251:80/'
+Zabbix_Token = '3b268ca177be445f0d1ea8dc0ffde327248966adi'
 
 Zabbix_User = 'Admin'
 Zabbix_Password = 'zabbix'
