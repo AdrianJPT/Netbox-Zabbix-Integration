@@ -20,8 +20,11 @@ jobs:
       run: mvn clean verify --file pom.xml
       
   # Create a symbolic link to index.html
-    - name: Create Symlink to index.html
-      run: ln -s target/site/serenity/index.html target/site/report.html
+    - name: Create Symbolic Link
+      run: |
+       ln -s target/site/serenity/index.html target/site/serenity-report.html
+
+      
     - uses: actions/upload-artifact@v3
       if: always()
       with:
