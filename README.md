@@ -29,9 +29,10 @@ To get _Netbox-Zabbix-Integracion_ up and running run the following commands.
 * Clone this repository
 ```bash
 git clone https://github.com/AdrianJPT/Netbox-Zabbix-Integration.git
+```
+```bash
 cd Netbox-Zabbix-Integration
 ```
-
 * Set the corresponding variables in "credentials.py" file:
 ```python
 Netbox_Url = '[your_netbox_url]'
@@ -47,6 +48,8 @@ Zabbix_Password = 'zabbix'
 * Getting _Netbox-Zabbix-Integracion_ with Docker Compose up
 ```bash
 docker compose build
+```
+```bash
 docker compose up
 ```
 
