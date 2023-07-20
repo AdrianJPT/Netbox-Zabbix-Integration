@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   netbox-zabbix-integration:
-    build: .
     ports:
       - "5000:5000"
     volumes:
