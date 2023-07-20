@@ -28,9 +28,9 @@ To get _Netbox-Zabbix-Integracion_ up and running run the following commands.
 
 * Clone this repository
 ```bash
+#(1)
 git clone https://github.com/AdrianJPT/Netbox-Zabbix-Integration.git
-```
-```bash
+#(2)
 cd Netbox-Zabbix-Integration
 ```
 * Set the corresponding variables in "credentials.py" file:
