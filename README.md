@@ -58,12 +58,14 @@ docker compose up
 version: '3.8'
 
 services:
-  netbox-zabbix-integration:
+  api:
+    build: .
     ports:
       - "5000:5000"
     volumes:
       - .:/app
     command: flask run --host=0.0.0.0 --port=5000 --debug
+
 
 ```
 
