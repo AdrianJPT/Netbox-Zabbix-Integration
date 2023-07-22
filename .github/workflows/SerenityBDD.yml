@@ -25,13 +25,8 @@ jobs:
         java-version: 1.8
     
     - name: Build and Test with Maven
-      run: mvn clean test
+      run: mvn -B verify --file pom.xml
       
-        # Create a symbolic link to index.html
-    - name: Create Symbolic Link
-      run: |
-        cd ${{ github.workspace }}
-        ln -s target/site/serenity/index.html target/site/serenity-report.html
 
     - uses: actions/upload-artifact@v3
       if: always()
