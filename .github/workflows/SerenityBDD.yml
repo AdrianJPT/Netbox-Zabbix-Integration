@@ -23,7 +23,7 @@ jobs:
     - run: chrome --version
      
     - name: Build with Maven
-      run: mvn -B verify --file pom.xml
+      run: mvn test --file pom.xml
       
   # Create a symbolic link to index.html
     - name: Create Symbolic Link
@@ -31,7 +31,6 @@ jobs:
         cd ${{ github.workspace }}
         ln -s target/site/serenity/index.html target/site/serenity-report.html
 
-      
     - uses: actions/upload-artifact@v3
       if: always()
       with:
