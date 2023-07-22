@@ -1,15 +1,11 @@
 name: Serenity Tests Build
-
-
 on:
   push: # Trigger the workflow on code push
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout the Serenity Test Repo
       uses: actions/checkout@v3
@@ -30,8 +26,7 @@ jobs:
     
     - name: Build and Test with Maven
       run: mvn -B verify --file pom.xml
-      
-
+  
     - uses: actions/upload-artifact@v3
       if: always()
       with:
