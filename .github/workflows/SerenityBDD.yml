@@ -16,6 +16,10 @@ jobs:
       with:
         repository: 'AdrianJPT/Netbox-Zabbix-Integration_TEST_SERENITY'
         
+    - name: Set serenity.propeties to run Headless mode
+      run: |
+          echo -e "\nchrome.switches=--window-size=1920,1080;--headless" >> serenity.properties
+        
     - uses: browser-actions/setup-chrome@latest
     - run: chrome --version
      
