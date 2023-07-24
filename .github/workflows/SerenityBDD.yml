@@ -32,4 +32,42 @@ jobs:
       with:
         name: Serenity-Report
         path: target/site/
+##########################################3
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Cypress_E2E Test Repo
+        uses: actions/checkout@v3
+        with:
+          repository: 'AdrianJPT/Cypress_E2E'
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+      
+      - name: Generate Cucumber Report
+        run: node cucumber-html-report.js || pwd && ls -l
         
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Cucumber-Report
+          path: reports/cucumber-htmlreport.html/
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Cucumber-Report-Porable
+          path: cucumber-report.html
+      # Save the screenshots in case tests are failed
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      # Save ALWAYS the video screenplay
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
