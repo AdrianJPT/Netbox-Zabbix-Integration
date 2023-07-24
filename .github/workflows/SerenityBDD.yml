@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  Serenity Test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the Serenity Test Repo
@@ -33,7 +33,7 @@ jobs:
         name: Serenity-Report
         path: target/site/
 ##########################################3
-  cypress-run:
+  Cypress Test:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Cypress_E2E Test Repo
