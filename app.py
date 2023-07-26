@@ -34,6 +34,8 @@ def zabbix_host_create():
         reading_post = request.get_json()
         nb_device_name = reading_post['data']['name']
         nb_site_name = reading_post['data']['site']['name']
+    
+        
         # HOSTGROUP - SITES | 
         try:
             # HOSTGROUP - SITES | TEMPLATE - PLATFORM                
@@ -98,12 +100,38 @@ def zabbix_host_create():
 @app.route('/update', methods=['POST'])
 def zabbix_host_update():
     if(request.data):
+
         # LEER NOMBRE DEL DEVICE NETBOX
         reading_post = request.get_json()
+        
+        # Mandatory
         nb_device_name = reading_post['data']['name']
-        platform_name = reading_post['data']['platform']['name']
+        nb_device_name = reading_post['data']['name']
+        nb_device_role = ""
+        # OPTIONAL
+        
+        
         # TRAER LA INFO DE ZABBIX
         hosts_zabbix = zapi.host.get(output=["hostid", "name", "interfaces"], filter={"name": nb_device_name}, selectInterfaces=["interfaceid", "ip", "dns"], selectGroups=["groupid"])
+        
+        # Update Platform 
+        za.update_Template_Host(nb_device_name, reading_post['snapshots']['prechange']['platform'], reading_post['snapshots']['postchange']['platform'])
+        
+        # Update Site
+        
+        
+        # Change name
+        if(reading_post['snapshots']['prechange']['name'] != nb_device_name):
+            before_nb_device_name = reading_post['snapshots']['prechange']['name']
+            
+            za.update_Hostname(before_nb_device_name, nb_device_name)
+        
+        # Add and IP
+        
+        # Remove and IP 
+    
+        # ADD IP  
+        
         
         # SI YA EXISTIA EL NB DEVICE Y EN ZABBIX NO, SE CREARA UNO
         if len(hosts_zabbix) != 0:
@@ -150,6 +178,7 @@ def zabbix_host_update():
                     nb_primary_ip = str(convert_to_ip.ip)
                     
                     # AGREGAR LA INTERFAZ Y IP AL ZABBIX HOST
+                    print("ooooooooooooooooooooooooooo_1") #AQUI NO ES
                     zapi.host.update(hostid = zab_host_id, name = nb_device_name, interfaces = [{
                                                     
                                                     "type": 1,
@@ -184,6 +213,7 @@ def zabbix_host_update():
                 convert_to_ip = ipaddress.IPv4Interface(request_nb_primary_ip)
                 nb_primary_ip = str(convert_to_ip.ip)            
 
+                print("ooooooooooooooooooooooooooo_2") #AQUI NO ES
                 zapi.host.create(host = nb_device_name,
                     groups = [
                                 {
@@ -215,7 +245,7 @@ def zabbix_host_update():
                 
                 print(f"ZABBIX | SUCCESS | Se creo el host ({nb_device_name}) , porque no exitia en Zabbix Server")
 
-        za.zab_patch_Template( platform_name, nb_device_name)
+
         
     return jsonify({"msg":"Correct"})    
     
