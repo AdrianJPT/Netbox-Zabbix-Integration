@@ -70,3 +70,29 @@ def nb_DeviceTag_update_remove(nb_device_id, weebhook_id):
 
 
 
+#######################################################3
+
+def get_Platform_by_ID(PLATFORM_ID):
+    headers = {
+        'Authorization': f'Token {Netbox_Token}',
+        'Content-Type': 'application/json',
+        }
+    # ID del platform que deseas obtener
+    platform_id = PLATFORM_ID  # Reemplaza con el ID del platform que buscas
+
+    # Endpoint de la API para obtener un platform específico por su ID
+    endpoint = f'api/dcim/platforms/{platform_id}/'
+
+    # Realizar la solicitud GET para obtener el platform específico
+    response = requests.get(f'{Netbox_Url}{endpoint}', headers=headers)
+
+    # Verificar el código de estado de la respuesta
+    if response.status_code == 200:
+        # Obtener los datos de la respuesta en formato JSON
+        platform_data = response.json()
+
+        # Mostrar el nombre del platform
+        
+        return platform_data['name']
+    else:
+        print(f"WARNING | PLATFORM - TEMPLATE | NO PLATFORM ID: '{platform_id}' ")
