@@ -6,9 +6,9 @@
 [Cypress_E2E]:https://github.com/AdrianJPT/Cypress_E2E 
 Integration between Netbox and Zabbix to unify everything in a single SoT (Source of Truth) using Flask as a middleware
 ### Funcionalities from Netbox to Zabbix:
-- CREATE devices, ipaddress (IPv4 Primary IP), templates, sites, platform
-- UPDATE devices, ipaddress(IPv4 Primary IP)
-- DELETE devices, ipaddress(IPv4 Primary IP), templates, sites, platform
+- CREATE devices, templates, sites, platform
+- UPDATE devices, all ipaddress, sites, platform
+- DELETE devices, all ipaddress, templates, sites, platform
 ### TESTS:
 ##### End to End Testing:
 * [Netbox-Zabbix-Integration_TEST_SERENITY]
