@@ -116,17 +116,17 @@ def zabbix_host_update():
         pre_primary_ipv4 = reading_post['snapshots']['prechange']['primary_ip4']
         post_primary_ipv4 = reading_post['snapshots']['postchange']['primary_ip4']
                 
-        # Update Platform 
-        za.update_Template_Host(nb_device_name, pre_platform, post_platform)
-        
-        # Update Site
-        za.update_HostGroup_Host(nb_device_name, pre_site, post_site)
-        
         # Change name
         if(reading_post['snapshots']['prechange']['name'] != nb_device_name):
             before_nb_device_name = reading_post['snapshots']['prechange']['name']
             
             za.update_Hostname(before_nb_device_name, nb_device_name)
+                
+        # Update Platform 
+        za.update_Template_Host(nb_device_name, pre_platform, post_platform)
+        
+        # Update Site
+        za.update_HostGroup_Host(nb_device_name, pre_site, post_site)
         
         # Manage IP Address
         za.update_ips_host(nb_device_name, pre_primary_ipv4, post_primary_ipv4)
