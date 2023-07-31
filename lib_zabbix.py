@@ -330,176 +330,136 @@ def update_HostGroup_Host(DEVICE_NAME, BEFORE_SITE, AFTER_SITE):
 
 # IP ADDRESS
 
-def enable_Interface_By_IP_and_HostName(host_id, IP_ADDRESS):
-    host = host_id
-    
-    ENABLE_interface_id = None
-    for interface in host[0]['interfaces']:
-        if interface['ip'] == IP_ADDRESS or interface['dns'] == IP_ADDRESS:
-            ENABLE_interface_id = interface['interfaceid']
-            break
-    
-    # Find the interface that matches that is DEFAULT
-    DISABLE_interface_id = None
-    for interface in host[0]['interfaces']:
+def enable_Interface_By_IP_and_HostName(DEVICE_NAME, IP_ADDRESS, INTERFACE_ID):
+    host = zapi.host.get(filter={'host': DEVICE_NAME}, selectInterfaces=['interfaceid', 'ip','main','type','dns'])
+    if host:
+
         
-        if interface['main'] == "1":
-            DISABLE_interface_id = interface['interfaceid']
-            break
-            
-    print("")
-    if ENABLE_interface_id:
-       
+        # Find the interface that matches that is DEFAULT
+        DISABLE_interface_id = None
+        for interface in host[0]['interfaces']:
+            if interface['main'] == "1":
+                DISABLE_interface_id = interface['interfaceid']
+                break
+                
         # Set the new default interface by updating the host
         data = {
-                "jsonrpc": "2.0",
-                "method": "hostinterface.update",
-                "params": [{
-                    "interfaceid": ENABLE_interface_id,       # ACTIVATING
-                    "main": 1       
-                    },
-                    {
-                    "interfaceid": DISABLE_interface_id,      # DISACTIVATING
-                    "main": 0
-                    }],
-                "id": 1
-            }
-        r = requests.post(zabbix_url,json=data,headers=zabbix_headers)
-        response = r.json()
-        
-        if response and 'hostids' in response:
-            print(f"The default interface has been changed to {IP_ADDRESS}.")
-        
-    else:
-        print(f"No interface found with the IP or DNS '{IP_ADDRESS}'.")
-    
-#enable_Interface_By_IP_and_HostName("adrian","9.9.9.9")
-
-def update_InterfaceIP_By_IP(HOST_ID, IP, IP_to_FIND):
-
-    # Obtener las interfaces del host por el nombre del IP
-    ZABBIX_INTERFACES = zapi.hostinterface.get(hostids=HOST_ID, filter={"ip": IP_to_FIND})
-    
-    if(len(ZABBIX_INTERFACES) > 1):
-        master_interface_id = ZABBIX_INTERFACES[0]['interfaceid']
-        for i in ZABBIX_INTERFACES:
-            if (i['interfaceid'] != master_interface_id ):
-                data = {
                     "jsonrpc": "2.0",
-                    "method": "hostinterface.delete",
-                    "params": [
-                        i['interfaceid']
-                    ],
+                    "method": "hostinterface.update",
+                    "params": [{
+                        "interfaceid": str(INTERFACE_ID[0]),       # ACTIVATING
+                        "main": 1       
+                        },
+                        {
+                        "interfaceid": str(DISABLE_interface_id),      # DISACTIVATING
+                        "main": 0
+                        }],
                     "id": 1
                 }
-                
-                r = requests.post(zabbix_url,json=data,headers=zabbix_headers)
-                if not r:
-                    print( "ERROR --REMOVE INTERFACE | update_InterfaceIP_By_IP -----------------")
-    # Verificar si se encontró una interfaz con el IP especificado
-    if (len(ZABBIX_INTERFACES) == 0 ):
-        
-        print(f" UPDATE| No se encontró una interfaz con el ip: {IP_to_FIND} para el host_ID: {HOST_ID}")
-        return False
-    else:
-        for i in ZABBIX_INTERFACES:
-            # Actualizar la dirección IP de la interfaz encontrada
-            interface_id = i['interfaceid']
-            new_ip = IP
-            update_result = zapi.hostinterface.update(interfaceid=interface_id, ip=new_ip, dns_name="")
-            
-            if update_result['interfaceids']:
-                print(f"SUCCESS | IP ADDRESS | From:{IP_to_FIND} to {IP}")
-            else:
-                print(f"ERROR | IP ADDRESS | IP: {IP} not updated")
-    
-#update_InterfaceIP_By_IP("host_id", "9.9.9.9", "9.1.1.9")
 
-def delete_InterfaceIP_By_IP(HOST_ID, ARRAY_IP_to_DELETE):
-    # Obtener las interfaces del host por el nombre del IP
-    ARRAY_IP_to_DELETE_IPS = []
-    
-    if isinstance(ARRAY_IP_to_DELETE, str):
-        ARRAY_IP_to_DELETE_IPS.append(ARRAY_IP_to_DELETE)
-        
-    elif isinstance(ARRAY_IP_to_DELETE, list):
-        ARRAY_IP_to_DELETE_IPS = ARRAY_IP_to_DELETE
-    
-    for ip in ARRAY_IP_to_DELETE_IPS:
-        interfaceID_to_Delete = zapi.hostinterface.get(hostids=HOST_ID, filter={"ip": ip})
-        # Verificar si se encontró una interfaz con el IP especificado
-        if len(interfaceID_to_Delete) == 0:
-            print(f" DELETE | IP ADDRESS | No se encontró una interfaz con el ip: {ip} para el host_ID: {HOST_ID}")
-            return False
-        
+        r = requests.post(zabbix_url,json=data,headers=zabbix_headers)
+        response = r.json()
+            
+        print("SUCCESS | ENABLE DEFAULT INTERFACE")
+        return DISABLE_interface_id
+            
+       
+    else:
+        print(f"No host found with the name '{DEVICE_NAME}'.")
+#enable_Interface_By_IP_and_HostName("adrian","9.9.9.9")
+
+
+def create_interface(HOST_ID, IP, DNS, USEID, PORT):
+        if len(zapi.hostinterface.get(hostids=HOST_ID, output=["interfaceid"])) == 0:
+            MAIN = 1
         else:
-            interface_id_del = str(interfaceID_to_Delete[0]['interfaceid'])
+            MAIN = 0
+        # Create interface with or without interface
+        
+        new_interface = {
+            "type": 1,  # Tipo de interfaz (1 para agente, 2 para SNMP, 3 para JMX, etc.)
+            "main": MAIN,  # 1 para hacerla la interfaz por defecto, 0 en caso contrario
+            "ip": IP,  # Dirección IP de la interfaz
+            "dns": DNS,  # : ""  # Nombre DNS (opcional, déjalo vacío si no es necesario)
+            "port": PORT ,  # Puerto de la interfaz (por ejemplo, 10050 para el agente Zabbix)
+            "useip": USEID,  # 1 para usar dirección IP, 0 para usar nombre DNS
+            "hostid": HOST_ID  # ID del host al que se agregará la interfaz
+        }
+        
+        r = zapi.hostinterface.create(new_interface)
+        print("SUCCESS | CREATE")
+        return r['interfaceids']
+   
+
+def delete_interfaces_IPs(HOST_ID,IP, Interface_id_NO_remove):
+        interfaceID_to_Delete_temporal = zapi.hostinterface.get(hostids=HOST_ID, filter={"ip": IP})
+        print(f"DELETEEEE ARRAY: {interfaceID_to_Delete_temporal}")
+        print()
+        print(f"{Interface_id_NO_remove} <------------------- Interface ID removed --------------")
+        interfaceID_to_Delete = [item for item in interfaceID_to_Delete_temporal if item['interfaceid'] != Interface_id_NO_remove[0]]
+        print("<<<<<<<")
+        print(f"new DELETEEEE ARRAY: {interfaceID_to_Delete}")
+        for interfaces in interfaceID_to_Delete:
+            print("*¨¨--------------------")
+            print(interfaces)
             data = {
                 "jsonrpc": "2.0",
                 "method": "hostinterface.delete",
                 "params": [
-                    interface_id_del
+                    interfaces['interfaceid']
                 ],
                 "id": 1
             }
             
             r = requests.post(zabbix_url,json=data,headers=zabbix_headers)
-            
-            # Validate if the intereface cannot be deleted
+            print("++++++++++++++++++++++++")
+            print(r.json())
+            print( "SUCCESS | DELETE")
             try:
-                if r.json()['error']:
+                if r.json()['error']: 
                     dns_message = "Netbox-Zabbix_Cant-Delete"
                     update_data = {
-                            'interfaceid': interface_id_del,
-                            'dns': dns_message,
-                            "useip": 0
-                        }
+                                'interfaceid': interfaces['interfaceid'],
+                                'dns': dns_message,
+                                "useip": 0,
+                            }
 
                     r = zapi.hostinterface.update(update_data)
-                        
-                    return print(f"WARNING | IP ADDRESS | The interface of: '{ip}' can't no be delete, setting up DNSname as '{dns_message}'." ) 
+                    
+                    print(f"WARNING | IP ADDRESS | The interface of: '{ip}' can't no be delete, setting up DNSname as '{dns_message}'." ) 
+                
             except:
-                print(f"SUCCES | IP ADDRESS | The interface of: '{ip}' was deleted " )  
-            print(f" " )            
-#delete_InterfaceIP_By_IP("10762","9.9.9.9")
+                print("SUCCESS | DELETE ALL SUCCESSFULLY")
+            
+#delete_interfaces_IP("10762","192.168.1.60")
 
-def create_interface(zab_host_id, ARRAY_IP_to_ADD):
-    ARRAY_IP_to_ADD_ids = []
-    if isinstance(ARRAY_IP_to_ADD, str):
-        ARRAY_IP_to_ADD_ids = [ARRAY_IP_to_ADD]
-    elif isinstance(ARRAY_IP_to_ADD, list):
-        ARRAY_IP_to_ADD_ids = ARRAY_IP_to_ADD
-    print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-    if len(ARRAY_IP_to_ADD_ids) == 1:
-        new_interface = {
-            "type": 1,  # Tipo de interfaz (1 para agente, 2 para SNMP, 3 para JMX, etc.)
-            "main": 0,  # 1 para hacerla la interfaz por defecto, 0 en caso contrario
-            "ip": ARRAY_IP_to_ADD,  # Dirección IP de la interfaz
-            "dns": "",  # Nombre DNS (opcional, déjalo vacío si no es necesario)
-            "port": "9999" ,  # Puerto de la interfaz (por ejemplo, 10050 para el agente Zabbix)
-            "useip": 1,  # 1 para usar dirección IP, 0 para usar nombre DNS
-            "hostid": zab_host_id  # ID del host al que se agregará la interfaz
-        }
-        r = zapi.hostinterface.create(new_interface)
-        return True
-    for i in ARRAY_IP_to_ADD_ids:
-        print("Aaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        # All this parameters are mandary
-        new_interface = {
-            "type": 1,  # Tipo de interfaz (1 para agente, 2 para SNMP, 3 para JMX, etc.)
-            "main": 0,  # 1 para hacerla la interfaz por defecto, 0 en caso contrario
-            "ip": i,  # Dirección IP de la interfaz
-            "dns": "",  # Nombre DNS (opcional, déjalo vacío si no es necesario)
-            "port": "9999" ,  # Puerto de la interfaz (por ejemplo, 10050 para el agente Zabbix)
-            "useip": 1,  # 1 para usar dirección IP, 0 para usar nombre DNS
-            "hostid": zab_host_id  # ID del host al que se agregará la interfaz
-        }
-        r = zapi.hostinterface.create(new_interface)
-        print(r)
-        print(f'SUCCESS | IP ADDRESS |ADD interface: {i}')
-#create_interface("10762", "192.168.1.52")
+def setup_primary_ip(host_id,ip):
+            info_interface = zapi.hostinterface.get(hostids=host_id, filter={"ip": ip})
+            print(info_interface)
+            # Set up main ip ( primary IP )    
 
-def update_ips_host(DEVICE_NAME, BEFORE_PRIMARY_IPv4, AFTER_PRIMARY_IPv4): # <--------
+            
+            if (len(info_interface) == 0) :
+                print(f"WARNING | IP ADDRESS | IP: {ip} no found")
+                enable_interface_id = create_interface(host_id, ip,"","1","9999")
+                
+                return enable_interface_id
+        
+            if (len(info_interface) > 1): 
+                first_object = info_interface[0]
+                enable_interface_id = create_interface(host_id, first_object['ip'], first_object['dns'], first_object['useip'], first_object['port'])
+                
+                return enable_interface_id     
+        
+            else:
+                
+                enable_interface_id = create_interface(host_id, info_interface[0]['ip'], info_interface[0]['dns'], info_interface[0]['useip'], info_interface[0]['port'])
+                
+                return enable_interface_id
+            
+#setup_primary_ip("adrian3","10763","192.168.1.52","192.168.1.52")
+
+def update_ips_host(DEVICE_NAME, BEFORE_PRIMARY_IPv4, AFTER_PRIMARY_IPv4):
     
     BEFORE_PRIMARY_IPv4_ip  = get_IPadress_By_IPaddress_ID(BEFORE_PRIMARY_IPv4)
     AFTER_PRIMARY_IPv4_ip   = get_IPadress_By_IPaddress_ID(AFTER_PRIMARY_IPv4)
@@ -510,49 +470,49 @@ def update_ips_host(DEVICE_NAME, BEFORE_PRIMARY_IPv4, AFTER_PRIMARY_IPv4): # <--
         return print(f"ERROR | IP ADDRESS | Host: {DEVICE_NAME} no found")
     host_id = host[0]['hostid']
     
-    ZABBIX_INTERFACES = zapi.hostinterface.get(hostids=host_id)
-    ZABBIX_INTERFACES_IPs = [item['ip'] for item in ZABBIX_INTERFACES]
     NETOBX_IPS = get_ips_by_devices(DEVICE_NAME)
     
-    print(ZABBIX_INTERFACES_IPs)
-    print(NETOBX_IPS)
-    print()
+    NETOBX_IPS.remove(AFTER_PRIMARY_IPv4_ip)
+    NETOBX_IPS.insert(0,AFTER_PRIMARY_IPv4_ip)
     
-    # 1) Setup the Main DEFAULT to the primary IP
-    if( update_InterfaceIP_By_IP(host_id, AFTER_PRIMARY_IPv4_ip, BEFORE_PRIMARY_IPv4_ip) == False):
-        print("SUCCESS | IP ADDRESS | No interface, creating one")
-        create_interface(host_id, AFTER_PRIMARY_IPv4)
-        NETOBX_IPS.remove(AFTER_PRIMARY_IPv4_ip)
-    try:
-        enable_Interface_By_IP_and_HostName(host_id,AFTER_PRIMARY_IPv4_ip)
-    except:
-        print("ERROR | IP ADDRESS | No interface to change the DEFAULT interface")
-    # Encontrar los valores que sobran en el array zabbix (DELETE)
-    valores_sobran_zabbix = None
-    valores_sobran_zabbix = list(set(ZABBIX_INTERFACES_IPs) - set(NETOBX_IPS))
+    print( NETOBX_IPS)
+    
+    # Set up main ip ( primary IP )    
+    
+    for ip in NETOBX_IPS:
+        print(f"ip: {ip}  ||||||||||||||||||||||||||")
 
-
-    # Encontrar los valores que faltan en el array b para que sea igual a NETBOX (ADD)
-    valores_faltan_netbox = None
-    valores_faltan_netbox = list(set(NETOBX_IPS) - set(ZABBIX_INTERFACES_IPs))
-
-    print(valores_faltan_netbox)
-    print(valores_sobran_zabbix)
-    print()
-    # ACTIONS
-    if( len(valores_sobran_zabbix) >= len(valores_faltan_netbox)):
-        index = 0
-        for n, z in zip(valores_faltan_netbox, valores_sobran_zabbix):
-            print(n)
-            print(z)
-            update_InterfaceIP_By_IP(host_id, n, z)
-            valores_faltan_netbox.remove(n)
-            valores_sobran_zabbix.remove(z)
+        # Get the templates of the interfaces of ONE by filtering by IP [template_id, ip, dns, IP or DNS]
+        info_interface = zapi.hostinterface.get(hostids=host_id, filter={"ip": ip})
+        print(info_interface)
+        # Set up main ip ( primary IP )    
+        if (ip == AFTER_PRIMARY_IPv4_ip):
             
-    delete_InterfaceIP_By_IP(host_id, valores_sobran_zabbix)  
-              
-    create_interface(host_id, valores_faltan_netbox)
-    print(valores_faltan_netbox)
-    print(valores_sobran_zabbix)
-    print()
-#update_ips_host("adrian","192.168.1.202","192.168.1.202")
+            enable_interface_id = setup_primary_ip(host_id,ip)
+            
+            try:
+                enable_Interface_By_IP_and_HostName(DEVICE_NAME, ip,enable_interface_id)
+            except:
+                print("ERROR | NO PREVIUS INTERFACE")
+                
+            delete_interfaces_IPs(host_id,ip,enable_interface_id)
+            
+            continue
+        
+        if not info_interface:
+            print(f"WARNING | IP ADDRESS | IP: {ip} no found")
+            create_interface(host_id, ip,"","1","9999")
+            continue
+        
+        else:
+            #print(info_interface)
+            info_interface = info_interface[0]
+            
+    # Create Interface with IP, DNS, useip
+        create_interface_id = create_interface(host_id, info_interface['ip'], info_interface['dns'], info_interface['useip'], info_interface['port'])
+        
+    # Remove until is over all the IPS are delete
+        delete_interfaces_IPs(host_id,ip,create_interface_id)
+        
+         
+#update_ips_host("adrian3","192.168.1.51","192.168.1.52")
