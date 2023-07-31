@@ -210,9 +210,12 @@ def get_IPadress_By_IPaddress_ID(IP_ADDRESS_ID):
         convert_to_ip = ipaddress.IPv4Interface(ip_address)
         nb_primary_ip = str(convert_to_ip.ip)
         
+        
+        print(f"The IP address string for IP ID {IP_ADDRESS_ID} is: {nb_primary_ip}")    
         return nb_primary_ip
 
         
     else:
         print(f"Failed to retrieve IP address. Status Code: {response.status_code}")
-#get_IPadress_By_IPaddress_ID("1")
+
+#get_IPadress_By_IPaddress_ID("9")
