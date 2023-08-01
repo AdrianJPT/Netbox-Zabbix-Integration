@@ -9,10 +9,8 @@ import lib_zabbix as za
 from credentials import *
 import nb_local_lib as ntbx
 
-
 # ZABBIXs
 from pyzabbix import ZabbixAPI, ZabbixAPIException
-
 
 
 app = Flask(__name__)
@@ -54,7 +52,7 @@ def zabbix_host_create():
                     'main': 1,
                     'useip': 0,
                     'ip': '',
-                    'dns': 'netbox-zabbix-PrimaryIP',
+                    'dns': 'NEED TO UPDATE INTERFACE',
                     'port': '9999'
                 }],
                 groups=[{'groupid': find_hostgroup[0]['groupid']}],
@@ -116,12 +114,80 @@ def zabbix_host_update():
         pre_primary_ipv4 = reading_post['snapshots']['prechange']['primary_ip4']
         post_primary_ipv4 = reading_post['snapshots']['postchange']['primary_ip4']
                 
-    # Change name
+        # Change name
         if(reading_post['snapshots']['prechange']['name'] != nb_device_name):
             before_nb_device_name = reading_post['snapshots']['prechange']['name']
-            
             za.update_Hostname(before_nb_device_name, nb_device_name)
                 
+        # Validade if the host needs to be created in Zabbix
+        if (reading_post['data']['name'] != None ):
+            nb_device_name_ori = reading_post['data']['name']
+            if (za.create_hosts_if_necessary(reading_post,nb_device_name_ori) != False ):
+                print(f"SUCCESS | No host found in Zabbix, creating one....")
+                reading_post = request.get_json()
+                
+                nb_site_name = reading_post['data']['site']['name']
+                
+                # HOSTGROUP - SITES | 
+                try:
+                    # HOSTGROUP - SITES | TEMPLATE - PLATFORM                
+                    nb_platform = reading_post['data']['platform']['name']
+                    print(nb_platform)
+                    template = zapi.template.get(filter={'host': nb_platform})
+                    
+                    find_hostgroup = zapi.hostgroup.get(filter={"name": nb_site_name},output=['groupid'])
+                    # Validate HOSTGROPS
+                    if(len(find_hostgroup) != 0):
+                        zapi.host.create(
+                        
+                        host=nb_device_name,
+                        interfaces=[{
+                            'type': 1,
+                            'main': 1,
+                            'useip': 0,
+                            'ip': '',
+                            'dns': 'netbox-zabbix-PrimaryIP',
+                            'port': '9999'
+                        }],
+                        groups=[{'groupid': find_hostgroup[0]['groupid']}],
+                        templates=[{'templateid': template[0]['templateid']}]
+                        )
+                        
+                        print(f"ZABBIX | SUCCESS | Created ({nb_device_name})")
+                        
+                    else:
+                        print(f'HostGroup {nb_site_name} not found in ZABBIX')
+                        
+                    # HOSTGROUP - SITES 
+                    
+                except :
+                    print("NO PLATFORM SELECTED")
+                    
+                
+                try:
+                        find_hostgroup = zapi.hostgroup.get(filter={"name": nb_site_name}, output=['groupid'])
+                        if(len(find_hostgroup) != 0):
+                            zapi.host.create(
+                                
+                                host = nb_device_name,
+                                interfaces=[{
+                                    'type': 1,
+                                    'main': 1,
+                                    'useip': 0,
+                                    'ip': '',
+                                    'dns': 'netbox-zabbix-PrimaryIP',
+                                    'port': '9999'
+                                }],
+                                groups = [{"groupid": find_hostgroup[0]['groupid']}])
+                            
+                            print(f"ZABBIX | SUCCESS | Creado ({nb_device_name})")
+                        else:
+                            print(f'HostGroup {nb_site_name} not found in ZABBIX')
+                            
+                except ZabbixAPIException as e:
+                    print("DEVICE NOT CREATED")
+                return jsonify({"msg":"Correct"})
+
         # Update Platform 
         za.update_Template_Host(nb_device_name, pre_platform, post_platform)
         
@@ -129,8 +195,10 @@ def zabbix_host_update():
         za.update_HostGroup_Host(nb_device_name, pre_site, post_site)
         
         # Manage IP Address
-        za.update_ips_host(nb_device_name, pre_primary_ipv4, post_primary_ipv4)
-
+        try:
+            za.update_ips_host(nb_device_name, pre_primary_ipv4, post_primary_ipv4)
+        except:
+            print("WARNING | IP ADDRESS | NO IPs")
 
         
     return jsonify({"msg":"Correct"})    
@@ -165,4 +233,4 @@ def zabbix_host_delete():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port=5000)
+    app.run(debug=True,host='0.0.0.0',port= PORT)
