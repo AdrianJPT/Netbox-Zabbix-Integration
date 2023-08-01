@@ -28,7 +28,6 @@ def zabbix_host_create():
     if(request.data):
 
         reading_post = request.get_json()
-        print(reading_post)
         
         nb_device_name = reading_post['data']['name']
         nb_site_name = reading_post['data']['site']['name']
@@ -38,26 +37,27 @@ def zabbix_host_create():
         try:
             # HOSTGROUP - SITES | TEMPLATE - PLATFORM                
             nb_platform = reading_post['data']['platform']['name']
-            print(nb_platform)
-            template = zapi.template.get(filter={'host': nb_platform})
             
+            template = zapi.template.get(filter={'host': nb_platform})
+            print()
+            print(template)
             find_hostgroup = zapi.hostgroup.get(filter={"name": nb_site_name},output=['groupid'])
+            
             # Validate HOSTGROPS
-            if(len(find_hostgroup) != 0):
+            if(len(template) != 0):
                 zapi.host.create(
-                
-                host=nb_device_name,
-                interfaces=[{
-                    'type': 1,
-                    'main': 1,
-                    'useip': 0,
-                    'ip': '',
-                    'dns': 'NEED TO UPDATE INTERFACE',
-                    'port': '9999'
-                }],
-                groups=[{'groupid': find_hostgroup[0]['groupid']}],
-                templates=[{'templateid': template[0]['templateid']}]
-                )
+                    host=nb_device_name,
+                    interfaces=[{
+                        'type': 1,
+                        'main': 1,
+                        'useip': 0,
+                        'ip': '',
+                        'dns': 'netbox-zabbix-PrimaryIP',
+                        'port': '9999'
+                    }],
+                    groups=[{'groupid': find_hostgroup[0]['groupid']}],
+                    templates=[{'templateid': template[0]['templateid']}]
+                    )
                 
                 print(f"ZABBIX | SUCCESS | Created ({nb_device_name})")
                 
