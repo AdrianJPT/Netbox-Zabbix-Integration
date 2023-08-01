@@ -45,8 +45,6 @@ Netbox_Token = '[your_netbox_token]'
 Zabbix_Url = '[your_netbox_url]'
 Zabbix_Token = '[your_zabbix_token]'
 
-Zabbix_User = 'Admin'
-Zabbix_Password = 'zabbix'
 ```
 
 * Getting _Netbox-Zabbix-Integracion_, Build the DockerFile
