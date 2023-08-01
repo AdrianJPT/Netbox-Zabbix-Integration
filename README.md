@@ -18,7 +18,7 @@ Integration between Netbox and Zabbix to unify everything in a single SoT (Sourc
 
 ![image](https://user-images.githubusercontent.com/86939628/224465296-abddcd6b-f1a6-4a51-90b1-c212dcd4d08f.png)
 
-## Quickstart
+# Quickstart
 
 To get _Netbox-Zabbix-Integracion_ up and running run the following commands.
 
