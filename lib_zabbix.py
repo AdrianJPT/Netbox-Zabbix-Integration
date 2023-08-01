@@ -7,7 +7,7 @@ import json
 ZABBIX_SERVER = Zabbix_Url
 
 zapi = ZabbixAPI(ZABBIX_SERVER)
-zapi.login(Zabbix_User, Zabbix_Password)
+zapi.login(api_token=Zabbix_Token)
 
 zabbix_url = Zabbix_Url + "api_jsonrpc.php"
 zabbix_headers = {
@@ -83,31 +83,47 @@ def zab_patch_Template( platform_name, nb_device_name):
 
 ###############################################
 
+
+
 # DEVICE NAME | HOST NAME
 # -----------------------
 
 def update_Hostname(Before_DeviceName, After_DeviceName):
     # Find the HostID by DeviceName
     Host_Id = zapi.host.get(filter={"name": Before_DeviceName},output=['hostid'])[0]['hostid']
-    
-    
-    zapi.host.update(
-        host = After_DeviceName,
-        hostid = Host_Id,
-        )
-    print(f"SUCCESS | Name change from {Before_DeviceName} to {After_DeviceName}")
-    print("****************************************************************************")
-    
+    if not Host_Id:
+        print(Host_Id)
+        return False
+    else:
+        zapi.host.update(
+            host = After_DeviceName,
+            hostid = Host_Id,
+            )
+        print(f"SUCCESS | Name change from {Before_DeviceName} to {After_DeviceName}")
+        print("****************************************************************************")
+        return True
+        
+
+
+def create_hosts_if_necessary(request_data,Before_DeviceName):    
+    Host_Id = zapi.host.get(filter={"name": Before_DeviceName},output=['hostid'])
+    print(Host_Id)
+    if (len(Host_Id) == 0):
+        print()
+
+        return print("SUCCESSSSSSSSSSSSSSSSSss")
+    else:
+        return False
 ###############################################
 # PLATFORM | TEMPLATE
 # -------------------
 
 def get_Host_Templates(DEVICE_NAME):
     
-    Host_Id = zapi.host.get(filter={"name": DEVICE_NAME},output=['hostid'])[0]['hostid']
-    if (len(Host_Id) == 0):
+    Host_Id_pre = zapi.host.get(filter={"name": DEVICE_NAME},output=['hostid'])
+    if (len(Host_Id_pre) == 0):
         return print("HOST NOT EXIST IN ZABBIX ---------")
-    
+    Host_Id = Host_Id_pre[0]['hostid']
     data = {
         "jsonrpc": "2.0",
         "method": "host.get",
@@ -393,15 +409,11 @@ def create_interface(HOST_ID, IP, DNS, USEID, PORT):
 
 def delete_interfaces_IPs(HOST_ID,IP, Interface_id_NO_remove):
         interfaceID_to_Delete_temporal = zapi.hostinterface.get(hostids=HOST_ID, filter={"ip": IP})
-        print(f"DELETEEEE ARRAY: {interfaceID_to_Delete_temporal}")
-        print()
-        print(f"{Interface_id_NO_remove} <------------------- Interface ID removed --------------")
+        
         interfaceID_to_Delete = [item for item in interfaceID_to_Delete_temporal if item['interfaceid'] != Interface_id_NO_remove[0]]
-        print("<<<<<<<")
-        print(f"new DELETEEEE ARRAY: {interfaceID_to_Delete}")
+  
         for interfaces in interfaceID_to_Delete:
-            print("*¨¨--------------------")
-            print(interfaces)
+
             data = {
                 "jsonrpc": "2.0",
                 "method": "hostinterface.delete",
@@ -412,8 +424,7 @@ def delete_interfaces_IPs(HOST_ID,IP, Interface_id_NO_remove):
             }
             
             r = requests.post(zabbix_url,json=data,headers=zabbix_headers)
-            print("++++++++++++++++++++++++")
-            print(r.json())
+
             print( "SUCCESS | DELETE")
             try:
                 if r.json()['error']: 
@@ -435,7 +446,7 @@ def delete_interfaces_IPs(HOST_ID,IP, Interface_id_NO_remove):
 
 def setup_primary_ip(host_id,ip):
             info_interface = zapi.hostinterface.get(hostids=host_id, filter={"ip": ip})
-            print(info_interface)
+        
             # Set up main ip ( primary IP )    
 
             
@@ -475,16 +486,15 @@ def update_ips_host(DEVICE_NAME, BEFORE_PRIMARY_IPv4, AFTER_PRIMARY_IPv4):
     NETOBX_IPS.remove(AFTER_PRIMARY_IPv4_ip)
     NETOBX_IPS.insert(0,AFTER_PRIMARY_IPv4_ip)
     
-    print( NETOBX_IPS)
+
     
-    # Set up main ip ( primary IP )    
     
     for ip in NETOBX_IPS:
-        print(f"ip: {ip}  ||||||||||||||||||||||||||")
+        
 
         # Get the templates of the interfaces of ONE by filtering by IP [template_id, ip, dns, IP or DNS]
         info_interface = zapi.hostinterface.get(hostids=host_id, filter={"ip": ip})
-        print(info_interface)
+
         # Set up main ip ( primary IP )    
         if (ip == AFTER_PRIMARY_IPv4_ip):
             
@@ -514,5 +524,5 @@ def update_ips_host(DEVICE_NAME, BEFORE_PRIMARY_IPv4, AFTER_PRIMARY_IPv4):
     # Remove until is over all the IPS are delete
         delete_interfaces_IPs(host_id,ip,create_interface_id)
         
-         
+
 #update_ips_host("adrian3","192.168.1.51","192.168.1.52")
